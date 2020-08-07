@@ -1,0 +1,59 @@
+
+<div class="side-menu-container">
+    <!-- website logo -->
+    <div class="app-logo">LOGO</div>
+
+
+    <!-- left side main menu bar -->
+    <app-side-menu-item 
+        text="Home"
+        route="home"
+        icon="home icon">
+    </app-side-menu-item>
+
+    <app-side-menu-item 
+        text="Explore"
+        route=""
+        icon="search icon">
+    </app-side-menu-item>
+    
+    <app-side-menu-item 
+        text="Bookmarks"
+        route=""
+        icon="bookmark outline icon">
+    </app-side-menu-item>
+
+    <app-side-menu-item 
+        text="Notifications"
+        route="notification"
+        icon="bell outline icon">
+    </app-side-menu-item>
+
+    <app-side-menu-item 
+        text="Profile"
+        route=""
+        icon="user outline icon">
+    </app-side-menu-item>
+
+    <app-side-menu-item 
+        text="Help"
+        route=""
+        icon="exclamation icon">
+    </app-side-menu-item>
+
+    <app-side-menu-item 
+        text="More"
+        route=""
+        icon="ellipsis horizontal icon">
+    </app-side-menu-item>
+
+
+    <!-- user information -->
+    <div class="user-info">
+        <div class='user-image'></div>
+        <div class='user-name-id'>
+            <div class='user-name'>{{ userName }}</div>
+            <div class='user-id'>{{ userId }}</div>
+        </div>
+    </div>
+</div>
