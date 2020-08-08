@@ -6,3 +6,58 @@
 .home-wrapper {
     flex: 1;
 }
+
+/* each blog details */
+.ec-blog-post {
+    display: flex;
+    padding: 10px 15px;
+}
+
+.user-blog-post {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: url('/assets/images/user_default.jpg') no-repeat;
+    background-size: cover;
+}
+
+.user-blog-wrapper {
+    flex: 1;
+    margin-left: 10px;
+}
+
+.user-blog-info {
+    display: flex;
+    margin-top: 10px;
+    align-items: center;
+}
+
+.user-blog-name {
+    font-weight: bold;
+    text-transform: capitalize;
+    color: #000;
+}
+
+.dot {
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    background: #828282;
+    margin: 0 10px;
+}
+
+.user-blog-post-time {
+    color: #747474;
+    font-size: 13px;
+}
+
+.user-blog-content {
+    margin-top: 10px;
+    color: #4b4b4b;
+}
+
+.video-fluid {
+    width: 100%;
+    height: auto;
+    margin-top: 15px;
+}

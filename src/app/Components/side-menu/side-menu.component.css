@@ -10,6 +10,7 @@
     flex-direction: column;
     width: 300px;
     overflow-y: auto;
+    border-right: 1px solid #ddd;
 }
 
 /* app logo design */
