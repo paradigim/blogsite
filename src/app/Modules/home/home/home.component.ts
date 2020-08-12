@@ -7,9 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
+  likeCount: number;
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  getLikeCounts(event: number): void {
+    this.likeCount = event;
   }
 
 }

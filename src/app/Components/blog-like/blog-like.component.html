@@ -1,0 +1,7 @@
+
+
+<div class='blog-like-container' (click)='likeCountStatusChange()'>
+    <i *ngIf='likeGiven' class="heart red icon activity-icon"></i>
+    <i *ngIf='!likeGiven' class="heart outline icon activity-icon"></i>
+    <span>{{ likeCount }}</span>
+</div>

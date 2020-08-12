@@ -61,3 +61,9 @@
     height: auto;
     margin-top: 15px;
 }
+
+.blog-activities {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
