@@ -7,7 +7,7 @@ import { RightSideMenuComponent } from 'src/app/Components/right-side-menu/right
 import { BlogLikeComponent } from 'src/app/Components/blog-like/blog-like.component';
 import { BlogCommentComponent } from 'src/app/Components/blog-comment/blog-comment.component';
 import { BlogActivityMoreComponent } from 'src/app/Components/blog-activity-more/blog-activity-more.component';
-
+import { BlogAllCommentsComponent } from 'src/app/Components/blog-all-comments/blog-all-comments.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +15,8 @@ import { BlogActivityMoreComponent } from 'src/app/Components/blog-activity-more
     RightSideMenuComponent,
     BlogLikeComponent,
     BlogCommentComponent,
-    BlogActivityMoreComponent
+    BlogActivityMoreComponent,
+    BlogAllCommentsComponent
   ],
   imports: [
     CommonModule,

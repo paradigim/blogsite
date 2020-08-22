@@ -1,0 +1,13 @@
+
+.ui.menu {
+    box-shadow: none;
+    min-height: 0;
+    border: 0;
+    border-radius: 0;
+}
+.ui.menu:not(.vertical) > .menu {
+    display: block;
+}
+.menu-list {
+    min-width: 175px;
+}

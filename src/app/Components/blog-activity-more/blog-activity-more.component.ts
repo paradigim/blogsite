@@ -1,10 +1,7 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 // import * as $ from 'jquery';
-declare var JQuery: any;
+declare var $: any;
 
-interface JQuery {
-  dropdown(): any;
-}
 @Component({
   selector: 'app-blog-activity-more',
   templateUrl: './blog-activity-more.component.html',
@@ -12,12 +9,24 @@ interface JQuery {
 })
 export class BlogActivityMoreComponent implements OnInit {
 
-  constructor(private dropdown: ElementRef) { }
+  constructor() { }
 
   ngOnInit(): void {
+    this.accessDropDownMenu();
   }
 
-  showDropDown(): void {
-    JQuery(this.dropdown.nativeElement).dropdown();
+
+  // function to access and manupulate dropdown menu
+  private accessDropDownMenu(): void {
+    const dropdownEl = document.querySelector('.dropdown');
+    dropdownEl.addEventListener('click', (event) => {
+      event.stopPropagation();
+      dropdownEl.classList.toggle('menu');
+    });
+    document.addEventListener('click', (event) => {
+      if (dropdownEl.classList.contains('menu')) {
+        dropdownEl.classList.remove('menu');
+      }
+    });
   }
 }

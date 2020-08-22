@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { InteractionService } from '../../services/interaction.service';
 
 @Component({
   selector: 'app-blog-like',
@@ -10,7 +11,9 @@ export class BlogLikeComponent implements OnInit {
   likeCount = 1234;
   likeGiven = false;
 
-  constructor() { }
+  constructor(
+    private interaction: InteractionService
+  ) { }
 
   ngOnInit(): void {
   }

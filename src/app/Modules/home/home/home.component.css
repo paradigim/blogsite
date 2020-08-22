@@ -11,6 +11,8 @@
 .ec-blog-post {
     display: flex;
     padding: 10px 15px;
+    border-bottom: 1px solid #ddd;
+    background: #f5f5f8;
 }
 
 .user-blog-post {
@@ -53,13 +55,13 @@
 
 .user-blog-content {
     margin-top: 10px;
+    margin-bottom: 15px;
     color: #4b4b4b;
 }
 
 .video-fluid {
     width: 100%;
     height: auto;
-    margin-top: 15px;
 }
 
 .blog-activities {
