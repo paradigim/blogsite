@@ -1,0 +1,21 @@
+
+<div class="ui form">
+    <div class="field">
+        <label>Comment</label>
+        <textarea 
+            rows="2" 
+            class="comment-box" 
+            [(ngModel)]="comment"
+            #textbox>
+        </textarea>
+    </div>
+    <div class="comment-parts">
+        <div class="comment-specifications">
+
+        </div>
+        <button (click)="getInputValue(textbox.value)">Comment</button>
+    </div>
+</div>
+
+<!-- <input #textbox type="text" [(ngModel)]="textValue" required> -->
+<!--  -->

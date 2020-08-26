@@ -11,8 +11,9 @@
     font-weight: bold;
 }
 
-.side-menu-items:hover {
-  background: rgba(0, 179, 131, 0.2);  
+.side-menu-items:hover,
+.active {
+  background: rgb(137 137 137 / 20%);  
 }
 
 .side-menu-items i {

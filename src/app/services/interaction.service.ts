@@ -6,13 +6,13 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class InteractionService {
 
-  // private likeStatus = new BehaviorSubject<boolean>(false);
+  // private likeStatus = new BehaviorSubject<string>('');
   // public likeStatus$ = this.likeStatus.asObservable();
 
   constructor() { }
 
 
-  // changeStatus(status: boolean): void {
-  //   this.likeStatus.next(status);
+  // changeStatus(id: string): void {
+  //   this.likeStatus.next(id);
   // }
 }

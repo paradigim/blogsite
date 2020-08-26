@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { InteractionService } from 'src/app/services/interaction.service';
 
 @Component({
   selector: 'app-home',
@@ -9,7 +10,9 @@ export class HomeComponent implements OnInit {
 
   likeCount: number;
 
-  constructor() { }
+  constructor(
+    private interaction: InteractionService
+  ) { }
 
   ngOnInit(): void {
   }

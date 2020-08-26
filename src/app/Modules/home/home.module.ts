@@ -8,6 +8,8 @@ import { BlogLikeComponent } from 'src/app/Components/blog-like/blog-like.compon
 import { BlogCommentComponent } from 'src/app/Components/blog-comment/blog-comment.component';
 import { BlogActivityMoreComponent } from 'src/app/Components/blog-activity-more/blog-activity-more.component';
 import { BlogAllCommentsComponent } from 'src/app/Components/blog-all-comments/blog-all-comments.component';
+import { BlogCommentInputComponent } from 'src/app/Components/blog-comment-input/blog-comment-input.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -16,11 +18,13 @@ import { BlogAllCommentsComponent } from 'src/app/Components/blog-all-comments/b
     BlogLikeComponent,
     BlogCommentComponent,
     BlogActivityMoreComponent,
-    BlogAllCommentsComponent
+    BlogAllCommentsComponent,
+    BlogCommentInputComponent
   ],
   imports: [
     CommonModule,
-    HomeRoutingModule
+    HomeRoutingModule,
+    FormsModule
   ]
 })
 export class HomeModule { }
