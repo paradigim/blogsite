@@ -3,19 +3,27 @@
     <div class="field">
         <label>Comment</label>
         <textarea 
-            rows="2" 
+            [rows]="rowCount" 
             class="comment-box" 
             [(ngModel)]="comment"
+            (keydown.enter)="setRowCount()"
             #textbox>
         </textarea>
     </div>
     <div class="comment-parts">
         <div class="comment-specifications">
-
+            <div class='spec-icon'>
+                <i class="paperclip icon"></i>
+            </div>
+            <div class='spec-icon'>
+                <i class="smile outline icon"></i>
+            </div>
         </div>
-        <button (click)="getInputValue(textbox.value)">Comment</button>
+        <button 
+            class="comment-button" 
+            disabled
+            (click)="getInputValue(textbox.value)">
+            {{jsonData.button.comment}}
+        </button>
     </div>
 </div>
-
-<!-- <input #textbox type="text" [(ngModel)]="textValue" required> -->
-<!--  -->

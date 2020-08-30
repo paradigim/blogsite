@@ -2,3 +2,31 @@
 textarea.comment-box {
     resize: none;
 }
+
+.comment-parts {
+    display: flex;
+    align-items: cneter;
+    justify-content: space-between;
+}
+
+.comment-specifications {
+    display: flex;
+    align-items: center;
+}
+
+.spec-icon {
+    margin-right: 10px;
+    color: var(--prime-color);
+}
+
+.comment-button {
+    background: var(--prime-color);
+    border: 0;
+    color: #fff;
+    padding: 12px 17px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+.comment-button:disabled {
+    background: #a4dfcf;
+}

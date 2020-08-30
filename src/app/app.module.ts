@@ -8,7 +8,6 @@ import { SideMenuComponent } from './Components/side-menu/side-menu.component';
 import { SideMenuItemComponent } from './Components/side-menu-item/side-menu-item.component';
 import { FormsModule } from '@angular/forms';
 
-
 @NgModule({
   declarations: [
     AppComponent,

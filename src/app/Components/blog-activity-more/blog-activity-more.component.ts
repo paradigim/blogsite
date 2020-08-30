@@ -19,7 +19,7 @@ export class BlogActivityMoreComponent implements OnInit {
     const dropdownEl = document.querySelectorAll('.dropdown')[Number(this.index)];
     dropdownEl.id = this.elemId;
 
-    // to show the targeted dropdown elemnt
+    // to show the targeted dropdown element
     document.getElementById(dropdownEl.id).addEventListener('click', (event) => {
       this.accessDropDownMenu(event, dropdownEl);
     });
@@ -33,7 +33,6 @@ export class BlogActivityMoreComponent implements OnInit {
 
   // function to access and manupulate dropdown menu
   private accessDropDownMenu(event: any, dropdownEl: any): void {
-    console.log('EVENT: ', event);
     event.stopPropagation();
     dropdownEl.classList.toggle('menu');
   }
