@@ -2,12 +2,12 @@
 <div class="ui form">
     <div class="field">
         <label>Comment</label>
+        <!-- use ngx-autoresize -->
         <textarea 
-            [rows]="rowCount" 
+            minRows="2"
             class="comment-box" 
-            [(ngModel)]="comment"
-            (keydown.enter)="setRowCount()"
-            #textbox>
+            autosize
+            [(ngModel)]="comment">
         </textarea>
     </div>
     <div class="comment-parts">

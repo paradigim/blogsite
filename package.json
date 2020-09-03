@@ -30,6 +30,7 @@
     "font-awesome": "^4.7.0",
     "hammerjs": "^2.0.8",
     "jquery": "^3.5.1",
+    "ngx-autosize": "^1.8.0",
     "rxjs": "~6.5.5",
     "semantic-ui-css": "^2.4.1",
     "tslib": "^2.0.0",

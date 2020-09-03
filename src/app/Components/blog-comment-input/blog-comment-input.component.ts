@@ -7,24 +7,16 @@ import * as data from 'src/assets/language.json';
   styleUrls: ['./blog-comment-input.component.css']
 })
 export class BlogCommentInputComponent implements OnInit {
-
   comment = '';
   jsonData = (data as any).default;
   rowCount = 2;
   counter = 0;
+  scrollHeight = 0;
 
   constructor() { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
-
-  setRowCount(): void {
-    this.counter++;
-    if (this.counter >= 2) {
-      this.rowCount++;
-    }
-  }
 
   getInputValue(val: any): void {
     this.comment = val;
