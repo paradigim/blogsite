@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import * as data from 'src/assets/language.json';
 
 @Component({
@@ -7,11 +7,11 @@ import * as data from 'src/assets/language.json';
   styleUrls: ['./blog-comment-input.component.css']
 })
 export class BlogCommentInputComponent implements OnInit {
+  @Input() index = 0;
+  @Input() commentId = '';
   comment = '';
   jsonData = (data as any).default;
-  rowCount = 2;
-  counter = 0;
-  scrollHeight = 0;
+  isDisabled = true;
 
   constructor() { }
 
@@ -23,4 +23,14 @@ export class BlogCommentInputComponent implements OnInit {
     console.log(this.comment);
   }
 
+  activeCommentBTN(e): void {
+    if (e.target.value) {
+      const dropdownEl = document.querySelectorAll('.comment-button');
+      console.log('ELEM: ', dropdownEl[Number(this.index)].getAttribute('class'));
+
+      this.isDisabled = !(dropdownEl[Number(this.index)].getAttribute('disabled'));
+      dropdownEl[Number(this.index)].setAttribute('disabled', 'false');
+      console.log(dropdownEl[Number(this.index)].getAttribute('disabled'));
+    }
+  }
 }
