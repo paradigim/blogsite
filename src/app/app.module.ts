@@ -7,7 +7,11 @@ import { AppComponent } from './app.component';
 import { SideMenuComponent } from './Components/side-menu/side-menu.component';
 import { SideMenuItemComponent } from './Components/side-menu-item/side-menu-item.component';
 import { FormsModule } from '@angular/forms';
-import { NotificationComponent } from './notification/notification.component';
+import { NotificationComponent } from './Modules/notification/notification.component';
+
+import { environment } from '../environments/environment';
+import { AngularFireModule } from '@angular/fire';
+
 
 @NgModule({
   declarations: [
@@ -20,7 +24,8 @@ import { NotificationComponent } from './notification/notification.component';
     BrowserModule,
     AppRoutingModule,
     MDBBootstrapModule.forRoot(),
-    FormsModule
+    FormsModule,
+    AngularFireModule.initializeApp(environment.firebase)
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
   providers: [],
