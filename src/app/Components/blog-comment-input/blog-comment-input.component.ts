@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChildren, ElementRef, QueryList } from '@angular/core';
 import * as data from 'src/assets/language.json';
 
 @Component({
@@ -12,25 +12,29 @@ export class BlogCommentInputComponent implements OnInit {
   comment = '';
   jsonData = (data as any).default;
   isDisabled = true;
+  commentBTN: any;
+  textArea: any;
 
-  constructor() { }
+  constructor(private elemRef: ElementRef) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.commentBTN = document.querySelectorAll('.comment-button');
+    this.textArea = document.querySelectorAll('.comment-box');
+  }
 
 
-  getInputValue(val: any): void {
-    this.comment = val;
+  getInputValue(): void {
     console.log(this.comment);
   }
 
-  activeCommentBTN(e): void {
-    if (e.target.value) {
-      const dropdownEl = document.querySelectorAll('.comment-button');
-      console.log('ELEM: ', dropdownEl[Number(this.index)].getAttribute('class'));
+  activeCommentBTN(e: any): void {
+    this.comment = e.target.value;
 
-      this.isDisabled = !(dropdownEl[Number(this.index)].getAttribute('disabled'));
-      dropdownEl[Number(this.index)].setAttribute('disabled', 'false');
-      console.log(dropdownEl[Number(this.index)].getAttribute('disabled'));
+    // activate comment button if there is value in textarea
+    if (this.textArea[this.index].value) {
+      this.commentBTN[Number(this.index)].removeAttribute('disabled');
+    } else {
+      this.commentBTN[Number(this.index)].setAttribute('disabled', 'true');
     }
   }
 }

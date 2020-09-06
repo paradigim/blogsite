@@ -26,6 +26,7 @@ textarea.comment-box {
     padding: 12px 17px;
     border-radius: 20px;
     font-weight: bold;
+    outline: none;
 }
 .comment-button:disabled {
     background: #a4dfcf;
