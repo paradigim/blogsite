@@ -7,12 +7,14 @@ import { AppComponent } from './app.component';
 import { SideMenuComponent } from './Components/side-menu/side-menu.component';
 import { SideMenuItemComponent } from './Components/side-menu-item/side-menu-item.component';
 import { FormsModule } from '@angular/forms';
+import { NotificationComponent } from './notification/notification.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SideMenuComponent,
-    SideMenuItemComponent
+    SideMenuItemComponent,
+    NotificationComponent
   ],
   imports: [
     BrowserModule,
