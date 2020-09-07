@@ -4,9 +4,8 @@ import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: '',
-    pathMatch: 'full',
-    redirectTo: 'home'
+    path:'',
+    loadChildren:() => import('./Modules/preauth/preauth.module').then(m => m.PreauthModule)
   },
   {
     path: 'home',

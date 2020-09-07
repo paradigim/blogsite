@@ -6,8 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SideMenuComponent } from './Components/side-menu/side-menu.component';
 import { SideMenuItemComponent } from './Components/side-menu-item/side-menu-item.component';
-import { FormsModule } from '@angular/forms';
-import { NotificationComponent } from './Modules/notification/notification.component';
+import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 
 import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire';
@@ -18,13 +17,14 @@ import { AngularFireModule } from '@angular/fire';
     AppComponent,
     SideMenuComponent,
     SideMenuItemComponent,
-    NotificationComponent
+    
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     MDBBootstrapModule.forRoot(),
     FormsModule,
+    ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebase)
   ],
   schemas: [ NO_ERRORS_SCHEMA ],

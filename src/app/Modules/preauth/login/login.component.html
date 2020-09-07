@@ -1,0 +1,12 @@
+<form class="ui form" [formGroup]="loginForm">
+    <div class="field">
+        <label>Email</label>
+        <input type="text" name="email" formControlName="email" placeholder="abc@gmail.com">
+    </div>
+    <div class="field">
+        <label>Password</label>
+        <input type="password" name="password" formControlName="password" placeholder="password">
+    </div>
+
+    <button class="ui button" (click)="submit()" type="button">Submit</button>
+</form>
