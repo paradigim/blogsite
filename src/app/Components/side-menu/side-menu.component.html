@@ -25,7 +25,7 @@
 
     <app-side-menu-item 
         text="Notifications"
-        route="notifications"
+        route="notification"
         icon="bell outline icon">
     </app-side-menu-item>
 
@@ -46,6 +46,14 @@
         route="more"
         icon="ellipsis horizontal icon">
     </app-side-menu-item>
+
+
+    
+    <button class="blog-post-button" (click)="changeModalStatus()">
+        Post
+    </button>
+    <app-blog-post-modal *ngIf="modalShow"></app-blog-post-modal>
+    
 
 
     <!-- user information -->

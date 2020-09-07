@@ -10,9 +10,15 @@ export class SideMenuComponent implements OnInit {
   userName = 'Anisya olga';
   userId = '@Anisyaolga21123';
 
+  modalShow = false;
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  changeModalStatus(): void {
+    this.modalShow = !this.modalShow;
   }
 
 }

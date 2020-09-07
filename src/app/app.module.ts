@@ -7,10 +7,11 @@ import { AppComponent } from './app.component';
 import { SideMenuComponent } from './Components/side-menu/side-menu.component';
 import { SideMenuItemComponent } from './Components/side-menu-item/side-menu-item.component';
 import { FormsModule } from '@angular/forms';
-import { NotificationComponent } from './Modules/notification/notification.component';
 
 import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire';
+import { NotificationModule } from './Modules/notification/notification.module';
+import { BlogPostModalComponent } from './Components/blog-post-modal/blog-post-modal.component';
 
 
 @NgModule({
@@ -18,14 +19,15 @@ import { AngularFireModule } from '@angular/fire';
     AppComponent,
     SideMenuComponent,
     SideMenuItemComponent,
-    NotificationComponent
+    BlogPostModalComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     MDBBootstrapModule.forRoot(),
     FormsModule,
-    AngularFireModule.initializeApp(environment.firebase)
+    AngularFireModule.initializeApp(environment.firebase),
+    NotificationModule
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
   providers: [],

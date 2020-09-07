@@ -57,3 +57,18 @@
     color: #666;
 }
 /* user info end */
+
+
+.blog-post-button {
+    width: 80%;
+    border: 0;
+    background: var(--prime-color);
+    border-radius: 20px;
+    padding: 12px 0;
+    color: #fff;
+    font-weight: bold;
+    text-transform: capitalize;
+    margin-top: 10px;
+    cursor: pointer;
+    outline: none;
+}
