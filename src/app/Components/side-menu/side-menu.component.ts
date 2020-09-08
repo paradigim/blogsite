@@ -19,7 +19,6 @@ export class SideMenuComponent implements OnInit {
 
   changeModalStatus(): void {
     this.modalShow = !this.modalShow;
-    console.log('MODAL STATUS: ', this.modalShow);
   }
 
 }
