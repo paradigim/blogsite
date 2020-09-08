@@ -12,7 +12,9 @@ import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire';
 import { NotificationModule } from './Modules/notification/notification.module';
 import { BlogPostModalComponent } from './Components/blog-post-modal/blog-post-modal.component';
-
+import { SuiModule } from 'ng2-semantic-ui';
+import { HomeModule } from './Modules/home/home.module';
+import { AutosizeModule } from 'ngx-autosize';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { BlogPostModalComponent } from './Components/blog-post-modal/blog-post-m
     MDBBootstrapModule.forRoot(),
     FormsModule,
     AngularFireModule.initializeApp(environment.firebase),
-    NotificationModule
+    NotificationModule,
+    SuiModule,
+    AutosizeModule
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
   providers: [],

@@ -10,7 +10,6 @@ import { BlogActivityMoreComponent } from 'src/app/Components/blog-activity-more
 import { BlogAllCommentsComponent } from 'src/app/Components/blog-all-comments/blog-all-comments.component';
 import { BlogCommentInputComponent } from 'src/app/Components/blog-comment-input/blog-comment-input.component';
 import { FormsModule } from '@angular/forms';
-import {AutosizeModule} from 'ngx-autosize';
 
 @NgModule({
   declarations: [
@@ -20,13 +19,12 @@ import {AutosizeModule} from 'ngx-autosize';
     BlogCommentComponent,
     BlogActivityMoreComponent,
     BlogAllCommentsComponent,
-    BlogCommentInputComponent
+    BlogCommentInputComponent,
   ],
   imports: [
     CommonModule,
     HomeRoutingModule,
-    FormsModule,
-    AutosizeModule
+    FormsModule
   ]
 })
 export class HomeModule { }

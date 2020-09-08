@@ -1,6 +1,8 @@
+@import 'semantic-ui-css/semantic.css';
+@import 'bulma/css/bulma.css';
 
 textarea.comment-box {
-    resize: none;
+    resize: none !important;
 }
 
 .comment-parts {

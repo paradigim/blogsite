@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChildren, ElementRef, QueryList } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import * as data from 'src/assets/language.json';
 
 @Component({
@@ -15,7 +15,7 @@ export class BlogCommentInputComponent implements OnInit {
   commentBTN: any;
   textArea: any;
 
-  constructor(private elemRef: ElementRef) { }
+  constructor() { }
 
   ngOnInit(): void {
     this.commentBTN = document.querySelectorAll('.comment-button');

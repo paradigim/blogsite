@@ -1,21 +1,36 @@
 
-<div class="ui dimmer modal active">
-    <i class="close icon"></i>
-    <div class="header">
-      Profile Picture
-    </div>
-    <div class="image content">
-      <div class="ui medium image">
-        <!-- <img src="/images/avatar/large/chris.jpg"> -->
+ <sui-modal size="tiny" [isClosable]="true" (dismissed)="cancelBlog()" #modal>
+    <div class="header">Example</div>
+    <div class="content">
+      
+      <div class="blog-write-container">
+        <!-- blog owner image -->
+        <div class="blog-owner-image"></div>
+
+        <!-- writing and editing blog -->
+        <div class="ui form blog-write-form">
+          <div class="field textarea-field">
+              <textarea
+                minRows="1"
+                class="post-box"
+                autosize
+                (focus)="statusPlaceholder($event)"
+                (blur)="statusPlaceholder($event)"></textarea>
+              <label class="text-placeholder" *ngIf="isPlaceholder">What's on your mind...?</label>
+          </div>
+          <!-- attach images and videos to the blog and post button-->
+          <div class="attach-btn">
+              <div class="attach-icons">
+                <i class="image outline icon"></i>
+                <i class="video icon"></i>
+                <i class="smile outline icon"></i>
+              </div>
+              <button class="blog-post-btn" (click)="postBlog()">Post</button>
+          </div>
+        </div>
       </div>
-      <div class="description">
-        
-      </div>
+
+
+
     </div>
-    <div class="actions">
-      <div class="ui positive right labeled icon button">
-        Yep, that's me
-        <i class="checkmark icon"></i>
-      </div>
-    </div>
-</div>
+</sui-modal>

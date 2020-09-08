@@ -1,20 +1,38 @@
-import { Component, OnInit, ElementRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'app-blog-post-modal',
   templateUrl: './blog-post-modal.component.html',
   styleUrls: ['./blog-post-modal.component.css']
 })
-export class BlogPostModalComponent implements OnInit, OnDestroy {
+export class BlogPostModalComponent implements OnInit {
+  @Output() modalStatus = new EventEmitter();
+  @ViewChild('modal') modal: any;
+  @ViewChild('textarea') textarea: any;
 
-  constructor(private elemRef: ElementRef) { }
+  isPlaceholder = true;
+
+  constructor() { }
 
   ngOnInit(): void {
-    document.body.appendChild(this.elemRef.nativeElement);
   }
 
-  ngOnDestroy(): void {
-    this.elemRef.nativeElement.remove();
+  cancelBlog(): void {
+    this.modal.deny();
+    this.modalStatus.emit();
+  }
+
+  postBlog(): void {
+    this.modal.approve();
+    this.modalStatus.emit();
+  }
+
+  statusPlaceholder(e): void {
+    console.log(e);
+    e.preventDefault();
+    if (e.target.value === '' || e.target.value === undefined || e.target.value === null) {
+      this.isPlaceholder = !this.isPlaceholder;
+    }
   }
 
 }
