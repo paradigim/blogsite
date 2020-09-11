@@ -4,22 +4,18 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { SideMenuComponent } from './Components/side-menu/side-menu.component';
-import { SideMenuItemComponent } from './Components/side-menu-item/side-menu-item.component';
-import { FormsModule,ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire';
-import { NotificationModule } from './Modules/notification/notification.module';
 import { BlogPostModalComponent } from './Components/blog-post-modal/blog-post-modal.component';
 import { SuiModule } from 'ng2-semantic-ui';
 import { AutosizeModule } from 'ngx-autosize';
+import { PostauthModule } from './Modules/postauth/postauth.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    SideMenuComponent,
-    SideMenuItemComponent,
     BlogPostModalComponent
   ],
   imports: [
@@ -28,10 +24,10 @@ import { AutosizeModule } from 'ngx-autosize';
     MDBBootstrapModule.forRoot(),
     FormsModule,
     AngularFireModule.initializeApp(environment.firebase),
-    NotificationModule,
     SuiModule,
     AutosizeModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    PostauthModule
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
   providers: [],
