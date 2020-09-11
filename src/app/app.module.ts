@@ -6,14 +6,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SideMenuComponent } from './Components/side-menu/side-menu.component';
 import { SideMenuItemComponent } from './Components/side-menu-item/side-menu-item.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 
 import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire';
 import { NotificationModule } from './Modules/notification/notification.module';
 import { BlogPostModalComponent } from './Components/blog-post-modal/blog-post-modal.component';
 import { SuiModule } from 'ng2-semantic-ui';
-import { HomeModule } from './Modules/home/home.module';
 import { AutosizeModule } from 'ngx-autosize';
 
 @NgModule({
@@ -31,7 +30,8 @@ import { AutosizeModule } from 'ngx-autosize';
     AngularFireModule.initializeApp(environment.firebase),
     NotificationModule,
     SuiModule,
-    AutosizeModule
+    AutosizeModule,
+    ReactiveFormsModule
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
   providers: [],
