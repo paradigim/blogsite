@@ -10,6 +10,7 @@ import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire';
 import { PostauthModule } from './Modules/postauth/postauth.module';
 
+
 @NgModule({
   declarations: [
     AppComponent

@@ -12,25 +12,25 @@ import { BlogCommentInputComponent } from 'src/app/Components/blog-comment-input
 import { FormsModule } from '@angular/forms';
 import { AutosizeModule } from 'ngx-autosize';
 import { BlogPostModalComponent } from 'src/app/Components/blog-post-modal/blog-post-modal.component';
-
+import { SuiModule } from 'ng2-semantic-ui';
 
 @NgModule({
   declarations: [
     HomeComponent,
     RightSideMenuComponent,
-    BlogPostModalComponent,
     BlogLikeComponent,
     BlogCommentComponent,
     BlogActivityMoreComponent,
     BlogAllCommentsComponent,
     BlogCommentInputComponent,
+    BlogPostModalComponent
   ],
   imports: [
     CommonModule,
     HomeRoutingModule,
     FormsModule,
-    AutosizeModule
+    AutosizeModule,
+    SuiModule
   ],
-  schemas: [ NO_ERRORS_SCHEMA ]
 })
 export class HomeModule { }

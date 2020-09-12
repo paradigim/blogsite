@@ -1,4 +1,6 @@
 
+@import 'semantic-ui-css/semantic.css';
+
 .blog-like-container {
     white-space: nowrap;
     vertical-align: middle;

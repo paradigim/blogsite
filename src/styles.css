@@ -1,11 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
 /* @import 'bootstrap/dist/css/bootstrap.css'; */
-@import 'semantic-ui-css/semantic.css';
+/* @import 'semantic-ui-css/semantic.css'; */
 @import 'bulma/css/bulma.css';
 
 
 :root {
     --prime-color: #00b383;
+}
+
+body {
+    font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+    font-size: 1em;
 }
 
 .dot {

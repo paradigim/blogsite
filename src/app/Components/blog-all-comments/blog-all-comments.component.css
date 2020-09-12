@@ -19,6 +19,7 @@
     flex: 1;
     margin-left: 10px;
 }
+@import 'semantic-ui-css/semantic.css';
 
 .comment-user-indentity {
     display: flex;
