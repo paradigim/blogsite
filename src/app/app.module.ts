@@ -25,9 +25,9 @@ import { PostauthModule } from './Modules/postauth/postauth.module';
     FormsModule,
     AngularFireModule.initializeApp(environment.firebase),
     SuiModule,
-    AutosizeModule,
     ReactiveFormsModule,
-    PostauthModule
+    PostauthModule,
+    AutosizeModule
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
   providers: [],

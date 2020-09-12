@@ -4,12 +4,18 @@ import { PostauthComponent } from './postauth.component';
 
 const routes: Routes = [
   {
-    path: 'home',
-    loadChildren: () => import('../postauth/home/home.module').then(m => m.HomeModule),
-  },
-  {
-    path: 'notification',
-    loadChildren: () => import('../postauth/notification/notification.module').then(m => m.NotificationModule)
+    path: '',
+    component: PostauthComponent,
+    children: [
+      {
+        path: 'home',
+        loadChildren: () => import('../postauth/home/home.module').then(m => m.HomeModule),
+      },
+      {
+        path: 'notification',
+        loadChildren: () => import('../postauth/notification/notification.module').then(m => m.NotificationModule)
+      }
+    ]
   }
 ];
 

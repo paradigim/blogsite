@@ -3,21 +3,18 @@ import { CommonModule } from '@angular/common';
 
 import { PostauthRoutingModule } from './postauth-routing.module';
 import { PostauthComponent } from './postauth.component';
-import { NotificationModule } from './notification/notification.module';
 import { SideMenuComponent } from 'src/app/Components/side-menu/side-menu.component';
 import { SideMenuItemComponent } from 'src/app/Components/side-menu-item/side-menu-item.component';
-
 
 @NgModule({
   declarations: [
     PostauthComponent,
     SideMenuComponent,
-    SideMenuItemComponent
+    SideMenuItemComponent,
   ],
   imports: [
     CommonModule,
-    PostauthRoutingModule,
-    NotificationModule,
+    PostauthRoutingModule
   ],
   schemas: [ NO_ERRORS_SCHEMA ]
 })

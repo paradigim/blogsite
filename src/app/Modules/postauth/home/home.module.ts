@@ -19,7 +19,7 @@ import { FormsModule } from '@angular/forms';
     BlogCommentComponent,
     BlogActivityMoreComponent,
     BlogAllCommentsComponent,
-    BlogCommentInputComponent,
+    BlogCommentInputComponent
   ],
   imports: [
     CommonModule,
