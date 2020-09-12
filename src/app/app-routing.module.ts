@@ -4,11 +4,11 @@ import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'dashboard',
     loadChildren: () => import('./Modules/postauth/postauth.module').then(m => m.PostauthModule)
   },
   {
-    path: 'auth',
+    path: '',
     loadChildren: () => import('./Modules/preauth/preauth.module').then(m => m.PreauthModule)
   }
 ];
