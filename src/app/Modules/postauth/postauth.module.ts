@@ -6,6 +6,8 @@ import { PostauthComponent } from './postauth.component';
 import { SideMenuComponent } from 'src/app/Components/side-menu/side-menu.component';
 import { SideMenuItemComponent } from 'src/app/Components/side-menu-item/side-menu-item.component';
 
+import { SuiModule } from 'ng2-semantic-ui';
+
 @NgModule({
   declarations: [
     PostauthComponent,
@@ -14,7 +16,8 @@ import { SideMenuItemComponent } from 'src/app/Components/side-menu-item/side-me
   ],
   imports: [
     CommonModule,
-    PostauthRoutingModule
+    PostauthRoutingModule,
+    SuiModule
   ],
   schemas: [ NO_ERRORS_SCHEMA ]
 })

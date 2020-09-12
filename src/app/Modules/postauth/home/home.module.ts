@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { HomeRoutingModule } from './home-routing.module';
@@ -10,21 +10,27 @@ import { BlogActivityMoreComponent } from 'src/app/Components/blog-activity-more
 import { BlogAllCommentsComponent } from 'src/app/Components/blog-all-comments/blog-all-comments.component';
 import { BlogCommentInputComponent } from 'src/app/Components/blog-comment-input/blog-comment-input.component';
 import { FormsModule } from '@angular/forms';
+import { AutosizeModule } from 'ngx-autosize';
+import { BlogPostModalComponent } from 'src/app/Components/blog-post-modal/blog-post-modal.component';
+
 
 @NgModule({
   declarations: [
     HomeComponent,
     RightSideMenuComponent,
+    BlogPostModalComponent,
     BlogLikeComponent,
     BlogCommentComponent,
     BlogActivityMoreComponent,
     BlogAllCommentsComponent,
-    BlogCommentInputComponent
+    BlogCommentInputComponent,
   ],
   imports: [
     CommonModule,
     HomeRoutingModule,
-    FormsModule
-  ]
+    FormsModule,
+    AutosizeModule
+  ],
+  schemas: [ NO_ERRORS_SCHEMA ]
 })
 export class HomeModule { }

@@ -15,6 +15,7 @@ export class BlogPostModalComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    console.log('ENTER..............');
   }
 
   cancelBlog(): void {

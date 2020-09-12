@@ -8,15 +8,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire';
-import { BlogPostModalComponent } from './Components/blog-post-modal/blog-post-modal.component';
-import { SuiModule } from 'ng2-semantic-ui';
-import { AutosizeModule } from 'ngx-autosize';
 import { PostauthModule } from './Modules/postauth/postauth.module';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    BlogPostModalComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
@@ -24,10 +20,8 @@ import { PostauthModule } from './Modules/postauth/postauth.module';
     MDBBootstrapModule.forRoot(),
     FormsModule,
     AngularFireModule.initializeApp(environment.firebase),
-    SuiModule,
     ReactiveFormsModule,
-    PostauthModule,
-    AutosizeModule
+    PostauthModule
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
   providers: [],
