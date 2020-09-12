@@ -29,8 +29,7 @@ export class HomeComponent implements OnInit {
   }
 
   routeToBlogDetail(e: any): void {
-    this.router.navigate(['/notification']);
-    console.log('ll');
+    // this.router.navigate();
   }
 
 }
