@@ -1,11 +1,11 @@
-import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 
 @Component({
-  selector: 'app-blog-post-modal',
-  templateUrl: './blog-post-modal.component.html',
-  styleUrls: ['./blog-post-modal.component.css']
+  selector: 'app-blog-modal',
+  templateUrl: './blog-modal.component.html',
+  styleUrls: ['./blog-modal.component.css']
 })
-export class BlogPostModalComponent implements OnInit {
+export class BlogModalComponent implements OnInit {
   @Output() modalStatus = new EventEmitter();
   @ViewChild('modal') modal: any;
   @ViewChild('textarea') textarea: any;

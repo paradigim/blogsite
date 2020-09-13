@@ -3,20 +3,21 @@ import { CommonModule } from '@angular/common';
 
 import { SuiModule } from 'ng2-semantic-ui';
 
-import { BlogPostModalComponent } from './blog-post-modal/blog-post-modal.component';
+import {BlogModalComponent } from './blog-modal/blog-modal.component';
 import { RightSideMenuComponent } from './right-side-menu/right-side-menu.component';
 
 
 @NgModule({
   declarations: [
-    BlogPostModalComponent,
+    BlogModalComponent,
     RightSideMenuComponent
   ],
   imports: [
     CommonModule,
     SuiModule
   ],
-  exports: [BlogPostModalComponent, RightSideMenuComponent],
+  exports: [BlogModalComponent, RightSideMenuComponent],
   schemas: [ NO_ERRORS_SCHEMA ],
+  entryComponents: [BlogModalComponent]
 })
 export class SharedModule { }

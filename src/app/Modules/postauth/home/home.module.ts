@@ -11,6 +11,8 @@ import { BlogAllCommentsComponent } from 'src/app/Components/blog-all-comments/b
 import { BlogCommentInputComponent } from 'src/app/Components/blog-comment-input/blog-comment-input.component';
 import { FormsModule } from '@angular/forms';
 import { AutosizeModule } from 'ngx-autosize';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { SuiModule } from 'ng2-semantic-ui';
 
 // import { SuiModule } from 'ng2-semantic-ui';
 
@@ -27,7 +29,9 @@ import { AutosizeModule } from 'ngx-autosize';
     CommonModule,
     HomeRoutingModule,
     FormsModule,
-    AutosizeModule
+    AutosizeModule,
+    SharedModule,
+    SuiModule
   ],
 })
 export class HomeModule { }

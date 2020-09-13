@@ -5,6 +5,7 @@ import { PostauthRoutingModule } from './postauth-routing.module';
 import { PostauthComponent } from './postauth.component';
 import { SideMenuComponent } from 'src/app/Components/side-menu/side-menu.component';
 import { SideMenuItemComponent } from 'src/app/Components/side-menu-item/side-menu-item.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 
 
@@ -16,7 +17,8 @@ import { SideMenuItemComponent } from 'src/app/Components/side-menu-item/side-me
   ],
   imports: [
     CommonModule,
-    PostauthRoutingModule
+    PostauthRoutingModule,
+    SharedModule
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
 })
