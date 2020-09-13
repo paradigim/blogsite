@@ -5,6 +5,7 @@ import { PostauthRoutingModule } from './postauth-routing.module';
 import { PostauthComponent } from './postauth.component';
 import { SideMenuComponent } from 'src/app/Components/side-menu/side-menu.component';
 import { SideMenuItemComponent } from 'src/app/Components/side-menu-item/side-menu-item.component';
+import { HomeModule } from './home/home.module';
 
 
 @NgModule({
@@ -16,6 +17,7 @@ import { SideMenuItemComponent } from 'src/app/Components/side-menu-item/side-me
   imports: [
     CommonModule,
     PostauthRoutingModule,
+    HomeModule
   ]
 })
 export class PostauthModule { }
