@@ -20,15 +20,6 @@ textarea.comment-box {
     color: var(--prime-color);
 }
 
-.comment-button {
-    background: var(--prime-color);
-    border: 0;
-    color: #fff;
-    padding: 12px 17px;
-    border-radius: 20px;
-    font-weight: bold;
-    outline: none;
-}
 .comment-button:disabled {
     background: #a4dfcf;
 }

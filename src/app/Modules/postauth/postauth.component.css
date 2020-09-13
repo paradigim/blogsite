@@ -3,8 +3,8 @@
     width: 80%;
     margin: 0 auto;
     display: flex;
-    align-items: center;
 }
 .main-container {
     flex: 1;
+    margin-right: 300px;
 }

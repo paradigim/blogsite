@@ -10,6 +10,8 @@ import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire';
 import { PostauthModule } from './Modules/postauth/postauth.module';
 
+import { SharedModule } from 'src/app/shared/shared.module';
+
 
 @NgModule({
   declarations: [
@@ -22,7 +24,8 @@ import { PostauthModule } from './Modules/postauth/postauth.module';
     FormsModule,
     AngularFireModule.initializeApp(environment.firebase),
     ReactiveFormsModule,
-    PostauthModule
+    PostauthModule,
+    SharedModule
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
   providers: [],

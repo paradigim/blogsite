@@ -1,7 +1,6 @@
 @import 'semantic-ui-css/semantic.css';
 
 :host {
-    background: #f1f1f1;
     width: 300px;
 }
 .side-menu-container {

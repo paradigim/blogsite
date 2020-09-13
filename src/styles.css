@@ -38,3 +38,14 @@ body {
 .comment-text {
     color: #000;
 }
+
+.comment-button {
+    background: var(--prime-color);
+    border: 0;
+    color: #fff;
+    padding: 12px 17px;
+    border-radius: 20px;
+    font-weight: bold;
+    outline: none;
+    cursor: pointer;
+}

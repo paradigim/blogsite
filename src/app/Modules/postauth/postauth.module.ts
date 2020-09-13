@@ -7,15 +7,17 @@ import { SideMenuComponent } from 'src/app/Components/side-menu/side-menu.compon
 import { SideMenuItemComponent } from 'src/app/Components/side-menu-item/side-menu-item.component';
 
 
+
 @NgModule({
   declarations: [
     PostauthComponent,
     SideMenuComponent,
-    SideMenuItemComponent,
+    SideMenuItemComponent
   ],
   imports: [
     CommonModule,
-    PostauthRoutingModule,
-  ]
+    PostauthRoutingModule
+  ],
+  schemas: [ NO_ERRORS_SCHEMA ],
 })
 export class PostauthModule { }
