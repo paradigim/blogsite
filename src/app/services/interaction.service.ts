@@ -14,19 +14,20 @@ export class InteractionService {
 
   constructor(public afAuth: AngularFireAuth, public router: Router, afs: AngularFirestore) {
     this.userCollection = afs.collection('users');
-    // this.afAuth.authState.subscribe(user => {
-    //   if (user){
-    //     this.user = user;
-    //     localStorage.setItem('user', JSON.stringify(this.user));
-    //     this.router.navigate(['/home'])
-    //   } else {
-    //     localStorage.setItem('user', null);
-    //   }
-    // })
+    // panja
+    this.afAuth.authState.subscribe(user => {
+      if (user){
+        this.user = user;
+        localStorage.setItem('user', JSON.stringify(this.user));
+        this.router.navigate(['/home']);
+      } else {
+        localStorage.setItem('user', null);
+      }
+    })
   }
 
-  async login(data: any) {
-    var result = await this.afAuth.signInWithEmailAndPassword(data.email, data.password);
+  async login (data: any) {
+    const result = await this.afAuth.signInWithEmailAndPassword(data.email, data.password);
     return result;
   }
 
@@ -44,10 +45,10 @@ export class InteractionService {
             gender: data.gender
           }
           this.userCollection.doc(result.user.uid).set(userData);
-          resolve(result)
+          resolve(result);
 
         }).catch((error) => {
-          reject(error.message)
+          reject(error.message);
         })
     })
   }
