@@ -1,15 +1,35 @@
 
-<div class="form-container">
-    <form class="ui form" [formGroup]="loginForm">
-        <div class="field">
-            <label>Email</label>
-            <input type="text" name="email" formControlName="email" placeholder="abc@gmail.com">
-        </div>
-        <div class="field">
-            <label>Password</label>
-            <input type="password" name="password" formControlName="password" placeholder="password">
+<div class="auth-container">
+    <div class="site-logo">
+        LOGO
+    </div>
+
+    <div class="form-container">
+        <div class="login-to">Login</div>
+        <div class='social-login gogl'>
+            <i class="google icon"></i>
+            <div>Login with Google</div>
         </div>
 
-        <button class="ui button" (click)="submit()" type="button">Submit</button>
-    </form>
+        <div class="or-u-can">
+            <p class="or-text">OR</p>
+        </div>
+
+        <form class="ui form" [formGroup]="loginForm">
+            <div class="field">
+                <label>Email</label>
+                <input type="text" name="email" formControlName="email" placeholder="abc@gmail.com">
+            </div>
+            <div class="field">
+                <label>Password</label>
+                <input type="password" name="password" formControlName="password" placeholder="password">
+            </div>
+            <button class="comment-button login-btn" (click)="submit()" type="button">Login</button>
+        </form>
+    </div>
+
+    <div class="signup-forgot">
+        <div class="forgot-pwd">Forgot Password?</div>
+        <div class="siginup">Sign up with SiteName</div>
+    </div>
 </div>

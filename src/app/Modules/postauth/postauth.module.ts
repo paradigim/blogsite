@@ -5,19 +5,19 @@ import { PostauthRoutingModule } from './postauth-routing.module';
 import { PostauthComponent } from './postauth.component';
 import { SideMenuComponent } from 'src/app/Components/side-menu/side-menu.component';
 import { SideMenuItemComponent } from 'src/app/Components/side-menu-item/side-menu-item.component';
-import { HomeModule } from './home/home.module';
+
 
 
 @NgModule({
   declarations: [
     PostauthComponent,
     SideMenuComponent,
-    SideMenuItemComponent,
+    SideMenuItemComponent
   ],
   imports: [
     CommonModule,
-    PostauthRoutingModule,
-    HomeModule
-  ]
+    PostauthRoutingModule
+  ],
+  schemas: [ NO_ERRORS_SCHEMA ],
 })
 export class PostauthModule { }
