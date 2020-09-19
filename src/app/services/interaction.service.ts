@@ -23,7 +23,7 @@ export class InteractionService {
       } else {
         localStorage.setItem('user', null);
       }
-    })
+    });
   }
 
   async login (data: any) {

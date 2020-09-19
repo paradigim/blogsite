@@ -5,6 +5,7 @@ import { PreauthRoutingModule } from './preauth-routing.module';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { SuiModule } from 'ng2-semantic-ui';
 
 
 @NgModule({
@@ -12,7 +13,8 @@ import { ReactiveFormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     PreauthRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SuiModule
   ]
 })
 export class PreauthModule { }

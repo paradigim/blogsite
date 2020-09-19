@@ -1,0 +1,39 @@
+
+.notifications {
+    display: flex;
+    padding: 20px 15px;
+    cursor: pointer;
+}
+
+.nt-user-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.nt-user-image img {
+    width: 100%;
+    height: auto;
+}
+
+.nt-content {
+    flex: 1;
+    margin-left: 10px;
+}
+
+.nt-user-name {
+    font-weight: bold;
+    text-transform: capitalize;
+    color: #000;
+}
+
+.nt-user-post {
+    margin-top: 10px;
+    margin-bottom: 15px;
+    color: #4b4b4b;
+}
+
+.not-read {
+    background: var(--secondary-color);
+}
