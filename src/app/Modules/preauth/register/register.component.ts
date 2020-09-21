@@ -17,15 +17,30 @@ export class RegisterComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private services: InteractionService, public router: Router) { }
   ngOnInit(): void {
     this.registerForm = this.formBuilder.group({
-      name: new FormControl(''),
-      email: new FormControl(''),
-      gender: new FormControl(''),
-      dob: new FormControl(''),
-      password: new FormControl(''),
-      cpassword: new FormControl('')
+      // name: new FormControl(''),
+      // email: new FormControl(''),
+      // gender: new FormControl(''),
+      // dob: new FormControl(''),
+      // password: new FormControl(''),
+      // cpassword: new FormControl('')
+      name:['', Validators.required],
+      email: ['', [Validators.required,Validators.email]],
+      gender:[''],
+      dob: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      cpassword: ['', [Validators.required, Validators.minLength(6)]]
     })
-
   }
+
+  // createForm(){
+  //   this.registerForm = this.formBuilder.group({
+  //     name:['', Validators.required],
+  //     email: ['', Validators.required],
+  //     dob: ['', Validators.required],
+  //     password: ['', Validators.required],
+  //     cpassword: ['', Validators.required]
+  //   })
+  // }
 
   submitted = false;
   get f() { return this.registerForm.controls; }

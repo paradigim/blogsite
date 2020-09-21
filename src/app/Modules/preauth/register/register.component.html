@@ -2,10 +2,17 @@
     <div class="field">
         <label>Name</label>
         <input type="text" name="name" formControlName="name" placeholder="Mark Waugh">
+        <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+            <div *ngIf="f.name.errors.required"  class="validations">First Name is required</div>
+        </div>
     </div>
     <div class="field">
         <label>Email</label>
         <input type="text" name="email" formControlName="email" placeholder="abc@gmail.com">
+        <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+            <div *ngIf="f.email.errors.required" class="validations">Email is required</div>
+            <div *ngIf="f.email.errors.email" class="validations">Email must be a valid email address</div>
+        </div>
     </div>
     <div class="field">
         <label>Gender</label>
@@ -15,14 +22,25 @@
     <div class="field">
         <label>DOB</label>
         <input type="date" name="dob" formControlName="dob" placeholder="dob">
+        <div *ngIf="submitted && f.dob.errors" class="invalid-feedback">
+            <div *ngIf="f.dob.errors.required"  class="validations">DOB is required</div>
+        </div>
     </div>
     <div class="field">
         <label>Password</label>
-        <input type="password" name="password" formControlName="password" placeholder="abc@gmail.com">
+        <input type="password" name="password" formControlName="password" placeholder="Password">
+        <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+            <div *ngIf="f.password.errors.required"  class="validations">Password is required</div>
+            <div *ngIf="f.password.errors.minlength" class="validations">Password must be at least 6 characters</div>
+        </div>
     </div>
     <div class="field">
         <label>Confirm Password</label>
-        <input type="password" name="cpassword" formControlName="cpassword" placeholder="password">
+        <input type="password" name="cpassword" formControlName="cpassword" placeholder="Confirm Password">
+        <div *ngIf="submitted && f.cpassword.errors" class="invalid-feedback">
+            <div *ngIf="f.cpassword.errors.required"  class="validations">Confirm Password is required</div>
+            <div *ngIf="f.cpassword.errors.minlength" class="validations">Confirm Password must be at least 6 characters</div>
+        </div>
     </div>
 
     <button (click)="register()">Register</button>
