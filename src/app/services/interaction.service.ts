@@ -11,10 +11,13 @@ export class InteractionService {
 
   user: any;
   private userCollection: AngularFirestoreCollection;
+  private postCollection: AngularFirestoreCollection;
+
   afs: any;
 
   constructor(public afAuth: AngularFireAuth, public router: Router, afs: AngularFirestore, public ngZone: NgZone) {
     this.userCollection = afs.collection('users');
+    this.postCollection=afs.collection('posts');
     // this.afAuth.authState.subscribe(user => {
     //   if (user){
     //     this.user = user;
@@ -51,6 +54,14 @@ export class InteractionService {
         })
     })
   }
+
+   async post(data:any){
+    const userData: any = {
+      id: data.uid,
+      comments: data.comments
+    }
+    this.postCollection.doc(data.uid).set(userData);
+   }
   GoogleAuth() {
     return this.AuthLogin(new auth.GoogleAuthProvider());
   }
@@ -79,7 +90,7 @@ export class InteractionService {
            // dob: user.dob,
            // gender: user.gender
           }
-          this.userCollection.doc(user.uid).set(userData);
+          this.userCollection.doc('posts').set(userData);
   }
 
   // Sign out 
