@@ -1,6 +1,8 @@
 
 /* @import 'semantic-ui-css/semantic.css'; */
-
+.validations{
+    color:red;
+}
 .blog-write-container {
     display: flex;
     align-items: flex-start;

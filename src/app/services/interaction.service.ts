@@ -34,12 +34,9 @@ export class InteractionService {
   }
 
   async register(data: any) {
-
-    console.log("data" + data);
     return new Promise<any>((resolve, reject) => {
       this.afAuth.createUserWithEmailAndPassword(data.email, data.password)
         .then((result) => {
-
           const userData: any = {
             id: result.user.uid,
             email: data.email,
@@ -56,6 +53,7 @@ export class InteractionService {
   }
 
    async post(data:any){
+     alert(data.id);
     const userData: any = {
       id: data.uid,
       comments: data.comments

@@ -1,5 +1,5 @@
 <sui-modal size="tiny" [isClosable]="true" (dismissed)="cancelBlog()" #modal>
-    <div class="header">Example</div>
+    <div class="header">POST</div>
     <div class="content">
       
       <div class="blog-write-container">
@@ -7,26 +7,31 @@
         <div class="blog-owner-image"></div>
 
         <!-- writing and editing blog -->
-        <div class="ui form blog-write-form">
+        <form class="ui form blog-write-form" [formGroup]="postForm">
           <div class="field textarea-field">
               <textarea
                 minRows="1"
                 class="post-box"
                 autosize
                 (focus)="statusPlaceholder($event)"
-                (blur)="statusPlaceholder($event)"></textarea>
-              <label class="text-placeholder" *ngIf="isPlaceholder">What's on your mind...?</label>
+                (blur)="statusPlaceholder($event)" name="comments" formControlName="comments"></textarea>
+               <label class="text-placeholder" *ngIf="isPlaceholder">What's on your mind...?</label>
+              <div *ngIf="submitted && f.comments.errors" class="invalid-feedback">
+                <div *ngIf="f.comments.errors.required"  class="validations">Comments is required</div>
+            </div>
           </div>
           <!-- attach images and videos to the blog and post button-->
+        
+          <button class="blog-post-btn" (click)="postBlog()">Post</button>
+          </form>
           <div class="attach-btn">
-              <div class="attach-icons">
-                <i class="image outline icon"></i>
-                <i class="video icon"></i>
-                <i class="smile outline icon"></i>
-              </div>
-              <button class="blog-post-btn" (click)="postBlog()">Post</button>
-          </div>
+            <div class="attach-icons">
+              <i class="image outline icon"></i>
+              <i class="video icon"></i>
+              <i class="smile outline icon"></i>
+            </div>
         </div>
+        <!-- </div> -->
       </div>
 
 

@@ -1,4 +1,7 @@
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { InteractionService } from 'src/app/services/interaction.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-blog-modal',
@@ -11,21 +14,34 @@ export class BlogModalComponent implements OnInit {
   @ViewChild('textarea') textarea: any;
 
   isPlaceholder = true;
+  postForm: FormGroup;
 
-  constructor() { }
+  constructor(private formBuilder: FormBuilder, private services: InteractionService, public router: Router) { }
 
   ngOnInit(): void {
     console.log('ENTER..............');
+    this.postForm = this.formBuilder.group({
+      comments:['', Validators.required]
+    })
   }
 
   cancelBlog(): void {
     this.modal.deny();
     this.modalStatus.emit();
   }
-
+  submitted = false;
+  get f() { return this.postForm.controls; }
+  
   postBlog(): void {
-    this.modal.approve();
-    this.modalStatus.emit();
+    alert(JSON.stringify(this.postForm.value, null, 4));
+    this.services.post(this.postForm.value).then(res => {
+      alert(res);
+     // this.router.navigate([''])
+    }).catch(err => {
+      console.log(err)
+    })  
+   // this.modal.approve();
+    //this.modalStatus.emit();
   }
 
   statusPlaceholder(e): void {
