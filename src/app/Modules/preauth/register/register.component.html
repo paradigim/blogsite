@@ -40,6 +40,7 @@
         <div *ngIf="submitted && f.cpassword.errors" class="invalid-feedback">
             <div *ngIf="f.cpassword.errors.required"  class="validations">Confirm Password is required</div>
             <div *ngIf="f.cpassword.errors.minlength" class="validations">Confirm Password must be at least 6 characters</div>
+            <div *ngIf="f.cpassword.errors.mustMatch" class="validations">Passwords must match</div>
         </div>
     </div>
 

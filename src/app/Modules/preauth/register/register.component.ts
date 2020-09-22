@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { InteractionService } from 'src/app/services/interaction.service';
 import { Router } from '@angular/router';
+import { MustMatch } from './MustMatch';
 
 // import custom validator to validate that password and confirm password fields match
 //import { MustMatch } from './_helpers/must-match.validator';
@@ -29,7 +30,10 @@ export class RegisterComponent implements OnInit {
       dob: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(6)]],
       cpassword: ['', [Validators.required, Validators.minLength(6)]]
-    })
+    },
+   {
+      validator: MustMatch('password', 'cpassword')
+  })
   }
 
   // createForm(){
