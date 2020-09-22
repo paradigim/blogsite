@@ -60,7 +60,7 @@ export class InteractionService {
     return this.afAuth.signInWithPopup(provider)
     .then((result) => {
        this.ngZone.run(() => {
-          this.router.navigate(['dashboard']);
+          this.router.navigate(['/home']);
         })
       this.SetUserData(result.user);
     }).catch((error) => {
@@ -72,11 +72,12 @@ export class InteractionService {
   sign up with username/password and sign in with social auth  
   provider in Firestore database using AngularFirestore + AngularFirestoreDocument service */
   SetUserData(user) {
+   // console.log("user data"+user.gender);
           const userData: any = {
             id: user.uid,
-            email: user.email,
-            dob: user.dob,
-            gender: user.gender
+            email: user.email//,
+           // dob: user.dob,
+           // gender: user.gender
           }
           this.userCollection.doc(user.uid).set(userData);
   }
