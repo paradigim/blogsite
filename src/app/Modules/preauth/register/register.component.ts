@@ -54,7 +54,6 @@ export class RegisterComponent implements OnInit {
 
     if (this.registerForm.invalid) {
 
-
     }
     else {
       console.log("register" + JSON.stringify(this.registerForm.value, null, 4));
@@ -66,9 +65,7 @@ export class RegisterComponent implements OnInit {
       })
       return;
     }
-
   }
-
 
   onReset() {
     this.submitted = false;

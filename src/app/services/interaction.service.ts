@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { Router } from "@angular/router";
-import { auth } from 'firebase/app';
+import { auth, User } from 'firebase/app';
 import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestoreDocument, AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 
@@ -11,8 +11,9 @@ export class InteractionService {
 
   user: any;
   private userCollection: AngularFirestoreCollection;
+  afs: any;
 
-  constructor(public afAuth: AngularFireAuth, public router: Router, afs: AngularFirestore) {
+  constructor(public afAuth: AngularFireAuth, public router: Router, afs: AngularFirestore, public ngZone: NgZone) {
     this.userCollection = afs.collection('users');
     // this.afAuth.authState.subscribe(user => {
     //   if (user){
@@ -24,7 +25,6 @@ export class InteractionService {
     //   }
     // })
   }
-
   async login(data: any) {
     var result = await this.afAuth.signInWithEmailAndPassword(data.email, data.password);
     return result;
@@ -51,5 +51,42 @@ export class InteractionService {
         })
     })
   }
+  GoogleAuth() {
+    return this.AuthLogin(new auth.GoogleAuthProvider());
+  }
 
+  // Auth logic to run auth providers
+  AuthLogin(provider) {
+    return this.afAuth.signInWithPopup(provider)
+    .then((result) => {
+       this.ngZone.run(() => {
+          this.router.navigate(['dashboard']);
+        })
+      this.SetUserData(result.user);
+    }).catch((error) => {
+      window.alert(error)
+    })
+  }
+
+  /* Setting up user data when sign in with username/password, 
+  sign up with username/password and sign in with social auth  
+  provider in Firestore database using AngularFirestore + AngularFirestoreDocument service */
+  SetUserData(user) {
+          const userData: any = {
+            id: user.uid,
+            email: user.email,
+            dob: user.dob,
+            gender: user.gender
+          }
+          this.userCollection.doc(user.uid).set(userData);
+  }
+
+  // Sign out 
+  SignOut() {
+    return this.afAuth
+    .signOut().then(() => {
+      localStorage.removeItem('user');
+      this.router.navigate(['sign-in']);
+    })
+  }
 }

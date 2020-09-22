@@ -11,7 +11,7 @@ export class LoginComponent implements OnInit {
 
   loginForm : FormGroup;
 
-  constructor(private fb:FormBuilder, private servie : InteractionService) { }
+  constructor(private fb:FormBuilder, private service : InteractionService) { }
 
   ngOnInit(): void {
     this.createForm();
@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
 
   submit(){
     console.log(this.loginForm);
-    this.servie.login(this.loginForm.value)
+    this.service.login(this.loginForm.value)
       .then(res => {
         console.log(res);
       })
