@@ -18,6 +18,10 @@ const routes: Routes = [
       {
         path: 'bookmarks',
         loadChildren: () => import('../postauth/bookmarks/bookmarks.module').then(m => m.BookmarksModule)
+      },
+      {
+        path: 'profile',
+        loadChildren: () => import('../postauth/profile/profile.module').then(m => m.ProfileModule)
       }
     ]
   }
