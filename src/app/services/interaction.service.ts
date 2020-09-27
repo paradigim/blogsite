@@ -1,7 +1,7 @@
 import { Injectable, NgZone } from '@angular/core';
-import { Router } from "@angular/router";
+import { Router } from '@angular/router';
 import { auth, User } from 'firebase/app';
-import { AngularFireAuth } from "@angular/fire/auth";
+import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestoreDocument, AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 
 @Injectable({
@@ -46,29 +46,25 @@ export class InteractionService {
           }
           this.userCollection.doc(result.user.uid).set(userData);
           resolve(result);
-
         }).catch((error) => {
           reject(error.message);
-        })
-    })
+        });
+    });
   }
 
-   async post(data:any){
+   async post(data: any) {
     const uuidv4 = Math.floor(Math.random() * 100);
-   var userId = JSON.parse(localStorage.getItem('user'));
-   // alert("userId");
-   // const ids = this.afs.createId();
-     //alert('ids'+ uuidv4);
+    const userId = JSON.parse(localStorage.getItem('user'));
     const userData: any = {
       id: uuidv4,
       contents: data.contents,
       comments: [],
-      likes:0,
+      likes: 0,
       dislike: 0,
       userid: userId.uid
-    }
+    };
 
- //alert(JSON.stringify(userData));
+    // alert(JSON.stringify(userData));
     this.postCollection.doc(uuidv4.toString()).set(userData);
    }
 
@@ -80,37 +76,32 @@ export class InteractionService {
   AuthLogin(provider) {
     return this.afAuth.signInWithPopup(provider)
     .then((result) => {
-       this.ngZone.run(() => {
-          this.router.navigate(['/home']);
-        })
+      this.ngZone.run(() => {
+        this.router.navigate(['/home']);
+      });
       this.SetUserData(result.user);
     }).catch((error) => {
-      window.alert(error)
-    })
+      window.alert(error);
+    });
   }
 
   /* Setting up user data when sign in with username/password, 
   sign up with username/password and sign in with social auth  
   provider in Firestore database using AngularFirestore + AngularFirestoreDocument service */
   SetUserData(user) {
-   //alert("set"+user);
-//console.log(user);
-   // console.log("user data"+user.gender);
-          const userData: any = {
-            id: user.uid,
-            email: user.email//,
-           // dob: user.dob,
-           // gender: user.gender
-          }
-          this.userCollection.doc(user.uid).set(userData);
+    const userData: any = {
+      id: user.uid,
+      email: user.email
+    };
+    this.userCollection.doc(user.uid).set(userData);
   }
 
-  // Sign out 
+  // Sign out
   SignOut() {
     return this.afAuth
     .signOut().then(() => {
       localStorage.removeItem('user');
       this.router.navigate(['sign-in']);
-    })
+    });
   }
 }

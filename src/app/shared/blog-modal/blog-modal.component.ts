@@ -1,4 +1,7 @@
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { InteractionService } from 'src/app/services/interaction.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-blog-modal',
@@ -10,11 +13,16 @@ export class BlogModalComponent implements OnInit {
   @ViewChild('modal') modal: any;
   @ViewChild('textarea') textarea: any;
 
+  content: string;
   isPlaceholder = true;
+  postForm: FormGroup;
 
-  constructor() { }
+  constructor(private formBuilder: FormBuilder, private services: InteractionService, public router: Router) { }
 
   ngOnInit(): void {
+    this.postForm = this.formBuilder.group({
+      content: [''],
+    });
   }
 
   cancelBlog(): void {
@@ -22,13 +30,23 @@ export class BlogModalComponent implements OnInit {
     this.modalStatus.emit();
   }
 
+
+  // submitted = false;
+  // get f() { return this.postForm.controls; }
+
   postBlog(): void {
+    this.services.post(this.postForm.value).then(res => {
+     // this.router.navigate([''])
+    }).catch(err => {
+      alert(err);
+    });
     this.modal.approve();
     this.modalStatus.emit();
   }
 
   statusPlaceholder(e): void {
-    console.log(e);
+    console.log(this.postForm);
+    console.log('E-------------', e.target.value);
     e.preventDefault();
     if (e.target.value === '' || e.target.value === undefined || e.target.value === null) {
       this.isPlaceholder = !this.isPlaceholder;

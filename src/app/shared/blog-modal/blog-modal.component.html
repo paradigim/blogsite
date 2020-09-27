@@ -10,39 +10,39 @@
         <!-- [formGroup]="postForm" -->
         <form class="ui form blog-write-form" [formGroup]="postForm">
           <div class="field textarea-field">
-              <!-- <textarea
+              <textarea
+                formControlName="content"
                 minRows="1"
                 class="post-box"
                 autosize
                 (focus)="statusPlaceholder($event)"
-                (blur)="statusPlaceholder($event)" name="comments" formControlName="comments"></textarea> -->
-                <input type="text" name="contents" [(ngModel)]="content" formControlName="contents"/>
+                (blur)="statusPlaceholder($event)">
+              </textarea>
+              <!-- <input type="text" name="contents" [(ngModel)]="content" formControlName="contents" /> -->
 
-            
-
-                <!-- <input type="text" name="comments" formControlName="comments"/> -->
-                <!-- minRows="1"
-                class="post-box"
-                autosize
-                (focus)="statusPlaceholder($event)"
-                (blur)="statusPlaceholder($event)" name="comments" formControlName="comments"></input> -->
-                <!-- formControlName="comments" -->
                <label class="text-placeholder" *ngIf="isPlaceholder">What's on your mind...?</label>
               <!-- <div *ngIf="submitted && f.comments.errors" class="invalid-feedback">
                 <div *ngIf="f.comments.errors.required"  class="validations">Comments is required</div>
             </div> -->
           </div>
           <!-- attach images and videos to the blog and post button-->
-        
-          <button class="blog-post-btn" (click)="postBlog()">Post</button>
-          </form>
           <div class="attach-btn">
             <div class="attach-icons">
               <i class="image outline icon"></i>
               <i class="video icon"></i>
               <i class="smile outline icon"></i>
             </div>
-        </div>
+            <button class="blog-post-btn" (click)="postBlog()">Post</button>
+          </div>
+        
+        </form>
+          <!-- <div class="attach-btn">
+            <div class="attach-icons">
+              <i class="image outline icon"></i>
+              <i class="video icon"></i>
+              <i class="smile outline icon"></i>
+            </div>
+          </div> -->
         <!-- </div> -->
       </div>
 
