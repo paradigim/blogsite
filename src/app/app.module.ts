@@ -11,6 +11,7 @@ import { AngularFireModule } from '@angular/fire';
 import { PostauthModule } from './Modules/postauth/postauth.module';
 
 import { SharedModule } from 'src/app/shared/shared.module';
+import { SuiModule } from 'ng2-semantic-ui';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
     AngularFireModule.initializeApp(environment.firebase),
     ReactiveFormsModule,
     PostauthModule,
-    SharedModule
+    SharedModule,
+    SuiModule
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
   providers: [],

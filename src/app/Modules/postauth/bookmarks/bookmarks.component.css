@@ -1,6 +1,14 @@
 /* @import 'semantic-ui-css/semantic.css'; */
 @import 'bulma/css/bulma.css';
 
+.home-container {
+    display: flex;
+}
+
+.home-wrapper {
+    flex: 1;
+}
+
 /* each blog details */
 .ec-blog-post {
     display: flex;
@@ -12,6 +20,10 @@
 
 .ec-blog-post:not(:last-child) {
     border-bottom: 1px solid #ddd;
+}
+
+.ec-blog-post:last-child {
+    padding-bottom: 50px !important;
 }
 
 .ec-blog-post:hover {
