@@ -12,6 +12,7 @@ export class BlogModalComponent implements OnInit {
   @Output() modalStatus = new EventEmitter();
   @ViewChild('modal') modal: any;
   @ViewChild('textarea') textarea: any;
+  content : string;
 
   isPlaceholder = true;
   postForm: FormGroup;
@@ -22,9 +23,6 @@ export class BlogModalComponent implements OnInit {
     console.log('ENTER..............');
     this.postForm = this.formBuilder.group({
       contents:['',Validators.required],
-      likes: [''],
-      dislike: [''],
-      comments:['']
     });
   }
 
@@ -38,11 +36,8 @@ export class BlogModalComponent implements OnInit {
   postBlog(): void {
     this.postForm.setValue({
       contents: 'Hello data',
-      likes:0,
-      dislike: 0,
-      comments: []
   });
-    alert(JSON.stringify(this.postForm.value));
+  
     //this.postForm.value();
     this.services.post(this.postForm.value).then(res => {
       //alert(res);
