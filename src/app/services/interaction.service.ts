@@ -6,7 +6,6 @@ import { AngularFirestoreDocument, AngularFirestore, AngularFirestoreCollection 
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import 'rxjs/add/observable/from'; 
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +29,6 @@ export class InteractionService {
       } else {
         localStorage.setItem('user', null);
       }
-<<<<<<< HEAD
     })
 
   //   let userDoc = this.afs.firestore.collection(`posts`);
@@ -39,9 +37,6 @@ export class InteractionService {
   //      // console.log(doc.id, "=>", doc.data());  
   //  })
 
-=======
-    });
->>>>>>> 9dae84183a0f24cb8833b85e14e3875e801a1b7c
   }
 
   async login (data: any) {
@@ -120,7 +115,7 @@ export class InteractionService {
           this.userCollection.doc(user.uid).set(userData);
   }
 
-  async getposts(): Promise<Observable<any[]>>{
+  async getposts(){
     return this.postCollection.snapshotChanges().pipe(
       map(actions => {       
         return actions.map(a => {

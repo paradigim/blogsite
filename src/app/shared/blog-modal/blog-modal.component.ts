@@ -38,12 +38,6 @@ export class BlogModalComponent implements OnInit {
   postBlog(): void {
     this.postForm.setValue({
       contents: 'Hello data',
-<<<<<<< HEAD
-      likes: 0,
-      dislike: 0,
-      comments: []
-=======
->>>>>>> 9dae84183a0f24cb8833b85e14e3875e801a1b7c
   });
   
     //this.postForm.value();

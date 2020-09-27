@@ -30,10 +30,12 @@ export class HomeComponent implements OnInit {
 
 
   getposts(){
-    this.interaction.getposts().subscribe((res: any) => {
-      this.myUsers = res;
-      console.log("posts"+res);
-    });
+    this.interaction.getposts().then(r => {
+      r.subscribe(res => {
+        console.log(res)
+      })
+    }).catch(e => console.log(e))
+    
   }
   ngOnInit(): void {
    this.getposts();
