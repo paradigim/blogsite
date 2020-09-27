@@ -21,8 +21,11 @@ export class BlogModalComponent implements OnInit {
   ngOnInit(): void {
     console.log('ENTER..............');
     this.postForm = this.formBuilder.group({
-      comments:['', Validators.required]
-    })
+      contents:['',Validators.required],
+      likes: [''],
+      dislike: [''],
+      comments:['']
+    });
   }
 
   cancelBlog(): void {
@@ -33,12 +36,19 @@ export class BlogModalComponent implements OnInit {
   get f() { return this.postForm.controls; }
   
   postBlog(): void {
-    alert(JSON.stringify(this.postForm.value, null, 4));
+    this.postForm.setValue({
+      contents: 'Hello data',
+      likes:0,
+      dislike: 0,
+      comments: []
+  });
+    alert(JSON.stringify(this.postForm.value));
+    //this.postForm.value();
     this.services.post(this.postForm.value).then(res => {
-      alert(res);
+      //alert(res);
      // this.router.navigate([''])
     }).catch(err => {
-      console.log(err)
+      alert(err);
     })  
    // this.modal.approve();
     //this.modalStatus.emit();

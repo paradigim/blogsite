@@ -17,7 +17,7 @@ export class InteractionService {
 
   constructor(public afAuth: AngularFireAuth, public router: Router, afs: AngularFirestore, public ngZone: NgZone) {
     this.userCollection = afs.collection('users');
-    this.postCollection=afs.collection('posts');
+    this.postCollection = afs.collection('posts');
     // this.afAuth.authState.subscribe(user => {
     //   if (user){
     //     this.user = user;
@@ -53,13 +53,22 @@ export class InteractionService {
   }
 
    async post(data:any){
-     alert(data.id);
+    const uuidv4 = Math.floor(Math.random() * 100);
+
+   // const ids = this.afs.createId();
+     alert('ids'+ uuidv4);
     const userData: any = {
-      id: data.uid,
-      comments: data.comments
+      id: uuidv4,
+      contents: data.contents,
+      comments: data.comments,
+      likes: data.likes,
+      dislike: data.dislike
     }
-    this.postCollection.doc(data.uid).set(userData);
+
+ alert(JSON.stringify(userData));
+    this.postCollection.doc(uuidv4.toString()).set(userData);
    }
+
   GoogleAuth() {
     return this.AuthLogin(new auth.GoogleAuthProvider());
   }
@@ -81,6 +90,8 @@ export class InteractionService {
   sign up with username/password and sign in with social auth  
   provider in Firestore database using AngularFirestore + AngularFirestoreDocument service */
   SetUserData(user) {
+   //alert("set"+user);
+//console.log(user);
    // console.log("user data"+user.gender);
           const userData: any = {
             id: user.uid,
@@ -88,7 +99,7 @@ export class InteractionService {
            // dob: user.dob,
            // gender: user.gender
           }
-          this.userCollection.doc('posts').set(userData);
+          this.userCollection.doc(user.uid).set(userData);
   }
 
   // Sign out 
