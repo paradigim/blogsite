@@ -18,15 +18,15 @@ export class InteractionService {
   constructor(public afAuth: AngularFireAuth, public router: Router, afs: AngularFirestore, public ngZone: NgZone) {
     this.userCollection = afs.collection('users');
     this.postCollection = afs.collection('posts');
-    // this.afAuth.authState.subscribe(user => {
-    //   if (user){
-    //     this.user = user;
-    //     localStorage.setItem('user', JSON.stringify(this.user));
-    //     this.router.navigate(['/home'])
-    //   } else {
-    //     localStorage.setItem('user', null);
-    //   }
-    // })
+    this.afAuth.authState.subscribe(user => {
+      if (user){
+        this.user = user;
+        localStorage.setItem('user', JSON.stringify(this.user));
+        this.router.navigate(['/home'])
+      } else {
+        localStorage.setItem('user', null);
+      }
+    })
   }
   async login(data: any) {
     var result = await this.afAuth.signInWithEmailAndPassword(data.email, data.password);
@@ -54,7 +54,8 @@ export class InteractionService {
 
    async post(data:any){
     const uuidv4 = Math.floor(Math.random() * 100);
-
+   var userId =JSON.parse(localStorage.getItem('user'));
+    alert("userId");
    // const ids = this.afs.createId();
      alert('ids'+ uuidv4);
     const userData: any = {
@@ -62,7 +63,8 @@ export class InteractionService {
       contents: data.contents,
       comments: data.comments,
       likes: data.likes,
-      dislike: data.dislike
+      dislike: data.dislike,
+      userid: userId.uid
     }
 
  alert(JSON.stringify(userData));
