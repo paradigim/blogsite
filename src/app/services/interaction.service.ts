@@ -54,10 +54,10 @@ export class InteractionService {
 
    async post(data:any){
     const uuidv4 = Math.floor(Math.random() * 100);
-   var userId =JSON.parse(localStorage.getItem('user'));
-    alert("userId");
+   var userId = JSON.parse(localStorage.getItem('user'));
+   // alert("userId");
    // const ids = this.afs.createId();
-     alert('ids'+ uuidv4);
+     //alert('ids'+ uuidv4);
     const userData: any = {
       id: uuidv4,
       contents: data.contents,
@@ -67,7 +67,7 @@ export class InteractionService {
       userid: userId.uid
     }
 
- alert(JSON.stringify(userData));
+ //alert(JSON.stringify(userData));
     this.postCollection.doc(uuidv4.toString()).set(userData);
    }
 
