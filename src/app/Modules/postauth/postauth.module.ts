@@ -6,6 +6,7 @@ import { PostauthComponent } from './postauth.component';
 import { SideMenuComponent } from 'src/app/Components/side-menu/side-menu.component';
 import { SideMenuItemComponent } from 'src/app/Components/side-menu-item/side-menu-item.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { AutosizeModule } from 'ngx-autosize';
 
 
 
@@ -18,7 +19,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
   imports: [
     CommonModule,
     PostauthRoutingModule,
-    SharedModule
+    SharedModule,
+    AutosizeModule
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
 })

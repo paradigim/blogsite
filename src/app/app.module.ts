@@ -27,7 +27,7 @@ import { SuiModule } from 'ng2-semantic-ui';
     ReactiveFormsModule,
     PostauthModule,
     SharedModule,
-    SuiModule
+    SuiModule,
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
   providers: [],

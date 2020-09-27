@@ -17,7 +17,11 @@ export class BlogModalComponent implements OnInit {
   isPlaceholder = true;
   postForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private services: InteractionService, public router: Router) { }
+  constructor(
+    private formBuilder: FormBuilder,
+    private services: InteractionService,
+    public router: Router
+  ) { }
 
   ngOnInit(): void {
     this.postForm = this.formBuilder.group({
@@ -28,6 +32,17 @@ export class BlogModalComponent implements OnInit {
   cancelBlog(): void {
     this.modal.deny();
     this.modalStatus.emit();
+  }
+
+  statusPlaceholder(e): void {
+    e.preventDefault();
+    const val = (e.target.value).trim();
+
+    if (val === '' || val === undefined || val === null) {
+      this.isPlaceholder = !this.isPlaceholder;
+      console.log('isPlaceholder: ', this.isPlaceholder);
+    }
+    console.log('Form: ', this.postForm);
   }
 
 
@@ -43,14 +58,4 @@ export class BlogModalComponent implements OnInit {
     this.modal.approve();
     this.modalStatus.emit();
   }
-
-  statusPlaceholder(e): void {
-    console.log(this.postForm);
-    console.log('E-------------', e.target.value);
-    e.preventDefault();
-    if (e.target.value === '' || e.target.value === undefined || e.target.value === null) {
-      this.isPlaceholder = !this.isPlaceholder;
-    }
-  }
-
 }

@@ -52,7 +52,7 @@ export class InteractionService {
     });
   }
 
-   async post(data: any) {
+  async post(data: any) {
     const uuidv4 = Math.floor(Math.random() * 100);
     const userId = JSON.parse(localStorage.getItem('user'));
     const userData: any = {
