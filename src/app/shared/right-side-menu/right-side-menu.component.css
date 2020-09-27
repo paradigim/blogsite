@@ -1,8 +1,11 @@
 
 .right-menu-container {
     width: 300px;
-    background: #f1f1f1;
+    /* background: #f1f1f1; */
     position: fixed;
-    right: 11%;
+    right: 10%;
+    top: 0;
     overflow-y: auto;
+    bottom: 0;
+    border-left: 1px solid #ddd;
 }

@@ -6,6 +6,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ForgetpasswordComponent } from './forgetpassword/forgetpassword.component';
+import { SuiModule } from 'ng2-semantic-ui';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { ForgetpasswordComponent } from './forgetpassword/forgetpassword.compone
   imports: [
     CommonModule,
     PreauthRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SuiModule
   ]
 })
 export class PreauthModule { }

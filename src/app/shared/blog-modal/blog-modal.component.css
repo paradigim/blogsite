@@ -3,6 +3,9 @@
 .validations{
     color:red;
 }
+@import 'semantic-ui-css/semantic.css';
+/* @import 'bulma/css/bulma.css'; */
+
 .blog-write-container {
     display: flex;
     align-items: flex-start;

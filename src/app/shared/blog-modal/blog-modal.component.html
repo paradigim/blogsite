@@ -16,12 +16,9 @@
                 autosize
                 (focus)="statusPlaceholder($event)"
                 (blur)="statusPlaceholder($event)" name="comments" formControlName="comments"></textarea> -->
-                <input type="text" name="contents" formControlName="contents"/>
+                <input type="text" name="contents" [(ngModel)]="content" formControlName="contents"/>
 
-                <input type="hidden" name="likes" formControlName="likes"/>
-                <input type="hidden" name="dislike" formControlName="dislike"/>
-
-                <input type="hidden" name="comments" formControlName="comments"/>
+            
 
                 <!-- <input type="text" name="comments" formControlName="comments"/> -->
                 <!-- minRows="1"
@@ -48,8 +45,6 @@
         </div>
         <!-- </div> -->
       </div>
-
-
 
     </div>
 </sui-modal>

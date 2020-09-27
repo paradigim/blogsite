@@ -26,10 +26,11 @@ export class InteractionService {
       if (user){
         this.user = user;
         localStorage.setItem('user', JSON.stringify(this.user));
-        this.router.navigate(['/home'])
+        this.router.navigate(['/home']);
       } else {
         localStorage.setItem('user', null);
       }
+<<<<<<< HEAD
     })
 
   //   let userDoc = this.afs.firestore.collection(`posts`);
@@ -38,9 +39,13 @@ export class InteractionService {
   //      // console.log(doc.id, "=>", doc.data());  
   //  })
 
+=======
+    });
+>>>>>>> 9dae84183a0f24cb8833b85e14e3875e801a1b7c
   }
-  async login(data: any) {
-    var result = await this.afAuth.signInWithEmailAndPassword(data.email, data.password);
+
+  async login (data: any) {
+    const result = await this.afAuth.signInWithEmailAndPassword(data.email, data.password);
     return result;
   }
 
@@ -55,10 +60,10 @@ export class InteractionService {
             gender: data.gender
           }
           this.userCollection.doc(result.user.uid).set(userData);
-          resolve(result)
+          resolve(result);
 
         }).catch((error) => {
-          reject(error.message)
+          reject(error.message);
         })
     })
   }
@@ -72,9 +77,9 @@ export class InteractionService {
     const userData: any = {
       id: uuidv4,
       contents: data.contents,
-      comments: data.comments,
-      likes: data.likes,
-      dislike: data.dislike,
+      comments: [],
+      likes:0,
+      dislike: 0,
       userid: userId.uid
     }
 
