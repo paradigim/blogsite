@@ -10,13 +10,33 @@ import { Router } from '@angular/router';
 export class HomeComponent implements OnInit {
 
   likeCount: number;
+  myLists: any;
+  myUsers: any;
 
   constructor(
     private interaction: InteractionService,
     private router: Router
-  ) { }
+  ) { 
 
+    //this.myLists = this.interaction.getpost();
+   // console.log("users"+this.myLists);
+   // this.myUsers = this.interaction.getusers();
+  //   this.interaction.getusers().subscribe((data: any) => {
+  //     this.myUsers = data;
+  //     console.log(this.myUsers);
+  // });
+ 
+  }
+
+
+  getposts(){
+    this.interaction.getposts().subscribe((res: any) => {
+      this.myUsers = res;
+      console.log("posts"+res);
+    });
+  }
   ngOnInit(): void {
+   this.getposts();
   }
 
   getLikeCounts(event: number): void {

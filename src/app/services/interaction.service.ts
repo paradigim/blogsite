@@ -3,6 +3,10 @@ import { Router } from "@angular/router";
 import { auth, User } from 'firebase/app';
 import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestoreDocument, AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import 'rxjs/add/observable/from'; 
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +31,13 @@ export class InteractionService {
         localStorage.setItem('user', null);
       }
     })
+
+  //   let userDoc = this.afs.firestore.collection(`posts`);
+  //   userDoc.get().then((querySnapshot) => { 
+  //  querySnapshot.forEach((doc) => {
+  //      // console.log(doc.id, "=>", doc.data());  
+  //  })
+
   }
   async login(data: any) {
     var result = await this.afAuth.signInWithEmailAndPassword(data.email, data.password);
@@ -103,6 +114,33 @@ export class InteractionService {
           }
           this.userCollection.doc(user.uid).set(userData);
   }
+
+  async getposts(): Promise<Observable<any[]>>{
+    return this.postCollection.snapshotChanges().pipe(
+      map(actions => {       
+        return actions.map(a => {
+          const data = a.payload.doc.data();
+          data.id = a.payload.doc.id;
+          data.$key = a.payload.doc.id;
+          return data;
+        });
+      })
+    );
+   }
+   async getusers(): Promise<Observable<any[]>>{
+    return this.userCollection.snapshotChanges().pipe(
+      map(actions => {       
+        return actions.map(a => {
+          const data = a.payload.doc.data();
+          data.id = a.payload.doc.id;
+          data.$key = a.payload.doc.id;
+          console.log("users"+data);
+          return data;
+        });
+      })
+    );
+   }
+
 
   // Sign out 
   SignOut() {

@@ -26,6 +26,8 @@ export class BlogModalComponent implements OnInit {
       dislike: [''],
       comments:['']
     });
+
+
   }
 
   cancelBlog(): void {
@@ -38,7 +40,7 @@ export class BlogModalComponent implements OnInit {
   postBlog(): void {
     this.postForm.setValue({
       contents: 'Hello data',
-      likes:0,
+      likes: 0,
       dislike: 0,
       comments: []
   });
