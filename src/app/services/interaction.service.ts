@@ -62,9 +62,9 @@ export class InteractionService {
     const userData: any = {
       id: uuidv4,
       contents: data.contents,
-      comments: data.comments,
-      likes: data.likes,
-      dislike: data.dislike,
+      comments: [],
+      likes:0,
+      dislike: 0,
       userid: userId.uid
     }
 
