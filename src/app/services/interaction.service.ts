@@ -1,8 +1,8 @@
-import { Injectable, NgZone } from '@angular/core';
+import { ComponentFactoryResolver, Injectable, NgZone, ɵAPP_ID_RANDOM_PROVIDER } from '@angular/core';
 import { Router } from '@angular/router';
 import { auth, User } from 'firebase/app';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestoreDocument, AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { AngularFirestoreDocument, AngularFirestore } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -10,26 +10,30 @@ import { AngularFirestoreDocument, AngularFirestore, AngularFirestoreCollection 
 export class InteractionService {
 
   user: any;
-  private userCollection: AngularFirestoreCollection;
-  private postCollection: AngularFirestoreCollection;
+  userId: any;
+  uniqueUserName = '';
 
-  afs: any;
+  symbols = ['#', '!', '*', '%', '$', '=', '?'];
 
-  constructor(public afAuth: AngularFireAuth, public router: Router, afs: AngularFirestore, public ngZone: NgZone) {
-    this.userCollection = afs.collection('users');
-    this.postCollection = afs.collection('posts');
+  constructor(
+    public afAuth: AngularFireAuth,
+    public router: Router,
+    public afs: AngularFirestore,
+    public ngZone: NgZone
+  ) {
     this.afAuth.authState.subscribe(user => {
       if (user){
         this.user = user;
+        this.userId = user.uid;
         localStorage.setItem('user', JSON.stringify(this.user));
-        this.router.navigate(['/home']);
+        // this.router.navigate(['/home']);
       } else {
         localStorage.setItem('user', null);
       }
     });
   }
 
-  async login (data: any) {
+  async login(data: any) {
     const result = await this.afAuth.signInWithEmailAndPassword(data.email, data.password);
     return result;
   }
@@ -43,8 +47,8 @@ export class InteractionService {
             email: data.email,
             dob: data.dob,
             gender: data.gender
-          }
-          this.userCollection.doc(result.user.uid).set(userData);
+          };
+          this.afs.collection('users').doc(result.user.uid).set(userData);
           resolve(result);
         }).catch((error) => {
           reject(error.message);
@@ -52,36 +56,109 @@ export class InteractionService {
     });
   }
 
-  async post(data: any) {
-    const uuidv4 = Math.floor(Math.random() * 100);
-    const userId = JSON.parse(localStorage.getItem('user'));
-    const userData: any = {
-      id: uuidv4,
-      contents: data.contents,
+  async post(postText: any) {
+    const postData = {
+      contents: postText,
       comments: [],
       likes: 0,
       dislike: 0,
-      userid: userId.uid
+      bookmark: false,
+      userid: this.userId
     };
-
-    // alert(JSON.stringify(userData));
-    this.postCollection.doc(uuidv4.toString()).set(userData);
+    this.afs.collection('posts').add(postData).then((res) => {
+      console.log('SUCCESS............', res);
+    });
    }
 
-  GoogleAuth() {
-    return this.AuthLogin(new auth.GoogleAuthProvider());
-  }
+  // GoogleAuth() {
+  //   return this.authLogin(new auth.GoogleAuthProvider());
+  // }
 
   // Auth logic to run auth providers
-  AuthLogin(provider) {
-    return this.afAuth.signInWithPopup(provider)
-    .then((result) => {
-      this.ngZone.run(() => {
+  // authLogin(provider) {
+  //   return this.afAuth.signInWithPopup(provider)
+  //   .then((result) => {
+  //     this.ngZone.run(() => {
+  //       this.router.navigate(['/home']);
+  //     });
+  //     this.SetUserData(result.user);
+  //   }).catch((error) => {
+  //     window.alert(error);
+  //   });
+  // }
+
+
+
+  async googleAuthentication(): Promise<void> {
+    const provider = new auth.GoogleAuthProvider();
+    const credentials = await this.afAuth.signInWithPopup(provider);
+
+    this.afs.collection('users').doc(credentials.user.uid).snapshotChanges().subscribe(async (data: any) => {
+      if (data.payload.exists === false) {
+        await this.createUniqueUserName(credentials.user.displayName);
+        console.log('uniqueUserName: ', this.uniqueUserName);
+        await this.createUserByGoogle(credentials.user.uid, credentials.user)
+        .then(res => {
+          this.router.navigate(['/home']);
+        });
+      }
+      else {
         this.router.navigate(['/home']);
+      }
+    });
+  }
+
+  // create unique user name
+  createUniqueUserName(username: string) {
+    const name = username.split(' ').join('');
+    const randomNo = this.getUniqueId();
+    const randomIndex = this.getSymbolIndex();
+    const randomUniqueId = `@${name}${randomNo}${this.symbols[randomIndex]}`;
+    console.log('randomUniqueId: ', randomUniqueId, typeof randomUniqueId);
+
+    this.afs.collection('users').valueChanges()
+    .subscribe((data: any) => {
+      const matchedUniqueId = data.filter(item => {
+        return item.uniqueId === randomUniqueId;
       });
-      this.SetUserData(result.user);
-    }).catch((error) => {
-      window.alert(error);
+      if (matchedUniqueId.length > 0) {
+        this.createUniqueUserName(username);
+      } else {
+        this.uniqueUserName = randomUniqueId;
+        return;
+      }
+    });
+  }
+
+  getUniqueId(): number {
+    return Math.floor(Math.random() * 5000);
+  }
+
+  getSymbolIndex(): number {
+    return Math.floor(Math.random() * 7);
+  }
+
+  async createUserByGoogle(userId, userData) {
+    console.log(userId);
+    console.log('..........', this.uniqueUserName);
+    
+    await this.afs.collection('users').doc(userId).set({
+      dob: '',
+      email: userData.email,
+      gender: '',
+      id: userData.uid,
+      uniqueId: this.uniqueUserName,
+      imageURL: userData.photoURL,
+      name: userData.displayName,
+      phone: '',
+      totalEarnings: 0,
+      availableEarnings: 0,
+      pendingEarnings: 0
+    }, {merge: true}).then(res => {
+      console.log('response', this.afAuth.authState);
+      return;
+    }).catch(err => {
+      console.log(err);
     });
   }
 
@@ -93,15 +170,26 @@ export class InteractionService {
       id: user.uid,
       email: user.email
     };
-    this.userCollection.doc(user.uid).set(userData);
+    this.afs.collection('users').doc(user.uid).set(userData);
   }
 
   // Sign out
-  SignOut() {
-    return this.afAuth
+  signOutUser() {
+    this.afAuth
     .signOut().then(() => {
       localStorage.removeItem('user');
-      this.router.navigate(['sign-in']);
+      this.router.navigate(['auth/login']);
     });
   }
+
+  async updateUserData(userId, photoUrl) {
+    return await this.afs.collection('users').doc(userId).update({
+      imageURL: photoUrl,
+    });
+  }
+
+  fetchUserFromFirebase(userId) {
+    return this.afs.collection('users').doc(userId).valueChanges();
+  }
 }
+

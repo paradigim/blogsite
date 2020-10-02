@@ -19,7 +19,7 @@ export class BlogModalComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private services: InteractionService,
+    private interaction: InteractionService,
     public router: Router
   ) { }
 
@@ -49,8 +49,9 @@ export class BlogModalComponent implements OnInit {
   // submitted = false;
   // get f() { return this.postForm.controls; }
 
-  postBlog(): void {
-    this.services.post(this.postForm.value).then(res => {
+  postBlog(e): void {
+    e.preventDefault();
+    this.interaction.post(this.postForm.get('content').value).then(res => {
      // this.router.navigate([''])
     }).catch(err => {
       alert(err);

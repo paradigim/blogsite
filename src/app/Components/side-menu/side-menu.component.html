@@ -58,9 +58,11 @@
 
     <!-- user information -->
     <div class="user-info">
-        <div class='user-image'></div>
+        <div class='user-image'>
+            <img [src]='photoUrl'>
+        </div>
         <div class='user-name-id'>
-            <div class='user-name'>{{ userName }}</div>
+            <div class='user-name' *ngIf="userData">{{ userData.name }}</div>
             <div class='user-id'>{{ userId }}</div>
         </div>
     </div>

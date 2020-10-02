@@ -4,7 +4,9 @@
       
       <div class="blog-write-container">
         <!-- blog owner image -->
-        <div class="blog-owner-image"></div>
+        <div class="blog-owner-image">
+          <img src="assets/images/user_default.jpg">
+        </div>
 
         <!-- writing and editing blog -->
         <!-- [formGroup]="postForm" -->
@@ -32,7 +34,11 @@
               <i class="video icon"></i>
               <i class="smile outline icon"></i>
             </div>
-            <button class="blog-post-btn" (click)="postBlog()">Post</button>
+            <button class="blog-post-btn" (click)="postBlog($event)">Post</button>
+          </div>
+
+          <div class="added-img">
+            <img class="ui small image" src="assets/images/user_default.jpg">
           </div>
         </form>
       </div>

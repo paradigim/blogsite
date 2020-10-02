@@ -6,9 +6,9 @@
 
     <div class="form-container">
         <div class="login-to">Login</div>
-        <div class='social-login gogl'>
+        <div class='social-login gogl' (click)="service.googleAuthentication()">
             <i class="google icon"></i>
-            <div (click)="service.GoogleAuth()">Login with Google</div>
+            <div>Login with Google</div>
         </div>
 
         <div class="or-u-can">

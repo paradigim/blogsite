@@ -34,11 +34,14 @@
 }
 
 .user-image {
-    background: url('/assets/images/user_default.jpg') no-repeat;
-    background-size: cover;
     width: 50px;
     height: 50px;
     border-radius: 50%;
+    overflow: hidden;
+}
+
+.user-image img {
+    width: 100%;
 }
 
 .user-name-id {
