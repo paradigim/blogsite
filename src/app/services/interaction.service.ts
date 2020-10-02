@@ -58,7 +58,7 @@ export class InteractionService {
     });
   }
 
-  async post(postText: any) {
+  async post(postText: string) {
     const postData = {
       contents: postText,
       comments: [],
@@ -72,34 +72,14 @@ export class InteractionService {
     });
    }
 
-  // GoogleAuth() {
-  //   return this.authLogin(new auth.GoogleAuthProvider());
-  // }
-
-  // Auth logic to run auth providers
-  // authLogin(provider) {
-  //   return this.afAuth.signInWithPopup(provider)
-  //   .then((result) => {
-  //     this.ngZone.run(() => {
-  //       this.router.navigate(['/home']);
-  //     });
-  //     this.SetUserData(result.user);
-  //   }).catch((error) => {
-  //     window.alert(error);
-  //   });
-  // }
-
-
-
   async googleAuthentication(): Promise<void> {
     const provider = new auth.GoogleAuthProvider();
     const credentials = await this.afAuth.signInWithPopup(provider);
 
     this.afs.collection('users').doc(credentials.user.uid).snapshotChanges().subscribe((data: any) => {
       if (data.payload.exists === false) {
-        this.createUniqueUserName(credentials.user.displayName).subscribe(data => {
-          this.uniqueUserName = data;
-          console.log('uniqueUserName: ', this.uniqueUserName);
+        this.createUniqueUserName(credentials.user.displayName).subscribe((uniqueId: any) => {
+          this.uniqueUserName = uniqueId;
           this.createUserByGoogle(credentials.user.uid, credentials.user, this.uniqueUserName)
           .then(res => {
             this.router.navigate(['/home']);
@@ -113,7 +93,7 @@ export class InteractionService {
   }
 
   // create unique user name
-  createUniqueUserName(username: string) {
+  createUniqueUserName(username: string): any {
     const name = username.split(' ').join('');
     const randomNo = this.getUniqueId();
     const randomIndex = this.getSymbolIndex();
@@ -125,8 +105,6 @@ export class InteractionService {
         const matchedUniqueId = x.filter(item => {
           return item.uniqueId === randomUniqueId;
         });
-        // console.log('MAP VALUE: ', matchedUniqueId);
-        // return matchedUniqueId;
         if (matchedUniqueId.length > 0) {
           this.createUniqueUserName(username);
         } else {
