@@ -10,10 +10,10 @@ import { InteractionService } from 'src/app/services/interaction.service';
 export class SideMenuComponent implements OnInit {
 
   userName = 'Anisya olga';
-  userId = '@Anisyaolga21123';
-  photoUrl = './assets/images/user_default.jpg';
+  photoUrl = './assets/images/default.png';
   userData: any;
   modalShow = false;
+  uniqueUserId = '';
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -30,6 +30,7 @@ export class SideMenuComponent implements OnInit {
         this.userData = data;
         if (this.userData.imageURL) {
           this.photoUrl = this.userData.imageURL;
+          this.uniqueUserId = this.userData.uniqueId;
         }
 
         console.log('userData : ', this.userData);

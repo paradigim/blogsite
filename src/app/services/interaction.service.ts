@@ -1,8 +1,10 @@
-import { ComponentFactoryResolver, Injectable, NgZone, ɵAPP_ID_RANDOM_PROVIDER } from '@angular/core';
+import { ChangeDetectorRef, Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { auth, User } from 'firebase/app';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestoreDocument, AngularFirestore } from '@angular/fire/firestore';
+import { map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -93,13 +95,15 @@ export class InteractionService {
     const provider = new auth.GoogleAuthProvider();
     const credentials = await this.afAuth.signInWithPopup(provider);
 
-    this.afs.collection('users').doc(credentials.user.uid).snapshotChanges().subscribe(async (data: any) => {
+    this.afs.collection('users').doc(credentials.user.uid).snapshotChanges().subscribe((data: any) => {
       if (data.payload.exists === false) {
-        await this.createUniqueUserName(credentials.user.displayName);
-        console.log('uniqueUserName: ', this.uniqueUserName);
-        await this.createUserByGoogle(credentials.user.uid, credentials.user)
-        .then(res => {
-          this.router.navigate(['/home']);
+        this.createUniqueUserName(credentials.user.displayName).subscribe(data => {
+          this.uniqueUserName = data;
+          console.log('uniqueUserName: ', this.uniqueUserName);
+          this.createUserByGoogle(credentials.user.uid, credentials.user, this.uniqueUserName)
+          .then(res => {
+            this.router.navigate(['/home']);
+          });
         });
       }
       else {
@@ -116,18 +120,19 @@ export class InteractionService {
     const randomUniqueId = `@${name}${randomNo}${this.symbols[randomIndex]}`;
     console.log('randomUniqueId: ', randomUniqueId, typeof randomUniqueId);
 
-    this.afs.collection('users').valueChanges()
-    .subscribe((data: any) => {
-      const matchedUniqueId = data.filter(item => {
-        return item.uniqueId === randomUniqueId;
-      });
-      if (matchedUniqueId.length > 0) {
-        this.createUniqueUserName(username);
-      } else {
-        this.uniqueUserName = randomUniqueId;
-        return;
-      }
-    });
+    return this.afs.collection('users').valueChanges()
+      .pipe(map((x: any) => {
+        const matchedUniqueId = x.filter(item => {
+          return item.uniqueId === randomUniqueId;
+        });
+        // console.log('MAP VALUE: ', matchedUniqueId);
+        // return matchedUniqueId;
+        if (matchedUniqueId.length > 0) {
+          this.createUniqueUserName(username);
+        } else {
+          return randomUniqueId;
+        }
+      }));
   }
 
   getUniqueId(): number {
@@ -138,17 +143,14 @@ export class InteractionService {
     return Math.floor(Math.random() * 7);
   }
 
-  async createUserByGoogle(userId, userData) {
-    console.log(userId);
-    console.log('..........', this.uniqueUserName);
-    
+  async createUserByGoogle(userId, userData, uniqueUserName) {
     await this.afs.collection('users').doc(userId).set({
       dob: '',
       email: userData.email,
       gender: '',
       id: userData.uid,
-      uniqueId: this.uniqueUserName,
-      imageURL: userData.photoURL,
+      uniqueId: this.uniqueUserName.toLowerCase(),
+      imageURL: uniqueUserName,
       name: userData.displayName,
       phone: '',
       totalEarnings: 0,

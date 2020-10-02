@@ -59,6 +59,9 @@
 
 .user-id {
     color: #666;
+    font-size: 14px;
+    margin-top: 2px;
+    text-transform: lowercase;
 }
 /* user info end */
 
