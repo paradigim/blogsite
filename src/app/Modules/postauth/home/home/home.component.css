@@ -102,3 +102,7 @@
     color: #fff;
     border-color: var(--prime-color);
 }
+
+.user-blog-post-image {
+    text-align: center;
+}

@@ -66,6 +66,10 @@
     cursor: pointer;
 }
 
+.blog-post-btn:disabled {
+    background: #a4dfcf;
+}
+
 .textarea-field {
     position: relative;
 }

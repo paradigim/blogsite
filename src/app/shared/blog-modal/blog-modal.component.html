@@ -18,7 +18,8 @@
                 class="post-box"
                 autosize
                 (focus)="statusPlaceholder($event)"
-                (blur)="statusPlaceholder($event)">
+                (blur)="statusPlaceholder($event)"
+                (input)="activeCommentBTN($event)">
               </textarea>
               <!-- <input type="text" name="contents" [(ngModel)]="content" formControlName="contents" /> -->
 
@@ -46,7 +47,7 @@
                 <!-- <input (change)='loadFile($event)' type='file'> -->
               </label>
             </div>
-            <button class="blog-post-btn" (click)="postBlog($event)">Post</button>
+            <button class="blog-post-btn" [disabled]="postButton" (click)="postBlog($event)">Post</button>
           </div>
 
           <div class="added-img">

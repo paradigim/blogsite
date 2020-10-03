@@ -20,6 +20,7 @@ export class BlogModalComponent implements OnInit {
   file: any;
   imageURL = '';
   isBlogPost = false;
+  postButton = true;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -84,5 +85,14 @@ export class BlogModalComponent implements OnInit {
 
   deleteImage(): void {
     this.imageURL = '';
+  }
+
+  activeCommentBTN(e: any): void {
+    // activate comment button if there is value in textarea
+    if (e.target.value) {
+      this.postButton = false;
+    } else {
+      this.postButton = true;
+    }
   }
 }
