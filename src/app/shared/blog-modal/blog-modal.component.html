@@ -30,18 +30,37 @@
           <!-- attach images and videos to the blog and post button-->
           <div class="attach-btn">
             <div class="attach-icons">
-              <i class="image outline icon"></i>
-              <i class="video icon"></i>
-              <i class="smile outline icon"></i>
+
+              <label class='upload-pic'>
+                <i class="image outline icon"></i>
+                <input (change)='loadFile($event)' type='file'>
+              </label>
+              
+              <label class='upload-pic'>
+                <i class="video icon"></i>
+                <!-- <input (change)='loadFile($event)' type='file'> -->
+              </label>
+
+              <label class='upload-pic'>
+                <i class="smile outline icon"></i>
+                <!-- <input (change)='loadFile($event)' type='file'> -->
+              </label>
             </div>
             <button class="blog-post-btn" (click)="postBlog($event)">Post</button>
           </div>
 
           <div class="added-img">
-            <img class="ui small image" src="assets/images/user_default.jpg">
+            <img class="ui small image" [src]="imageURL">
+            <button class="ui red button dlt-btn" *ngIf="imageURL" (click)="deleteImage()">Delete</button>
           </div>
         </form>
       </div>
 
+    </div>
+
+    <div *ngIf="isBlogPost">
+      <div class="ui active dimmer">
+        <div class="ui loader"></div>
+      </div>
     </div>
 </sui-modal>

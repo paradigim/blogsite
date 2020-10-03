@@ -22,8 +22,11 @@
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background: url('/assets/images/user_default.jpg') no-repeat;
-    background-size: cover;
+    overflow: hidden;
+}
+
+.user-blog-post img {
+    width: 100%;
 }
 
 .user-blog-wrapper {

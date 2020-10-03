@@ -2,26 +2,29 @@
 <div class='home-container'>
     <div class='home-wrapper'>
 
-        <div class='ec-blog-post' (click)="routeToBlogDetail($event)">
-            <div class='user-blog-post'></div>
+        <div class='ec-blog-post' (click)="routeToBlogDetail($event)" *ngFor="let item of postData">
+            <div class='user-blog-post'>
+                <img [src]="item.userImage">
+            </div>
             <div class='user-blog-wrapper'>
                 <div class="user-intro-follow">
                     <div class='user-blog-info'>
-                        <div class='user-blog-name'>Sophia grace</div>
+                        <div class='user-blog-name'>{{ item.userName }}</div>
                         <div class='dot'></div>
-                        <div class='user-blog-post-time'>22h</div>
+                        <div class='user-blog-post-time'>{{ item.postDate }}</div>
                     </div>
                     <button class="follow">Follow</button>
                 </div>
-                <div class="user-unique-id">@gracesophia1234#</div>
+                <div class="user-unique-id">{{ item.uniqueId }}</div>
                 <div class='user-blog-content'>
-                    Black Lives Matter protesters in Utah, US, who 
-                    splashed paint on prosecutor's office, could face life 
-                    sentences for acting as a 'gang'.
+                    {{ item.contents }}
                 </div>
-                <video class="video-fluid z-depth-1" autoplay loop controls muted>
-                    <source src="https://mdbootstrap.com/img/video/Sail-Away.mp4" type="video/mp4" />
+                <video class="video-fluid z-depth-1" autoplay loop controls muted *ngIf="item.video">
+                    <source [src]="item.visual" type="video/mp4" />
                 </video>
+                <div class="user-blog-post-image" *ngIf="item.image">
+                    <img [src]="item.image">
+                </div>
                 <div class='blog-activities'>
                     <app-blog-like></app-blog-like>
                     <app-blog-comment></app-blog-comment>

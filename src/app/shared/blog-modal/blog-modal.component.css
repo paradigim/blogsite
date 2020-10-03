@@ -80,3 +80,17 @@
     font-weight: normal;
     padding-left: 0 !important;
 }
+
+.added-img {
+    display: flex;
+    align-items: flex-end;
+}
+
+.dlt-btn {
+    margin-left: 10px !important;
+    font-size: 14px !important;
+}
+
+.upload-pic input {
+    display: none;
+}

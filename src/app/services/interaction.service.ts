@@ -14,6 +14,7 @@ export class InteractionService {
   user: any;
   userId: any;
   uniqueUserName = '';
+  userName = '';
 
   symbols = ['#', '!', '*', '%', '$', '=', '?'];
 
@@ -58,19 +59,35 @@ export class InteractionService {
     });
   }
 
-  async post(postText: string) {
-    const postData = {
-      contents: postText,
-      comments: [],
-      likes: 0,
-      dislike: 0,
-      bookmark: false,
-      userid: this.userId
-    };
-    this.afs.collection('posts').add(postData).then((res) => {
-      console.log('SUCCESS............', res);
+  async post(postText: string, postDate: string, image = '', video = '') {
+    this.getUser().subscribe(user => {
+      const postData = {
+        contents: postText,
+        image,
+        video,
+        comments: [],
+        likes: 0,
+        dislike: 0,
+        bookmark: false,
+        userid: this.userId,
+        postDate,
+        userName: user.name,
+        uniqueId: user.uniqueId,
+        userImage: user.imageURL
+      };
+      this.afs.collection('posts').add(postData).then((res) => {
+        return;
+      });
     });
    }
+
+  getAllPosts(): Observable<any> {
+    return this.afs.collection('posts').valueChanges();
+  }
+
+  getUser(): Observable<any> {
+    return this.afs.collection('users').doc(this.userId).valueChanges();
+  }
 
   async googleAuthentication(): Promise<void> {
     const provider = new auth.GoogleAuthProvider();

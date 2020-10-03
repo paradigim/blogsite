@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 export class HomeComponent implements OnInit {
 
   likeCount: number;
+  postData: any;
 
   constructor(
     private interaction: InteractionService,
@@ -17,6 +18,14 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.allPosts();
+  }
+
+  allPosts() {
+    this.interaction.getAllPosts()
+      .subscribe((data: any) => {
+        this.postData = data;
+      });
   }
 
   getLikeCounts(event: number): void {
