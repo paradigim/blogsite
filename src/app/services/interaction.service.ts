@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { auth, User } from 'firebase/app';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestoreDocument, AngularFirestore } from '@angular/fire/firestore';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 
 @Injectable({
@@ -66,8 +66,8 @@ export class InteractionService {
         image,
         video,
         comments: [],
-        likes: 0,
-        dislike: 0,
+        likeCount: 0,
+        likedUserId: [],
         bookmark: false,
         userid: this.userId,
         postDate,
@@ -76,12 +76,50 @@ export class InteractionService {
         userImage: user.imageURL
       };
       this.afs.collection('posts').add(postData).then((res) => {
+        this.afs.collection('posts').doc(res.id).update({
+          id: res.id
+        });
         return;
       });
     });
    }
 
-  getAllPosts(): Observable<any> {
+  // set liked data
+  setLikeData(likeCount: number, postId: string): void {
+    this.getPostWithId(postId)
+    .pipe(take(1))
+    .subscribe((val: any) => {
+      let getData = Object.values(val.likedUserId);
+      const index = getData.findIndex(item => {
+        return item === this.userId;
+      });
+      console.log('INDEX: ', index);
+      if (index < 0) {
+        getData = [...getData , this.userId];
+      }
+      else {
+        getData.splice(index, 1);
+        console.log('AFTER DLT: ', getData);
+      }
+      // call the function to save liked user's id in database
+      this.updateLike(getData, postId);
+    });
+  }
+
+  // update post's like data
+  updateLike(likedUserId: any, postId: string): void {
+    this.afs.collection('posts').doc(postId).update({
+      likedUserId
+    });
+  }
+
+  // get a specific post with postId
+  getPostWithId(postId: string): Observable<any> {
+    return this.afs.collection('posts').doc(postId).valueChanges();
+  }
+
+  // get all posts
+  getAllPosts(): Observable<any[]> {
     return this.afs.collection('posts').valueChanges();
   }
 

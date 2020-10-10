@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { InteractionService } from 'src/app/services/interaction.service';
 import { Router } from '@angular/router';
 import { format } from 'date-fns';
+import * as data from 'src/assets/language.json';
 
 @Component({
   selector: 'app-blog-modal',
@@ -13,6 +14,7 @@ export class BlogModalComponent implements OnInit {
   @Output() modalStatus = new EventEmitter();
   @ViewChild('modal') modal: any;
   @ViewChild('textarea') textarea: any;
+  jsonData = (data as any).default;
 
   content: string;
   isPlaceholder = true;
@@ -51,10 +53,6 @@ export class BlogModalComponent implements OnInit {
     console.log('Form: ', this.postForm);
   }
 
-
-  // submitted = false;
-  // get f() { return this.postForm.controls; }
-
   postBlog(e): void {
     e.preventDefault();
     this.isBlogPost = true;
@@ -63,9 +61,9 @@ export class BlogModalComponent implements OnInit {
     const postDate = format(new Date(), 'dd MMM, yyyy');
 
     this.interaction.post(content, postDate, image).then(res => {
-      this.isBlogPost = false;
       this.modal.approve();
       this.modalStatus.emit();
+      this.isBlogPost = false;
       this.router.navigate(['/home']);
     }).catch(err => {
       this.isBlogPost = false;

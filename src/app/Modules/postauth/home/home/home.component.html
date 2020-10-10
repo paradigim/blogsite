@@ -5,7 +5,8 @@
         <div 
             class='ec-blog-post' 
             (click)="routeToBlogDetail($event)" 
-            *ngFor="let item of postData; index as i;">
+            *ngFor="let item of postData; index as i;"
+        >
             <div class='user-blog-post'>
                 <img [src]="item.userImage">
             </div>
@@ -29,7 +30,7 @@
                     <img [src]="item.image">
                 </div>
                 <div class='blog-activities'>
-                    <app-blog-like></app-blog-like>
+                    <app-blog-like [postId]="item.id" [likedUserIds]="item.likedUserId"></app-blog-like>
                     <app-blog-comment></app-blog-comment>
                     <app-blog-activity-more [index]="i" [elemId]="i" (click)="stopDefaultBehaviour($event)"></app-blog-activity-more>
                 </div>
@@ -37,39 +38,10 @@
                 <app-blog-comment-input [index]="i" (click)="stopDefaultBehaviour($event)"></app-blog-comment-input>
             </div>
         </div>
-
-
-        <!-- <div class='ec-blog-post'>
-            <div class='user-blog-post'></div>
-            <div class='user-blog-wrapper'>
-                <div class="user-intro-follow">
-                    <div class='user-blog-info'>
-                        <div class='user-blog-name'>Sophia grace</div>
-                        <div class='dot'></div>
-                        <div class='user-blog-post-time'>22h</div>
-                    </div>
-                    <button class="follow is-following">Follow</button>
-                </div>
-                <div class="user-unique-id">@gracesophia1234#</div>
-                <div class='user-blog-content'>
-                    Black Lives Matter protesters in Utah, US, who 
-                    splashed paint on prosecutor's office, could face life 
-                    sentences for acting as a 'gang'.
-                </div>
-                <div class="user-blog-post-image">
-                    <img src="../assets/images/blog1.jpg">
-                </div>
-                <div class='blog-activities'>
-                    <app-blog-like></app-blog-like>
-                    <app-blog-comment></app-blog-comment>
-                    <app-blog-activity-more index="1" elemId="more-activity2" (click)="stopDefaultBehaviour($event)"></app-blog-activity-more>
-                </div>
-                <app-blog-all-comments></app-blog-all-comments>
-                <app-blog-comment-input index="1" (click)="stopDefaultBehaviour($event)"></app-blog-comment-input>
-            </div>
-        </div> -->
     </div>
 
 
     <app-right-side-menu></app-right-side-menu>
 </div>
+
+<!-- [ifUserLiked]="checkUserIsLiked(item)" -->

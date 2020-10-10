@@ -47,12 +47,16 @@
                 <!-- <input (change)='loadFile($event)' type='file'> -->
               </label>
             </div>
-            <button class="blog-post-btn" [disabled]="postButton" (click)="postBlog($event)">Post</button>
+            <button class="blog-post-btn" [disabled]="postButton" (click)="postBlog($event)">
+              {{ jsonData.button.post }}
+            </button>
           </div>
 
           <div class="added-img">
             <img class="ui small image" [src]="imageURL">
-            <button class="ui red button dlt-btn" *ngIf="imageURL" (click)="deleteImage()">Delete</button>
+            <button class="ui red button dlt-btn" *ngIf="imageURL" (click)="deleteImage()">
+              {{ jsonData.button.delete }}
+            </button>
           </div>
         </form>
       </div>

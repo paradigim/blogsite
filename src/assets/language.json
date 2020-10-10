@@ -1,5 +1,7 @@
 {
     "button": {
-        "comment": "Comment"
+        "comment": "Comment",
+        "post": "Post",
+        "delete": "Delete"
     }
 }
