@@ -18,8 +18,7 @@ export class BlogLikeComponent implements OnInit {
   constructor(
     public afAuth: AngularFireAuth,
     private interaction: InteractionService,
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.afAuth.authState.subscribe(user => {

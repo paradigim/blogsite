@@ -2,9 +2,9 @@
 <div class="ui icon bottom right pointing dropdown">
     <i class="ellipsis vertical icon"></i>
     <div class="menu menu-list">
-      <div class="item">
-        <i class="bookmark outline icon"></i>
-        Bookmark
+      <div class="item" (click)="bookmark()">
+        <i class="bookmark outline icon" [class.bookmarked]="bookmarkStatus"></i>
+        {{ bookmarkText }}
       </div>
       <div class="item">
         <i class="edit outline icon"></i>

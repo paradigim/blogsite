@@ -84,6 +84,13 @@ export class InteractionService {
     });
    }
 
+  // bookmark
+  changeBookMark(postId: string, bookmarkStatus: boolean): void {
+    this.afs.collection('posts').doc(postId).update({
+      bookmark: bookmarkStatus
+    });
+  }
+
   // set liked data
   setLikeData(likeCount: number, postId: string): void {
     this.getPostWithId(postId)

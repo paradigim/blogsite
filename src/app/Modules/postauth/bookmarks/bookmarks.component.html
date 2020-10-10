@@ -1,6 +1,6 @@
 <div class="bookmarks-container">
     
-    <div class='ec-blog-post'>
+    <div class='ec-blog-post' *ngFor="let bookmark of bookmarkData">
         <div class='user-blog-post'></div>
         <div class='user-blog-wrapper'>
             <div class="user-intro-follow">
@@ -18,7 +18,7 @@
                 sentences for acting as a 'gang'.
             </div>
             <div class="user-blog-post-image">
-                <img src="../assets/images/blog1.jpg">
+                <img [src]="bookmark.image">
             </div>
             <div class='blog-activities'>
                 <app-blog-like></app-blog-like>

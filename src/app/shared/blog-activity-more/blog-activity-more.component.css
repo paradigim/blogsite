@@ -12,3 +12,7 @@
 .menu-list {
     min-width: 175px;
 }
+
+.bookmarked {
+    color: var(--prime-color);
+}

@@ -32,7 +32,12 @@
                 <div class='blog-activities'>
                     <app-blog-like [postId]="item.id" [likedUserIds]="item.likedUserId"></app-blog-like>
                     <app-blog-comment></app-blog-comment>
-                    <app-blog-activity-more [index]="i" [elemId]="i" (click)="stopDefaultBehaviour($event)"></app-blog-activity-more>
+                    <app-blog-activity-more 
+                        [index]="i" 
+                        [elemId]="i" 
+                        (click)="stopDefaultBehaviour($event)"
+                        [postId]="item.id"
+                    ></app-blog-activity-more>
                 </div>
                 <app-blog-all-comments></app-blog-all-comments>
                 <app-blog-comment-input [index]="i" (click)="stopDefaultBehaviour($event)"></app-blog-comment-input>
