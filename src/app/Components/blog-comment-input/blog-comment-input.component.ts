@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { InteractionService } from 'src/app/services/interaction.service';
 import * as data from 'src/assets/language.json';
 
 @Component({
@@ -8,14 +9,14 @@ import * as data from 'src/assets/language.json';
 })
 export class BlogCommentInputComponent implements OnInit {
   @Input() index = 0;
-  @Input() commentId = '';
+  @Input() postId = '';
   comment = '';
   jsonData = (data as any).default;
   isDisabled = true;
   commentBTN: any;
   textArea: any;
 
-  constructor() { }
+  constructor(private interaction: InteractionService) { }
 
   ngOnInit(): void {
     this.commentBTN = document.querySelectorAll('.comment-button');
@@ -23,8 +24,10 @@ export class BlogCommentInputComponent implements OnInit {
   }
 
 
-  getInputValue(): void {
+  // add comment
+  addComment(): void {
     console.log(this.comment);
+    this.interaction.addCommentToPost(this.comment, this.postId);
   }
 
   activeCommentBTN(e: any): void {
@@ -37,4 +40,5 @@ export class BlogCommentInputComponent implements OnInit {
       this.commentBTN[Number(this.index)].setAttribute('disabled', 'true');
     }
   }
+
 }

@@ -1,62 +1,38 @@
 <div class="bookmarks-container">
     
-    <div class='ec-blog-post' *ngFor="let bookmark of bookmarkData">
-        <div class='user-blog-post'></div>
+    <div class='ec-blog-post' *ngFor="let bookmark of bookmarkData; index as i;">
+        <div class='user-blog-post'>
+            <img [src]="bookmark.userImage">
+        </div>
         <div class='user-blog-wrapper'>
             <div class="user-intro-follow">
                 <div class='user-blog-info'>
-                    <div class='user-blog-name'>Sophia grace</div>
+                    <div class='user-blog-name'>{{ bookmark.userName }}</div>
                     <div class='dot'></div>
-                    <div class='user-blog-post-time'>22h</div>
+                    <div class='user-blog-post-time'>{{ bookmark.postDate }}</div>
                 </div>
                 <button class="follow">Follow</button>
             </div>
-            <div class="user-unique-id">@gracesophia1234#</div>
+            <div class="user-unique-id">{{ bookmark.uniqueId }}</div>
             <div class='user-blog-content'>
-                Black Lives Matter protesters in Utah, US, who 
-                splashed paint on prosecutor's office, could face life 
-                sentences for acting as a 'gang'.
+                {{ bookmark.contents }}
             </div>
             <div class="user-blog-post-image">
                 <img [src]="bookmark.image">
             </div>
             <div class='blog-activities'>
-                <app-blog-like></app-blog-like>
+                <app-blog-like [postId]="bookmark.id" [likedUserIds]="bookmark.likedUserId"></app-blog-like>
                 <app-blog-comment></app-blog-comment>
-                <app-blog-activity-more index="0" elemId="more-activity1" (click)="stopDefaultBehaviour($event)"></app-blog-activity-more>
+                <app-blog-activity-more
+                    [index]="i" 
+                    [elemId]="i"
+                    [postId]="bookmark.id"
+                    [postUserId]="bookmark.userid"
+                    (click)="stopDefaultBehaviour($event)">
+                </app-blog-activity-more>
             </div>
         </div>
     </div>
-
-
-    <div class='ec-blog-post'>
-        <div class='user-blog-post'></div>
-        <div class='user-blog-wrapper'>
-            <div class="user-intro-follow">
-                <div class='user-blog-info'>
-                    <div class='user-blog-name'>Sophia grace</div>
-                    <div class='dot'></div>
-                    <div class='user-blog-post-time'>22h</div>
-                </div>
-                <button class="follow is-following">Follow</button>
-            </div>
-            <div class="user-unique-id">@gracesophia1234#</div>
-            <div class='user-blog-content'>
-                Black Lives Matter protesters in Utah, US, who 
-                splashed paint on prosecutor's office, could face life 
-                sentences for acting as a 'gang'.
-            </div>
-            <div class="user-blog-post-image">
-                <img src="../assets/images/blog1.jpg">
-            </div>
-            <div class='blog-activities'>
-                <app-blog-like></app-blog-like>
-                <app-blog-comment></app-blog-comment>
-                <app-blog-activity-more index="1" elemId="more-activity2" (click)="stopDefaultBehaviour($event)"></app-blog-activity-more>
-            </div>
-        </div>
-    </div>
-
 
     <app-right-side-menu></app-right-side-menu>
 </div>

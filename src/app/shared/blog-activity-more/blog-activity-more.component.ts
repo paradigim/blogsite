@@ -1,4 +1,5 @@
 import { Component, OnInit, ElementRef, Input, Output, EventEmitter } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/auth';
 import { InteractionService } from 'src/app/services/interaction.service';
 // import * as $ from 'jquery';
 declare var $: any;
@@ -14,15 +15,24 @@ export class BlogActivityMoreComponent implements OnInit {
   @Input() elemId = '';
   @Input() index: number;
   @Input() postId = '';
+  @Input() postUserId = '';
 
   bookmarkStatus: boolean;
   bookmarkText = 'Bookmark';
+  userId = '';
 
   constructor(
-    private interaction: InteractionService
+    private interaction: InteractionService,
+    private afAuth: AngularFireAuth
   ) { }
 
   ngOnInit(): void {
+    this.afAuth.authState.subscribe(user => {
+      if (user){
+        this.userId = user.uid;
+      }
+    });
+
     const dropdownEl = document.querySelectorAll('.dropdown')[Number(this.index)];
     dropdownEl.id = this.elemId;
 
@@ -74,6 +84,16 @@ export class BlogActivityMoreComponent implements OnInit {
         } else {
           this.bookmarkText = 'Bookmark';
         }
+      });
+  }
+
+  // delete the post
+  deletePost(): void {
+    this.interaction.deletePost(this.postId)
+      .then(() => {
+        console.log('Post has been removed')
+      }).catch(err => {
+        console.log('Post can not be removed');
       });
   }
 }

@@ -6,11 +6,13 @@
         <i class="bookmark outline icon" [class.bookmarked]="bookmarkStatus"></i>
         {{ bookmarkText }}
       </div>
-      <div class="item">
+      <div class="item" *ngIf="userId === postUserId">
         <i class="edit outline icon"></i>
         Edit
       </div>
-      <div class="item">
+      <div class="item" 
+        *ngIf="userId === postUserId"
+        (click)="deletePost()">
         <i class="trash alternate outline icon"></i>
         Delete
       </div>

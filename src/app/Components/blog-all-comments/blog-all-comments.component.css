@@ -1,3 +1,4 @@
+@import 'semantic-ui-css/semantic.css';
 
 .all-comment-container {
     margin-top: 40px;
@@ -15,11 +16,14 @@
     overflow: hidden;
 }
 
+.comment-user img {
+    width: 100%;
+}
+
 .comment-details {
     flex: 1;
     margin-left: 10px;
 }
-@import 'semantic-ui-css/semantic.css';
 
 .comment-user-indentity {
     display: flex;

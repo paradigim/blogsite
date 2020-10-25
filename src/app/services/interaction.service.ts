@@ -91,6 +91,33 @@ export class InteractionService {
     });
   }
 
+  // add comment to post
+  addCommentToPost(comment, postId) {
+    this.getPostWithId(postId)
+    .pipe(take(1))
+    .subscribe(val => {
+      let getComment = val.comments;
+      const data = {
+        text: comment,
+        commentedUserId: this.userId
+      };
+      getComment = [...getComment, data];
+      this.updateComment(getComment, postId);
+    });
+  }
+
+  // update comment data
+  updateComment(comments: any, postId: string): void {
+    this.afs.collection('posts').doc(postId).update({
+      comments
+    });
+  }
+
+  // get all comments
+  getBlogComments(postId): Observable<any> {
+    return this.getPostWithId(postId);
+  }
+
   // set liked data
   setLikeData(likeCount: number, postId: string): void {
     this.getPostWithId(postId)
@@ -128,6 +155,11 @@ export class InteractionService {
   // get all posts
   getAllPosts(): Observable<any[]> {
     return this.afs.collection('posts').valueChanges();
+  }
+
+  // get all users
+  getAllUser(): Observable<any> {
+    return this.afs.collection('users').valueChanges();
   }
 
   getUser(): Observable<any> {
@@ -230,8 +262,13 @@ export class InteractionService {
     });
   }
 
-  fetchUserFromFirebase(userId) {
+  fetchUserFromFirebase(userId): Observable<any> {
     return this.afs.collection('users').doc(userId).valueChanges();
+  }
+
+  // delete post
+  deletePost(postId: string): Promise<any> {
+    return this.afs.collection('posts').doc(postId).delete();
   }
 }
 

@@ -37,10 +37,15 @@
                         [elemId]="i" 
                         (click)="stopDefaultBehaviour($event)"
                         [postId]="item.id"
+                        [postUserId]="item.userid"
                     ></app-blog-activity-more>
                 </div>
-                <app-blog-all-comments></app-blog-all-comments>
-                <app-blog-comment-input [index]="i" (click)="stopDefaultBehaviour($event)"></app-blog-comment-input>
+                <app-blog-all-comments [postId]="item.id"></app-blog-all-comments>
+                <app-blog-comment-input 
+                    [index]="i" 
+                    [postId]="item.id"
+                    (click)="stopDefaultBehaviour($event)">
+                </app-blog-comment-input>
             </div>
         </div>
     </div>
