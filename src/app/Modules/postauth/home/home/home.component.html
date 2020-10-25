@@ -31,7 +31,7 @@
                 </div>
                 <div class='blog-activities'>
                     <app-blog-like [postId]="item.id" [likedUserIds]="item.likedUserId"></app-blog-like>
-                    <app-blog-comment></app-blog-comment>
+                    <app-blog-comment [commentCount]="item.comments.length"></app-blog-comment>
                     <app-blog-activity-more 
                         [index]="i" 
                         [elemId]="i" 
@@ -40,7 +40,7 @@
                         [postUserId]="item.userid"
                     ></app-blog-activity-more>
                 </div>
-                <app-blog-all-comments [postId]="item.id"></app-blog-all-comments>
+                <app-blog-all-comments [postId]="item.id" pageName='home'></app-blog-all-comments>
                 <app-blog-comment-input 
                     [index]="i" 
                     [postId]="item.id"

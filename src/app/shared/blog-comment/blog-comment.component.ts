@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { take } from 'rxjs/operators';
+import { DataExchangeService } from 'src/app/services/data-exchange.service';
 
 @Component({
   selector: 'app-blog-comment',
@@ -7,11 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BlogCommentComponent implements OnInit {
 
-  commentCount = 1234;
+  @Input() commentCount: 0;
 
-  constructor() { }
+  constructor(private dataExchange: DataExchangeService) { }
 
   ngOnInit(): void {
+
   }
 
   likeCountStatusChange(): void {

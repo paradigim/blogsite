@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { take } from 'rxjs/operators';
+import { DataExchangeService } from 'src/app/services/data-exchange.service';
 import { InteractionService } from 'src/app/services/interaction.service';
 
 @Component({
@@ -9,8 +10,13 @@ import { InteractionService } from 'src/app/services/interaction.service';
 })
 export class BlogAllCommentsComponent implements OnInit {
   @Input() postId = '';
+  @Input() pageName = '';
+
   commentData = [];
-  constructor(private interaction: InteractionService) { }
+  constructor(
+    private interaction: InteractionService,
+    private dataExchange: DataExchangeService
+  ) { }
 
   ngOnInit(): void {
     this.interaction.getBlogComments(this.postId)
@@ -30,6 +36,9 @@ export class BlogAllCommentsComponent implements OnInit {
             }
           }
         });
+        if (this.pageName !== '') {
+          this.commentData = this.commentData.slice(0, 2);
+        }
       });
     });
   }
