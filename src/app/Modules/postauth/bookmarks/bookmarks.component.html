@@ -22,7 +22,7 @@
             </div>
             <div class='blog-activities'>
                 <app-blog-like [postId]="bookmark.id" [likedUserIds]="bookmark.likedUserId"></app-blog-like>
-                <app-blog-comment></app-blog-comment>
+                <app-blog-comment [commentCount]="bookmark.comments.length"></app-blog-comment>
                 <app-blog-activity-more
                     [index]="i" 
                     [elemId]="i"
