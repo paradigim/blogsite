@@ -158,12 +158,15 @@ export class InteractionService {
   }
 
   // get all users
-  getAllUser(): Observable<any> {
+  getAllUser(): Observable<any[]> {
     return this.afs.collection('users').valueChanges();
   }
 
-  getUser(): Observable<any> {
-    return this.afs.collection('users').doc(this.userId).valueChanges();
+  // get user by userId
+  getUser(userId = ''): Observable<any> {
+    const uId = userId !== '' ? userId : this.userId;
+    console.log('uID: ', uId);
+    return this.afs.collection('users').doc(uId).snapshotChanges();
   }
 
   async googleAuthentication(): Promise<void> {
@@ -270,5 +273,29 @@ export class InteractionService {
   deletePost(postId: string): Promise<any> {
     return this.afs.collection('posts').doc(postId).delete();
   }
+
+  // following
+  followedUser(userId) {
+    let follower = [];
+    this.getUser(userId)
+    .pipe(take(1))
+    .subscribe(val => {
+      console.log('USER: ', val);
+      follower = [...val.follower, this.userId];
+      this.updateFollower(follower, userId);
+    });
+  }
+
+  updateFollower(follower, userId): void {
+    this.afs.collection('users').doc(userId).update({
+      follower
+    });
+  }
+
+  // isFollowed(userId) {
+  //   this.getUser(userId)
+  //   .pipe(take(1))
+  //   .subscribe(val => console.log(val));
+  // }
 }
 

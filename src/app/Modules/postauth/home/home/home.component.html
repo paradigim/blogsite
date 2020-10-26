@@ -17,7 +17,13 @@
                         <div class='dot'></div>
                         <div class='user-blog-post-time'>{{ item.postDate }}</div>
                     </div>
-                    <button class="follow">Follow</button>
+                    <button 
+                        class="follow" 
+                        (click)="followUser(item.userid)"
+                        [class.is-following]="isFollowed(item.userid)"
+                    >
+                        Follow
+                    </button>
                 </div>
                 <div class="user-unique-id">{{ item.uniqueId }}</div>
                 <div class='user-blog-content'>

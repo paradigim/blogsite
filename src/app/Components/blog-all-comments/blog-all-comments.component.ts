@@ -21,10 +21,8 @@ export class BlogAllCommentsComponent implements OnInit {
   ngOnInit(): void {
     this.interaction.getBlogComments(this.postId)
     .subscribe((val: any) => {
-      console.log('ALL POSTS: ', val);
       this.interaction.getAllUser()
       .subscribe(user => {
-        console.log('ALL USERS: ', user);
         val.comments.map((item: any) => {
           for (let i = 0; i < user.length; i++) {
             if (item.commentedUserId === user[i].id) {
