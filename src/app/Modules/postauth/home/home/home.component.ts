@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { InteractionService } from 'src/app/services/interaction.service';
 import { Router } from '@angular/router';
-import { switchMap, take } from 'rxjs/operators';
+import { switchMap, take, map } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { map } from 'jquery';
 import { Observable, of } from 'rxjs';
 
 @Component({
@@ -32,14 +31,31 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.allPosts();
-    // this.isFollowed();
+    // this.setFollowing();
   }
 
   allPosts(): void {
     this.interaction.getAllPosts()
       .subscribe((data: any) => {
         this.postData = data;
+        this.postData.map((item, i) => {
+          this.isFollowed(item.userid)
+          .pipe(take(1))
+          .subscribe(val => {
+            this.postData[i] = {...this.postData[i], followStatus: this.checkFollower(val)};
+          });
+        });
+        console.log('POST DATA: ', this.postData);
       });
+  }
+
+  checkFollower(user): boolean {
+    if (user.follower && user.follower.length > 0) {
+      const index = user.follower.findIndex(item => item === this.userId);
+      return (index !== -1) ? true : false;
+    } else {
+      return false;
+    }
   }
 
   getLikeCounts(event: number): void {
@@ -59,16 +75,7 @@ export class HomeComponent implements OnInit {
     this.interaction.followedUser(userId);
   }
 
-  isFollowed(userId) {
-    this.interaction.getUser(userId)
-    .pipe(take(1))
-    .pipe(switchMap((item) => {
-      const index = item.follower.findIndex(val => {
-        return val === this.userId;
-      });
-      this.checkFollow = index >= 0 ? true : false;
-      return of(this.checkFollow);
-    }));
+  isFollowed (userId) {
+    return this.interaction.getUser(userId);
   }
-
 }

@@ -119,7 +119,7 @@ export class InteractionService {
   }
 
   // set liked data
-  setLikeData(likeCount: number, postId: string): void {
+  setLikeData(likeCount: number, postId: string) {
     this.getPostWithId(postId)
     .pipe(take(1))
     .subscribe((val: any) => {
@@ -141,7 +141,7 @@ export class InteractionService {
   }
 
   // update post's like data
-  updateLike(likedUserId: any, postId: string): void {
+  updateLike(likedUserId: any, postId: string) {
     this.afs.collection('posts').doc(postId).update({
       likedUserId
     });
@@ -165,8 +165,8 @@ export class InteractionService {
   // get user by userId
   getUser(userId = ''): Observable<any> {
     const uId = userId !== '' ? userId : this.userId;
-    console.log('uID: ', uId);
-    return this.afs.collection('users').doc(uId).snapshotChanges();
+    // console.log('uID: ', uId);
+    return this.afs.collection('users').doc(uId).valueChanges();
   }
 
   async googleAuthentication(): Promise<void> {
@@ -280,7 +280,6 @@ export class InteractionService {
     this.getUser(userId)
     .pipe(take(1))
     .subscribe(val => {
-      console.log('USER: ', val);
       follower = [...val.follower, this.userId];
       this.updateFollower(follower, userId);
     });
@@ -291,11 +290,5 @@ export class InteractionService {
       follower
     });
   }
-
-  // isFollowed(userId) {
-  //   this.getUser(userId)
-  //   .pipe(take(1))
-  //   .subscribe(val => console.log(val));
-  // }
 }
 

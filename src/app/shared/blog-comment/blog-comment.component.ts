@@ -9,7 +9,7 @@ import { DataExchangeService } from 'src/app/services/data-exchange.service';
 })
 export class BlogCommentComponent implements OnInit {
 
-  @Input() commentCount: 0;
+  @Input() commentCount = 0;
 
   constructor(private dataExchange: DataExchangeService) { }
 

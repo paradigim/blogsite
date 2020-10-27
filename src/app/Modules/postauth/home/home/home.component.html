@@ -20,10 +20,11 @@
                     <button 
                         class="follow" 
                         (click)="followUser(item.userid)"
-                        [class.is-following]="isFollowed(item.userid)"
+                        [class.is-following]="item.followStatus"
                     >
                         Follow
                     </button>
+                    <!-- [class.is-following]="isFollowed(item.userid)" -->
                 </div>
                 <div class="user-unique-id">{{ item.uniqueId }}</div>
                 <div class='user-blog-content'>
