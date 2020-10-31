@@ -45,7 +45,12 @@ export class HomeComponent implements OnInit, OnDestroy {
           users.subscribe(val => {
             for (const user of val) {
               if (user.id === item.userid) {
-                this.postData[i] = {...this.postData[i], followStatus: this.checkFollower(user, true)};
+                this.postData[i] = {
+                  ...this.postData[i],
+                  followStatus: this.checkFollower(user, true)
+                };
+                const flTxt = this.postData[i].followStatus ? 'Following' : 'Follow';
+                this.postData[i].followText = flTxt;
                 break;
               }
             }

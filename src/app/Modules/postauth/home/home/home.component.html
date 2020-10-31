@@ -22,7 +22,7 @@
                         (click)="followUser(item.userid, $event)"
                         [class.is-following]="item.followStatus"
                     >
-                        Follow
+                        {{ item.followText }}
                     </button>
                     <!-- [class.is-following]="isFollowed(item.userid)" -->
                 </div>
