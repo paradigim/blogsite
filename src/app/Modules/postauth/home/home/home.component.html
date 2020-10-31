@@ -19,7 +19,7 @@
                     </div>
                     <button 
                         class="follow" 
-                        (click)="followUser(item.userid)"
+                        (click)="followUser(item.userid, $event)"
                         [class.is-following]="item.followStatus"
                     >
                         Follow

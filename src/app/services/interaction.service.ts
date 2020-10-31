@@ -1,21 +1,21 @@
-import { ChangeDetectorRef, Injectable, NgZone } from '@angular/core';
+import { Injectable, NgZone, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { auth, User } from 'firebase/app';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestoreDocument, AngularFirestore } from '@angular/fire/firestore';
-import { map, take } from 'rxjs/operators';
-import { Observable, of } from 'rxjs';
+import { map, take, takeUntil } from 'rxjs/operators';
+import { Observable, of, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class InteractionService {
+export class InteractionService implements OnDestroy {
 
   user: any;
   userId: any;
   uniqueUserName = '';
   userName = '';
-
+  unSubscribe = new Subject();
   symbols = ['#', '!', '*', '%', '$', '=', '?'];
 
   constructor(
@@ -279,6 +279,7 @@ export class InteractionService {
     let follower = [];
     this.getUser(userId)
     .pipe(take(1))
+    .pipe(takeUntil(this.unSubscribe))
     .subscribe(val => {
       follower = [...val.follower, this.userId];
       this.updateFollower(follower, userId);
@@ -289,6 +290,12 @@ export class InteractionService {
     this.afs.collection('users').doc(userId).update({
       follower
     });
+  }
+
+  // on destroy of the component
+  ngOnDestroy(): void {
+    this.unSubscribe.next();
+    this.unSubscribe.complete();
   }
 }
 
