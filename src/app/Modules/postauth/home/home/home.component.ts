@@ -16,6 +16,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   postData: any;
   userId: string;
   checkFollow = false;
+  isDataLoaded = false;
   unSubscribe = new Subject();
 
   constructor(
@@ -31,6 +32,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.isDataLoaded = true;
     this.allPosts();
   }
 
@@ -54,6 +56,7 @@ export class HomeComponent implements OnInit, OnDestroy {
                 break;
               }
             }
+            this.isDataLoaded = false;
           });
         });
       });

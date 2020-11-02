@@ -1,5 +1,5 @@
-/* @import 'semantic-ui-css/semantic.css'; */
-@import 'bulma/css/bulma.css';
+
+@import 'semantic-ui-css/semantic.css';
 
 /* each blog details */
 .ec-blog-post {
@@ -105,4 +105,18 @@
 
 .user-blog-post-image {
     text-align: center;
+    width: 100%;
+}
+
+.user-blog-post-image img {
+    width: 100%;
+}
+
+.data-loader {
+    height: 100vh;
+}
+
+.data-loader .loader {
+    top: 50%;
+    transform: translateY(-50%);
 }

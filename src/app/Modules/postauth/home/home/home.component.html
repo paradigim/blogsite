@@ -1,5 +1,5 @@
 
-<div class='home-container'>
+<div class='home-container' *ngIf="!isDataLoaded">
     <div class='home-wrapper'>
 
         <div 
@@ -60,5 +60,10 @@
 
     <app-right-side-menu></app-right-side-menu>
 </div>
+
+<div *ngIf="isDataLoaded" class="data-loader">
+    <div class="ui active centered inline loader"></div>
+</div>
+
 
 <!-- [ifUserLiked]="checkUserIsLiked(item)" -->
