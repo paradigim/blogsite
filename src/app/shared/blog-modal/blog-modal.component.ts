@@ -88,20 +88,24 @@ export class BlogModalComponent implements OnInit, OnChanges {
         this.isBlogPost = false;
       });
     } else {
-      this.interaction.post(content, postDate, image, video).then(res => {
-        debugger;
+      this.interaction.post(content, postDate, image, video).subscribe(res => {
         this.isBlogPost = false;
         this.modal.approve();
         this.modalStatus.emit();
         this.router.navigate(['/home']);
-      }).catch(err => {
+      },
+      err => {
         this.isBlogPost = false;
+        this.modal.denied();
+        this.modalStatus.emit();
+        this.router.navigate(['/home']);
       });
     }
   }
 
   loadFile(e): void {
     this.file = e.target.files[0];
+    debugger;
     const reader = new FileReader();
     console.log('reader......', reader);
     reader.onload = () => {
@@ -113,6 +117,7 @@ export class BlogModalComponent implements OnInit, OnChanges {
 
   deleteImage(): void {
     this.imageURL = '';
+    this.postForm.get('imageUrl').setValue('');
   }
 
   activeCommentBTN(e: any): void {

@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { auth, User } from 'firebase/app';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestoreDocument, AngularFirestore } from '@angular/fire/firestore';
-import { map, take, takeUntil } from 'rxjs/operators';
+import { map, switchMap, take, takeUntil } from 'rxjs/operators';
 import { Observable, of, Subject } from 'rxjs';
 
 @Injectable({
@@ -61,7 +61,7 @@ export class InteractionService implements OnDestroy {
 
   // update post
   updatePost(postId?: string, contents?: string, image?: string, video?: string, lastUpdateDate?: string): Promise<any> {
-    debugger;
+  
     return this.afs.collection('posts').doc(postId).update({
       id: postId,
       image,
@@ -72,8 +72,10 @@ export class InteractionService implements OnDestroy {
   }
 
   // add new post
-  async post(postText: string, postDate: string, image = '', video = ''): Promise<any> {
-    this.getUser().subscribe(user => {
+  post(postText: string, postDate: string, image = '', video = ''): Observable<any> {
+    return this.getUser()
+    .pipe(map((user): any => {
+      console.log('USER: ', user);
       const postData = {
         contents: postText,
         image,
@@ -88,11 +90,18 @@ export class InteractionService implements OnDestroy {
         uniqueId: user.uniqueId,
         userImage: user.imageURL
       };
-      this.afs.collection('posts').add(postData).then((res) => {
-        this.updatePost(res.id);
+      return this.afs.collection('posts').add(postData).then((res) => {
+        this.updatePost(res.id, postData.contents, postData.image, postData.video, postData.postDate).then(res => {
+          return res;
+        });
       });
-      return;
-    });
+    }))
+    // .pipe(map(data => {
+    //   debugger;
+    //   return this.updatePost(data.id).then(res => {
+    //     return res;
+    //   });
+    // }));
    }
 
   // bookmark

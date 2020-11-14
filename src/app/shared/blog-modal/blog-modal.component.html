@@ -48,8 +48,8 @@
           </div>
 
           <div class="added-img">
-            <img class="ui small image" [src]="postForm.get('imageUrl').value">
-            <button class="ui red button dlt-btn" *ngIf="postForm.get('imageUrl').value" (click)="deleteImage()">
+            <img class="ui small image" [src]="imageURL">
+            <button class="ui red button dlt-btn" *ngIf="imageURL" (click)="deleteImage()">
               {{ jsonData.button.delete }}
             </button>
           </div>
