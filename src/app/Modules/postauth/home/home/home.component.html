@@ -47,7 +47,7 @@
                         [postUserId]="item.userid"
                     ></app-blog-activity-more>
                 </div>
-                <app-blog-all-comments [postId]="item.id" pageName='home'></app-blog-all-comments>
+                <app-blog-all-comments [postId]="item?.id" pageName='home'></app-blog-all-comments>
                 <app-blog-comment-input 
                     [index]="i" 
                     [postId]="item.id"

@@ -1,5 +1,7 @@
 import { Component, OnInit, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { InteractionService } from 'src/app/services/interaction.service';
 // import * as $ from 'jquery';
 declare var $: any;
@@ -20,6 +22,10 @@ export class BlogActivityMoreComponent implements OnInit {
   bookmarkStatus: boolean;
   bookmarkText = 'Bookmark';
   userId = '';
+  modalShow = false;
+  editPostData: any;
+
+  ngUnsubscribe = new Subject();
 
   constructor(
     private interaction: InteractionService,
@@ -46,7 +52,15 @@ export class BlogActivityMoreComponent implements OnInit {
       this.closeDropDown(dropdownEl);
     });
 
-    this.getPostData();
+    this.getPostData()
+      .subscribe((res: any) => {
+        this.bookmarkStatus = res.bookmark;
+        if (res.bookmark) {
+          this.bookmarkText = 'Remove Bookmark';
+        } else {
+          this.bookmarkText = 'Bookmark';
+        }
+      });
   }
 
 
@@ -75,16 +89,22 @@ export class BlogActivityMoreComponent implements OnInit {
   }
 
   // get post data
-  getPostData(): void {
-    this.interaction.getPostWithId(this.postId)
-      .subscribe((res: any) => {
-        this.bookmarkStatus = res.bookmark;
-        if (res.bookmark) {
-          this.bookmarkText = 'Remove Bookmark';
-        } else {
-          this.bookmarkText = 'Bookmark';
-        }
+  getPostData(): Observable<any> {
+    return this.interaction.getPostWithId(this.postId);
+  }
+
+  // edit the post
+  editPost(): void {
+    this.getPostData()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(res => {
+        this.editPostData = res;
       });
+    this.modalShow = !this.modalShow;
+  }
+
+  changeModalStatus(): void {
+    this.modalShow = !this.modalShow;
   }
 
   // delete the post

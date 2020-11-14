@@ -4,9 +4,6 @@ import { InteractionService } from 'src/app/services/interaction.service';
 import { Router } from '@angular/router';
 import { MustMatch } from './MustMatch';
 
-// import custom validator to validate that password and confirm password fields match
-//import { MustMatch } from './_helpers/must-match.validator';
-
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -18,14 +15,8 @@ export class RegisterComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private services: InteractionService, public router: Router) { }
   ngOnInit(): void {
     this.registerForm = this.formBuilder.group({
-      // name: new FormControl(''),
-      // email: new FormControl(''),
-      // gender: new FormControl(''),
-      // dob: new FormControl(''),
-      // password: new FormControl(''),
-      // cpassword: new FormControl('')
       name:['', Validators.required],
-      email: ['', [Validators.required,Validators.email]],
+      email: ['', [Validators.required, Validators.email]],
       gender:[''],
       dob: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(6)]],

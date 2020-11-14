@@ -59,7 +59,20 @@ export class InteractionService implements OnDestroy {
     });
   }
 
-  async post(postText: string, postDate: string, image = '', video = '') {
+  // update post
+  updatePost(postId?: string, contents?: string, image?: string, video?: string, lastUpdateDate?: string): Promise<any> {
+    debugger;
+    return this.afs.collection('posts').doc(postId).update({
+      id: postId,
+      image,
+      video,
+      contents,
+      lastUpdateDate
+    });
+  }
+
+  // add new post
+  async post(postText: string, postDate: string, image = '', video = ''): Promise<any> {
     this.getUser().subscribe(user => {
       const postData = {
         contents: postText,
@@ -76,11 +89,9 @@ export class InteractionService implements OnDestroy {
         userImage: user.imageURL
       };
       this.afs.collection('posts').add(postData).then((res) => {
-        this.afs.collection('posts').doc(res.id).update({
-          id: res.id
-        });
-        return;
+        this.updatePost(res.id);
       });
+      return;
     });
    }
 
@@ -224,6 +235,7 @@ export class InteractionService implements OnDestroy {
       email: userData.email,
       gender: '',
       id: userData.uid,
+      follower: [],
       uniqueId: this.uniqueUserName.toLowerCase(),
       imageURL: uniqueUserName,
       name: userData.displayName,

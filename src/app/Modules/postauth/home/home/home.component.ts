@@ -89,7 +89,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   // set follow status when click on follow button
   followUser(userId, e): void {
-    e.stopPropagation();
     e.preventDefault();
     this.checkFollow = false;
     let follower = [];

@@ -9,7 +9,6 @@
         </div>
 
         <!-- writing and editing blog -->
-        <!-- [formGroup]="postForm" -->
         <form class="ui form blog-write-form" [formGroup]="postForm">
           <div class="field textarea-field">
               <textarea
@@ -17,16 +16,12 @@
                 minRows="1"
                 class="post-box"
                 autosize
-                (focus)="statusPlaceholder($event)"
-                (blur)="statusPlaceholder($event)"
+                (focus)="statusPlaceholder()"
+                (blur)="statusPlaceholderBlur($event.target.value)"
                 (input)="activeCommentBTN($event)">
               </textarea>
-              <!-- <input type="text" name="contents" [(ngModel)]="content" formControlName="contents" /> -->
 
-               <label class="text-placeholder" *ngIf="isPlaceholder">What's on your mind...?</label>
-              <!-- <div *ngIf="submitted && f.comments.errors" class="invalid-feedback">
-                <div *ngIf="f.comments.errors.required"  class="validations">Comments is required</div>
-              </div> -->
+              <label class="text-placeholder" *ngIf="isPlaceholder">What's on your mind...?</label>
           </div>
           <!-- attach images and videos to the blog and post button-->
           <div class="attach-btn">
@@ -53,8 +48,8 @@
           </div>
 
           <div class="added-img">
-            <img class="ui small image" [src]="imageURL">
-            <button class="ui red button dlt-btn" *ngIf="imageURL" (click)="deleteImage()">
+            <img class="ui small image" [src]="postForm.get('imageUrl').value">
+            <button class="ui red button dlt-btn" *ngIf="postForm.get('imageUrl').value" (click)="deleteImage()">
               {{ jsonData.button.delete }}
             </button>
           </div>

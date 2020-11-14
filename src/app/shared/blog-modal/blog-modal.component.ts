@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { InteractionService } from 'src/app/services/interaction.service';
 import { Router } from '@angular/router';
@@ -10,7 +10,8 @@ import * as data from 'src/assets/language.json';
   templateUrl: './blog-modal.component.html',
   styleUrls: ['./blog-modal.component.css']
 })
-export class BlogModalComponent implements OnInit {
+export class BlogModalComponent implements OnInit, OnChanges {
+  @Input() editPostData;
   @Output() modalStatus = new EventEmitter();
   @ViewChild('modal') modal: any;
   @ViewChild('textarea') textarea: any;
@@ -23,6 +24,7 @@ export class BlogModalComponent implements OnInit {
   imageURL = '';
   isBlogPost = false;
   postButton = true;
+  editPost = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -33,8 +35,24 @@ export class BlogModalComponent implements OnInit {
   ngOnInit(): void {
     this.postForm = this.formBuilder.group({
       content: [''],
-      imageUrl: ['']
+      imageUrl: [''],
+      videoUrl: ['']
     });
+  }
+
+  ngOnChanges(): void {
+    console.log('POST: ', this.editPostData);
+    if (this.editPostData) {
+      this.editPost = true;
+      this.postForm.patchValue({
+        content: this.editPostData.contents,
+        imageUrl: this.editPostData.image
+      });
+      this.imageURL = this.editPostData.image;
+      if (this.postForm.value.content) {
+        this.statusPlaceholder();
+      }
+    }
   }
 
   cancelBlog(): void {
@@ -42,15 +60,14 @@ export class BlogModalComponent implements OnInit {
     this.modalStatus.emit();
   }
 
-  statusPlaceholder(e): void {
-    e.preventDefault();
-    const val = (e.target.value).trim();
+  statusPlaceholder(): void {
+    this.isPlaceholder = false;
+  }
 
-    if (val === '' || val === undefined || val === null) {
-      this.isPlaceholder = !this.isPlaceholder;
-      console.log('isPlaceholder: ', this.isPlaceholder);
+  statusPlaceholderBlur(val): void {
+    if (val === '') {
+      this.isPlaceholder = true;
     }
-    console.log('Form: ', this.postForm);
   }
 
   postBlog(e): void {
@@ -58,16 +75,29 @@ export class BlogModalComponent implements OnInit {
     this.isBlogPost = true;
     const content = this.postForm.get('content').value;
     const image = this.postForm.get('imageUrl').value;
+    const video = this.postForm.get('videoUrl').value;
     const postDate = format(new Date(), 'dd MMM, yyyy');
 
-    this.interaction.post(content, postDate, image).then(res => {
-      this.modal.approve();
-      this.modalStatus.emit();
-      this.isBlogPost = false;
-      this.router.navigate(['/home']);
-    }).catch(err => {
-      this.isBlogPost = false;
-    });
+    if (this.editPost) {
+      this.interaction.updatePost(this.editPostData.id, content, image, video, postDate).then(res => {
+        this.isBlogPost = false;
+        this.modal.approve();
+        this.modalStatus.emit();
+        this.router.navigate(['/home']);
+      }).catch(err => {
+        this.isBlogPost = false;
+      });
+    } else {
+      this.interaction.post(content, postDate, image, video).then(res => {
+        debugger;
+        this.isBlogPost = false;
+        this.modal.approve();
+        this.modalStatus.emit();
+        this.router.navigate(['/home']);
+      }).catch(err => {
+        this.isBlogPost = false;
+      });
+    }
   }
 
   loadFile(e): void {
