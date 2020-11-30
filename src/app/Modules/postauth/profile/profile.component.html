@@ -1,5 +1,20 @@
-<p>profile works!</p>
+<div class="profile-cont" *ngIf="!isDataLoaded">
 
-<button (click)="signOut()">Logout</button>
+    <div class="user-info">
+        <div class="user-image">
+            <img [src]="userData?.imageURL">
+        </div>
+        <div class="user-name text-center">{{ userData.name }}</div>
+        <div class="user-unique-name text-center">{{ userData.uniqueId }}</div>
+    </div>
 
-<app-right-side-menu></app-right-side-menu>
+
+    <button (click)="signOut()">Logout</button>
+
+    <app-right-side-menu></app-right-side-menu>
+</div>
+
+
+<div *ngIf="isDataLoaded" class="data-loader">
+    <div class="ui active centered inline loader"></div>
+</div>

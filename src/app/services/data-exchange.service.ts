@@ -6,5 +6,12 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class DataExchangeService {
 
+  private userId = new BehaviorSubject<string>('');
+  public userId$ = this.userId.asObservable();
+
   constructor() { }
+
+  setUserId(id: string): void {
+    this.userId.next(id);
+  }
 }

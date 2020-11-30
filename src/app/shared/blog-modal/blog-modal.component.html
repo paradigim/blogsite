@@ -5,7 +5,7 @@
       <div class="blog-write-container">
         <!-- blog owner image -->
         <div class="blog-owner-image">
-          <img src="assets/images/user_default.jpg">
+          <img [src]="userImage">
         </div>
 
         <!-- writing and editing blog -->
@@ -29,7 +29,11 @@
 
               <label class='upload-pic'>
                 <i class="image outline icon"></i>
-                <input (change)='loadFile($event)' type='file'>
+                <input 
+                  (change)='loadFile($event)' 
+                  type="file"
+                  value=""
+                  #imageUpload>
               </label>
               
               <label class='upload-pic'>
@@ -48,8 +52,8 @@
           </div>
 
           <div class="added-img">
-            <img class="ui small image" [src]="imageURL">
-            <button class="ui red button dlt-btn" *ngIf="imageURL" (click)="deleteImage()">
+            <img class="ui small image" [src]="this.postForm.get('imageUrl').value">
+            <button class="ui red button dlt-btn" *ngIf="this.postForm.get('imageUrl').value" (click)="deleteImage()">
               {{ jsonData.button.delete }}
             </button>
           </div>

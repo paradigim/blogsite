@@ -1,0 +1,32 @@
+
+.user-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 20px auto;
+}
+
+.user-image img {
+    width: 100%;
+}
+
+.data-loader {
+    height: 100vh;
+}
+
+.data-loader .loader {
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.user-name {
+    text-transform: capitalize;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.user-unique-name {
+    color: #666;
+    font-size: 14px;
+}

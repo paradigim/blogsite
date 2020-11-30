@@ -1,9 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { InteractionService } from 'src/app/services/interaction.service';
 import { Router } from '@angular/router';
-import { take, takeUntil } from 'rxjs/operators';
+import { debounceTime, skipWhile, take, takeUntil } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Subject } from 'rxjs';
+import { format } from 'date-fns';
+import { DateService } from 'src/app/services/date.service';
 
 @Component({
   selector: 'app-home',
@@ -18,11 +20,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   checkFollow = false;
   isDataLoaded = false;
   unSubscribe = new Subject();
+  followDate = new Date().getTime();
 
   constructor(
     private interaction: InteractionService,
     private router: Router,
-    private afAuth: AngularFireAuth
+    private afAuth: AngularFireAuth,
+    private date: DateService,
+    private cdref: ChangeDetectorRef
   ) {
     this.afAuth.authState.subscribe(user => {
       if (user){
@@ -40,11 +45,19 @@ export class HomeComponent implements OnInit, OnDestroy {
   allPosts(): void {
     const users = this.interaction.getAllUser().pipe(takeUntil(this.unSubscribe));
     this.interaction.getAllPosts()
+      .pipe(
+        skipWhile(value => {
+          return (value === null || value === undefined || value.length <= 0);
+        }),
+        take(1)
+      )
       .pipe(takeUntil(this.unSubscribe))
       .subscribe((data: any) => {
         this.postData = data;
         this.postData.map((item, i) => {
-          users.subscribe(val => {
+          users
+          .pipe(take(1))
+          .subscribe(val => {
             for (const user of val) {
               if (user.id === item.userid) {
                 this.postData[i] = {
@@ -56,22 +69,23 @@ export class HomeComponent implements OnInit, OnDestroy {
                 break;
               }
             }
-            this.isDataLoaded = false;
+            // this.isDataLoaded = false;
           });
         });
+        this.isDataLoaded = false;
       });
   }
 
   // check if followed by the current user and return the status
-  checkFollower(user, initial = false): boolean {
-    if (user.follower && user.follower.length > 0) {
-      const index = user.follower.findIndex(item => item === this.userId);
+  checkFollower(user, initial: boolean): boolean {
+      const index = user.follower.findIndex(item => {
+        return (item.followingUserId === this.userId);
+      });
       if (!initial) {
         this.allPosts();
       } else {
         return (index !== -1) ? true : false;
       }
-    }
   }
 
   getLikeCounts(event: number): void {
@@ -87,7 +101,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     // this.router.navigate();
   }
 
-  // set follow status when click on follow button
+  // set status when click on follow button
   followUser(userId, e): void {
     e.preventDefault();
     this.checkFollow = false;
@@ -96,16 +110,25 @@ export class HomeComponent implements OnInit, OnDestroy {
     .pipe(take(1))
     .pipe(takeUntil(this.unSubscribe))
     .subscribe(user => {
+
       for (const [i, item] of user.follower.entries()) {
-        if (item === this.userId) {
-          follower = user.follower.splice(i, item);
+        console.log('uuuu---', item);
+        if (item.followingUserId === this.userId) {
+          follower = user.follower;
+          follower.splice(i, 1);
           this.checkFollow = true;
           break;
         }
       }
+
       if (!this.checkFollow) {
-        follower = [...user.follower, this.userId];
+        const data = {
+          followingUserId: this.userId,
+          followDate: this.followDate
+        };
+        follower = [...user.follower, data];
       }
+      // debugger;
       this.interaction.updateFollower(follower, userId);
       this.checkFollowerStatus(userId);
     });
@@ -114,9 +137,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   // set the follow status after click on the button
   checkFollowerStatus(uid): void {
     this.interaction.getUser(uid)
+      .pipe(take(1))
       .pipe(takeUntil(this.unSubscribe))
       .subscribe(user => {
-      this.checkFollower(user);
+      this.checkFollower(user, false);
     });
   }
 

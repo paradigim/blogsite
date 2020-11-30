@@ -1,42 +1,16 @@
 <div class="notification-container">
     
-    <div class="notifications not-read">
+    <div class="notifications not-read" *ngFor="let item of postNotification">
         <div class="nt-user-image">
-            <img src="assets/images/user_default.jpg">
+            <img [src]="item.userImage">
         </div>
         <div class="nt-content">
-            <div class="nt-user-name">Susan Malkovar</div>
+            <div class="nt-user-name">{{ item.userName }}</div>
             <div class="nt-user-post">
-                Black Lives Matter protesters in Utah, US, who splashed paint on prosecutor's office, could... 
+                {{ item.contents }} 
             </div>
         </div>
     </div>
-
-
-    <div class="notifications">
-        <div class="nt-user-image">
-            <img src="assets/images/user_default.jpg">
-        </div>
-        <div class="nt-content">
-            <div class="nt-user-name">Panja Khanki</div>
-            <div class="nt-user-post">
-                Black Lives Matter protesters in Utah, US, who splashed paint on prosecutor's office, could... 
-            </div>
-        </div>
-    </div>
-
-    <div class="notifications">
-        <div class="nt-user-image">
-            <img src="assets/images/user_default.jpg">
-        </div>
-        <div class="nt-content">
-            <div class="nt-user-name">Panja Khanki</div>
-            <div class="nt-user-post">
-                Black Lives Matter protesters in Utah, US, who splashed paint on prosecutor's office, could... 
-            </div>
-        </div>
-    </div>
-
 
 
     <app-right-side-menu></app-right-side-menu>

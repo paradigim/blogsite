@@ -2,9 +2,10 @@ import { Injectable, NgZone, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { auth, User } from 'firebase/app';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestoreDocument, AngularFirestore } from '@angular/fire/firestore';
-import { map, switchMap, take, takeUntil } from 'rxjs/operators';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { map, take, takeUntil } from 'rxjs/operators';
 import { Observable, of, Subject } from 'rxjs';
+import { DataExchangeService } from './data-exchange.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,12 +23,14 @@ export class InteractionService implements OnDestroy {
     public afAuth: AngularFireAuth,
     public router: Router,
     public afs: AngularFirestore,
-    public ngZone: NgZone
+    public ngZone: NgZone,
+    private dataExchange: DataExchangeService
   ) {
     this.afAuth.authState.subscribe(user => {
       if (user){
         this.user = user;
         this.userId = user.uid;
+        this.dataExchange.setUserId(this.userId);
         localStorage.setItem('user', JSON.stringify(this.user));
         // this.router.navigate(['/home']);
       } else {
@@ -60,8 +63,7 @@ export class InteractionService implements OnDestroy {
   }
 
   // update post
-  updatePost(postId?: string, contents?: string, image?: string, video?: string, lastUpdateDate?: string): Promise<any> {
-  
+  updatePost(postId?: string, contents?: string, image?: string, video?: string, lastUpdateDate?: number | string): Promise<any> {
     return this.afs.collection('posts').doc(postId).update({
       id: postId,
       image,
@@ -72,10 +74,9 @@ export class InteractionService implements OnDestroy {
   }
 
   // add new post
-  post(postText: string, postDate: string, image = '', video = ''): Observable<any> {
+  post(postText: string, postDate: string | number, image = '', video = ''): Observable<any> {
     return this.getUser()
     .pipe(map((user): any => {
-      console.log('USER: ', user);
       const postData = {
         contents: postText,
         image,
@@ -95,13 +96,7 @@ export class InteractionService implements OnDestroy {
           return res;
         });
       });
-    }))
-    // .pipe(map(data => {
-    //   debugger;
-    //   return this.updatePost(data.id).then(res => {
-    //     return res;
-    //   });
-    // }));
+    }));
    }
 
   // bookmark
@@ -185,7 +180,7 @@ export class InteractionService implements OnDestroy {
   // get user by userId
   getUser(userId = ''): Observable<any> {
     const uId = userId !== '' ? userId : this.userId;
-    // console.log('uID: ', uId);
+    console.log('uID: ', uId);
     return this.afs.collection('users').doc(uId).valueChanges();
   }
 
@@ -293,18 +288,6 @@ export class InteractionService implements OnDestroy {
   // delete post
   deletePost(postId: string): Promise<any> {
     return this.afs.collection('posts').doc(postId).delete();
-  }
-
-  // following
-  followedUser(userId) {
-    let follower = [];
-    this.getUser(userId)
-    .pipe(take(1))
-    .pipe(takeUntil(this.unSubscribe))
-    .subscribe(val => {
-      follower = [...val.follower, this.userId];
-      this.updateFollower(follower, userId);
-    });
   }
 
   updateFollower(follower, userId): void {
