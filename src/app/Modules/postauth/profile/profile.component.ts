@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { skipWhile, take } from 'rxjs/operators';
+import { filter, skipWhile, take } from 'rxjs/operators';
 import { DataExchangeService } from 'src/app/services/data-exchange.service';
 import { InteractionService } from 'src/app/services/interaction.service';
 
@@ -12,6 +12,9 @@ export class ProfileComponent implements OnInit {
 
   isDataLoaded = false;
   userData: any;
+  followerCount = 0;
+  followingCount = 0;
+  posts: any;
 
   constructor(
     private interaction: InteractionService,
@@ -42,9 +45,36 @@ export class ProfileComponent implements OnInit {
           .pipe(take(1))
           .subscribe((data: any) => {
             this.userData = data;
-            this.isDataLoaded = false;
+            this.getFollowerData(this.userData);
+            this.getFollowingData(this.userData.id);
+            this.getUserPosts(this.userData.id);
           });
       });
+  }
+
+  getFollowerData(userData: any): void {
+    this.followerCount = userData.follower.length;
+  }
+
+  getFollowingData(uid): void {
+    this.interaction.getAllUser()
+    .subscribe(user => {
+      user.map(item => {
+        const filterData = item.follower.filter(val => val.followingUserId === uid);
+
+        if (filterData.length > 0) {
+          this.followingCount += 1;
+        }
+      })
+    })
+  }
+
+  getUserPosts(uid) {
+    this.interaction.getAllPosts()
+      .subscribe(posts => {
+        this.posts = posts.filter(val => val.userid === uid);
+        this.isDataLoaded = false;
+      })
   }
 
   signOut() {

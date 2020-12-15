@@ -6,10 +6,63 @@
         </div>
         <div class="user-name text-center">{{ userData.name }}</div>
         <div class="user-unique-name text-center">{{ userData.uniqueId }}</div>
+        <div class="flr-block">
+            <div class="ui labeled button btn-gap">
+                <div class="ui button green u-flrn">
+                    {{ followerCount }}
+                </div>
+                <a class="ui basic green left pointing label u-flrn-txt">
+                    <div class="txt-desgn">Follower</div>
+                </a>
+            </div>
+            <div class="ui labeled button">
+                <div class="ui button green u-flrn">
+                    {{ followingCount }}
+                </div>
+                <a class="ui basic green left pointing label u-flrn-txt">
+                    <div class="txt-desgn">Following</div>
+                </a>
+            </div>
+        </div>
     </div>
 
 
     <button (click)="signOut()">Logout</button>
+
+
+    <div class='ec-blog-post' *ngFor="let post of posts; index as i;">
+        <div class='user-blog-post'>
+            <img [src]="post.userImage">
+        </div>
+        <div class='user-blog-wrapper'>
+            <div class="user-intro-follow">
+                <div class='user-blog-info'>
+                    <div class='user-blog-name'>{{ post.userName }}</div>
+                    <div class='dot'></div>
+                    <div class='user-blog-post-time'>{{ post.postDate }}</div>
+                </div>
+                <button class="follow">Follow</button>
+            </div>
+            <div class="user-unique-id">{{ post.uniqueId }}</div>
+            <div class='user-blog-content'>
+                {{ post.contents }}
+            </div>
+            <div class="user-blog-post-image">
+                <img [src]="post.image">
+            </div>
+            <div class='blog-activities'>
+                <app-blog-like [postId]="post.id" [likedUserIds]="post.likedUserId"></app-blog-like>
+                <app-blog-comment [commentCount]="post.comments.length"></app-blog-comment>
+                <app-blog-activity-more
+                    [index]="i" 
+                    [elemId]="i"
+                    [postId]="post.id"
+                    [postUserId]="post.userid"
+                    (click)="stopDefaultBehaviour($event)">
+                </app-blog-activity-more>
+            </div>
+        </div>
+    </div>
 
     <app-right-side-menu></app-right-side-menu>
 </div>
