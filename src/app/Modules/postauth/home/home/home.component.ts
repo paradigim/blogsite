@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { InteractionService } from 'src/app/services/interaction.service';
 import { Router } from '@angular/router';
 import { debounceTime, skipWhile, take, takeUntil } from 'rxjs/operators';

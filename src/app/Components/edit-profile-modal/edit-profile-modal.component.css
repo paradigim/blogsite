@@ -1,0 +1,36 @@
+
+.user-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 20px auto;
+    position: relative;
+}
+
+.user-image img {
+    width: 100%;
+}
+
+.change-img {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 179, 131, 0.3);
+    z-index: 1;
+    height: 60px;
+    cursor: pointer;
+}
+
+.change-img i {
+    position: relative;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+}
+
+#change-img {
+    display: none;
+}

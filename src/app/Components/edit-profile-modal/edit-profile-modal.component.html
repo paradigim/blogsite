@@ -1,0 +1,38 @@
+
+<sui-modal 
+    size="small"
+    [isClosable]="true" 
+    (dismissed)="closeModal($event)" 
+    #modal>
+    <!-- <div class="header">Example</div> -->
+    <div class="content">
+        <label for="change-img">
+            <div class="user-image">
+                <img [src]="editForm.get('imageUrl').value">
+                <div class="change-img">
+                    <i class="camera icon"></i>
+                </div>
+            </div>
+        </label>
+        <input 
+            type="file" 
+            id="change-img"
+            (change)='loadFile($event)'>
+        
+
+        <div class="edit-field">
+            <label>Name</label>
+            <div class="ui fluid icon input">
+                <input type="text" placeholder="Name" [value]="userData.name">
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <button class="ui green button" (click)="modal.approve('done')" autofocus>OK</button>
+    </div>
+</sui-modal>
+
+
+<div *ngIf="isDataLoaded" class="data-loader">
+    <div class="ui active centered inline loader"></div>
+</div>

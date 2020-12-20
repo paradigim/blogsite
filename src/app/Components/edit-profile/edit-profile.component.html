@@ -1,0 +1,24 @@
+
+
+<div 
+    class="ui icon top right pointing dropdown">
+    <i class="ellipsis horizontal icon"></i>
+    <div class="menu menu-list">
+        <div class="item" (click)="editProfile()">
+            <i class="edit outline icon"></i>
+            Edit Profile
+        </div>
+        <div class="item" (click)="logout()">
+            <i class="bookmark outline icon"></i>
+            Logout
+        </div>
+    </div>
+</div>
+
+
+<app-edit-profile-modal
+    *ngIf="showModal"
+    [userData]="userData"
+    (modalClose)="modalStatusClose($event)">
+</app-edit-profile-modal>
+

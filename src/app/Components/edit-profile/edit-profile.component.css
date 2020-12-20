@@ -1,0 +1,4 @@
+
+.ui.menu:not(.vertical) > .menu {
+    display: block;
+}

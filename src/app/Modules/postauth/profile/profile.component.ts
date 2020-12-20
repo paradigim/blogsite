@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { filter, skipWhile, take } from 'rxjs/operators';
 import { DataExchangeService } from 'src/app/services/data-exchange.service';
+import { DateService } from 'src/app/services/date.service';
 import { InteractionService } from 'src/app/services/interaction.service';
 
 @Component({
@@ -19,7 +20,7 @@ export class ProfileComponent implements OnInit {
   constructor(
     private interaction: InteractionService,
     private dataExchange: DataExchangeService,
-    private cdref: ChangeDetectorRef
+    private date: DateService
   ) { }
 
   ngOnInit(): void {
@@ -77,8 +78,5 @@ export class ProfileComponent implements OnInit {
       })
   }
 
-  signOut() {
-    this.interaction.signOutUser();
-  }
 
 }

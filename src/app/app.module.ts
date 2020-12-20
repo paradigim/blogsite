@@ -16,7 +16,7 @@ import { SuiModule } from 'ng2-semantic-ui';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,

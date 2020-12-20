@@ -26,9 +26,10 @@
         </div>
     </div>
 
-
-    <button (click)="signOut()">Logout</button>
-
+    <!-- edit profile -->
+    <div class="edit-icon">
+        <app-edit-profile></app-edit-profile>
+    </div>
 
     <div class='ec-blog-post' *ngFor="let post of posts; index as i;">
         <div class='user-blog-post'>
@@ -39,9 +40,9 @@
                 <div class='user-blog-info'>
                     <div class='user-blog-name'>{{ post.userName }}</div>
                     <div class='dot'></div>
-                    <div class='user-blog-post-time'>{{ post.postDate }}</div>
+                    <div class='user-blog-post-time'>{{ date.postDateFormat(post.postDate) }}</div>
                 </div>
-                <button class="follow">Follow</button>
+                <!-- <button class="follow">Follow</button> -->
             </div>
             <div class="user-unique-id">{{ post.uniqueId }}</div>
             <div class='user-blog-content'>
