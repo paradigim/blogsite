@@ -296,6 +296,14 @@ export class InteractionService implements OnDestroy {
     });
   }
 
+  // update user profile
+  updateUser(data) {
+    return this.afs.collection('users').doc(this.userId).update({
+      imageURL: data.image,
+      name: data.name
+    });
+  }
+
   // on destroy of the component
   ngOnDestroy(): void {
     this.unSubscribe.next();

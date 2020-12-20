@@ -5,7 +5,7 @@
     (dismissed)="closeModal($event)" 
     #modal>
     <!-- <div class="header">Example</div> -->
-    <div class="content">
+    <div class="content" [formGroup]="editForm">
         <label for="change-img">
             <div class="user-image">
                 <img [src]="editForm.get('imageUrl').value">
@@ -17,18 +17,25 @@
         <input 
             type="file" 
             id="change-img"
-            (change)='loadFile($event)'>
+            (change)='loadFile($event)'
+            formControlName="imageUrl"
+        >
         
 
         <div class="edit-field">
             <label>Name</label>
             <div class="ui fluid icon input">
-                <input type="text" placeholder="Name" [value]="userData.name">
+                <input 
+                    type="text" 
+                    placeholder="Name" 
+                    [value]="editForm.get('name').value"
+                    formControlName="name"
+                >
             </div>
         </div>
     </div>
     <div class="actions">
-        <button class="ui green button" (click)="modal.approve('done')" autofocus>OK</button>
+        <button class="edit-profile-btn loading" (click)="saveProfile()" autofocus>Save</button>
     </div>
 </sui-modal>
 

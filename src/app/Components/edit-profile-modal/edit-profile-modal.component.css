@@ -34,3 +34,14 @@
 #change-img {
     display: none;
 }
+
+.edit-profile-btn {
+    background: var(--prime-color);
+    border: 0;
+    color: #fff;
+    padding: 12px 25px;
+    border-radius: 20px;
+    font-weight: bold;
+    outline: none;
+    cursor: pointer;
+}

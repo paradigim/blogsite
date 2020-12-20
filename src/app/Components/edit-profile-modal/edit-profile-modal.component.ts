@@ -1,5 +1,5 @@
-import { Component, Input, OnInit, OnChanges, Output, EventEmitter, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DataExchangeService } from 'src/app/services/data-exchange.service';
@@ -34,7 +34,7 @@ export class EditProfileModalComponent implements OnInit {
     this.editForm = this.fb.group({
       name: ['', Validators.required],
       imageUrl: ['']
-    })
+    });
   }
 
   getUserData() {
@@ -45,11 +45,20 @@ export class EditProfileModalComponent implements OnInit {
       .pipe(takeUntil(this.unSubscribe))
       .subscribe(uData => {
         this.userData = uData;
-        this.editForm.get('imageUrl').setValue(this.userData.imageURL)
+        this.editForm.get('imageUrl').setValue(this.userData.imageURL);
+        this.editForm.get('name').setValue(this.userData.name)
         this.isDataLoaded = false;
-        console.log('U DATA: ', uData);
       });
     })
+  }
+
+  saveProfile() {
+    console.log('FORM: ', this.editForm);
+    const dataToUpdate = {
+      name: this.editForm.get('name').value,
+      image: this.editForm.get('imageUrl').value
+    }
+    this.interaction.updateUser(dataToUpdate);
   }
 
   closeModal(e) {
