@@ -5,7 +5,7 @@
     (dismissed)="closeModal($event)" 
     #modal>
     <!-- <div class="header">Example</div> -->
-    <div class="content" [formGroup]="editForm">
+    <div class="content" formGroup="editForm">
         <label for="change-img">
             <div class="user-image">
                 <img [src]="editForm.get('imageUrl').value">
@@ -28,8 +28,8 @@
                 <input 
                     type="text" 
                     placeholder="Name" 
-                    [value]="editForm.get('name').value"
-                    formControlName="name"
+                    [value]="editForm.get('uname').value"
+                    formControlName="uname"
                 >
             </div>
         </div>

@@ -32,8 +32,8 @@ export class EditProfileModalComponent implements OnInit {
     this.getUserData();
 
     this.editForm = this.fb.group({
-      name: ['', Validators.required],
-      imageUrl: ['']
+      imageUrl: [''],
+      uname: ['']
     });
   }
 
@@ -46,7 +46,7 @@ export class EditProfileModalComponent implements OnInit {
       .subscribe(uData => {
         this.userData = uData;
         this.editForm.get('imageUrl').setValue(this.userData.imageURL);
-        this.editForm.get('name').setValue(this.userData.name)
+        this.editForm.get('uname').setValue(this.userData.name)
         this.isDataLoaded = false;
       });
     })
@@ -55,7 +55,7 @@ export class EditProfileModalComponent implements OnInit {
   saveProfile() {
     console.log('FORM: ', this.editForm);
     const dataToUpdate = {
-      name: this.editForm.get('name').value,
+      uname: this.editForm.get('uname').value,
       image: this.editForm.get('imageUrl').value
     }
     this.interaction.updateUser(dataToUpdate);
