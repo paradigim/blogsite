@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -12,10 +12,9 @@ import { InteractionService } from 'src/app/services/interaction.service';
 })
 export class EditProfileModalComponent implements OnInit {
   @Output() modalClose = new EventEmitter<boolean>();
-  @ViewChild('modal') modal: any;
 
   uData: any;
-  isDataLoaded = false;
+  isDataLoaded = null;
   unSubscribe = new Subject();
   userData: any;
   imageUrl = '';
@@ -24,11 +23,11 @@ export class EditProfileModalComponent implements OnInit {
   constructor(
     private dataExchange: DataExchangeService,
     private interaction: InteractionService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private cdref: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
-    this.isDataLoaded = true;
     this.getUserData();
 
     this.editForm = this.fb.group({
@@ -46,19 +45,24 @@ export class EditProfileModalComponent implements OnInit {
       .subscribe(uData => {
         this.userData = uData;
         this.editForm.get('imageUrl').setValue(this.userData.imageURL);
-        this.editForm.get('uname').setValue(this.userData.name)
-        this.isDataLoaded = false;
+        this.editForm.get('uname').setValue(this.userData.name);
+        this.isDataLoaded = true;
       });
     })
   }
 
   saveProfile() {
-    console.log('FORM: ', this.editForm);
     const dataToUpdate = {
       uname: this.editForm.get('uname').value,
       image: this.editForm.get('imageUrl').value
     }
     this.interaction.updateUser(dataToUpdate);
+    this.interaction.updatePostData(dataToUpdate);
+    this.dataExchange.checkIsUpdated(true);
+    this.isDataLoaded = false;
+    this.modalClose.emit(false);
+    this.cdref.detectChanges();
+    
   }
 
   closeModal(e) {

@@ -3,9 +3,10 @@ import { Router } from '@angular/router';
 import { auth, User } from 'firebase/app';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { map, take, takeUntil } from 'rxjs/operators';
+import { map, skipWhile, take, takeUntil } from 'rxjs/operators';
 import { Observable, of, Subject } from 'rxjs';
 import { DataExchangeService } from './data-exchange.service';
+import { identifierModuleUrl } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root'
@@ -297,11 +298,30 @@ export class InteractionService implements OnDestroy {
   }
 
   // update user profile
-  updateUser(data) {
+  updateUser(data) { 
     return this.afs.collection('users').doc(this.userId).update({
       imageURL: data.image,
-      name: data.name
+      name: data.uname
     });
+  }
+
+  // pritam
+  updatePostData(dataToChange) {
+    this.getAllPosts()
+    .pipe(skipWhile(val => !val))
+    .pipe(take(1))
+    .subscribe((data: any) => {
+      const filterPost = data.filter((item) => item.userid === this.userId);
+      
+      filterPost.map(item => {
+        this.afs.collection('posts').doc(item.id).update({
+          userName: dataToChange.uname,
+          userImage: dataToChange.image
+        });
+      })
+    })
+
+    // this.afs.collection('posts', ref => ref.where('ref.userid', '==', this.userId));
   }
 
   // on destroy of the component

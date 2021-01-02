@@ -22,7 +22,6 @@ export class SideMenuComponent implements OnInit {
 
   ngOnInit(): void {
     this.afAuth.authState.subscribe(auth => {
-      console.log('auth........', auth);
       if (auth.photoURL != null) {
         this.interaction.updateUserData(auth.uid, auth.photoURL);
       }

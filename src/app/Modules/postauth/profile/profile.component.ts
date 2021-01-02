@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { filter, skipWhile, take } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { filter, skipWhile, take, takeUntil } from 'rxjs/operators';
 import { DataExchangeService } from 'src/app/services/data-exchange.service';
 import { DateService } from 'src/app/services/date.service';
 import { InteractionService } from 'src/app/services/interaction.service';
@@ -16,6 +17,7 @@ export class ProfileComponent implements OnInit {
   followerCount = 0;
   followingCount = 0;
   posts: any;
+  ngUnsubscribe = new Subject();
 
   constructor(
     private interaction: InteractionService,
@@ -26,6 +28,18 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.isDataLoaded = true;
     this.getUserData();
+    this.checkIsUpdated();
+  }
+
+  checkIsUpdated() {
+    this.dataExchange.isUpdated$
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((val) => {
+        if (val) {
+          this.isDataLoaded = true;
+          this.getUserData();
+        }
+      });
   }
 
   getUserData(): void {

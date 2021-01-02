@@ -16,9 +16,10 @@
 </div>
 
 
-<app-edit-profile-modal
-    *ngIf="showModal"
-    [userData]="userData"
-    (modalClose)="modalStatusClose($event)">
-</app-edit-profile-modal>
+<ng-container *ngIf="showModal">
+    <app-edit-profile-modal
+        [userData]="userData"
+        (modalClose)="modalStatusClose($event)">
+    </app-edit-profile-modal>
+</ng-container>
 
