@@ -22,16 +22,15 @@ export class SideMenuComponent implements OnInit {
 
   ngOnInit(): void {
     this.afAuth.authState.subscribe(auth => {
-      if (auth.photoURL != null) {
-        this.interaction.updateUserData(auth.uid, auth.photoURL);
-      }
       this.interaction.fetchUserFromFirebase(auth.uid).subscribe(data => {
         this.userData = data;
         if (this.userData.imageURL) {
           this.photoUrl = this.userData.imageURL;
           this.uniqueUserId = this.userData.uniqueId;
+          this.interaction.updateUserData(auth.uid, this.userData.imageURL);
+        } else if (auth.photoURL != null) {
+          this.interaction.updateUserData(auth.uid, auth.photoURL);
         }
-
         console.log('userData : ', this.userData);
         // this.spinner.hide();
       });

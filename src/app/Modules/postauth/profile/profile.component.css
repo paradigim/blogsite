@@ -6,6 +6,31 @@
     border-radius: 50%;
     overflow: hidden;
     margin: 20px auto;
+    animation: rolling .9s linear forwards;
+    position: relative;
+}
+
+@keyframes rolling {
+    0% {
+        transform: rotate(-50deg);
+        left: -50px;
+    }
+    60% {
+        left: 20px;
+        transform: rotate(30deg);
+    }
+    80% {
+        left: -10px;
+        transform: rotate(-10deg);
+    }
+    90% {
+        left: 5px;
+        transform: rotate(5deg);
+    }
+    100% {
+        transform: rotate(0deg);
+        left: 0;
+    }
 }
 
 .user-image img {
@@ -89,6 +114,7 @@
 
 .user-blog-post img {
     width: 100%;
+    height: 100%;
 }
 
 .user-blog-wrapper {
@@ -157,4 +183,8 @@
 
 .edit-icon:hover {
     color: var(--prime-color);
+}
+
+.user-info {
+    margin-bottom: 40px;
 }

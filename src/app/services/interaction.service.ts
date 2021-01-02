@@ -115,7 +115,8 @@ export class InteractionService implements OnDestroy {
       let getComment = val.comments;
       const data = {
         text: comment,
-        commentedUserId: this.userId
+        commentedUserId: this.userId,
+        commentId: getComment.length
       };
       getComment = [...getComment, data];
       this.updateComment(getComment, postId);
@@ -181,7 +182,6 @@ export class InteractionService implements OnDestroy {
   // get user by userId
   getUser(userId = ''): Observable<any> {
     const uId = userId !== '' ? userId : this.userId;
-    console.log('uID: ', uId);
     return this.afs.collection('users').doc(uId).valueChanges();
   }
 

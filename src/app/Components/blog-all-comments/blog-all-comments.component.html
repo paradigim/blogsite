@@ -1,20 +1,27 @@
 
 <div class='all-comment-container'>
-    <div class="each-comments-wrapper" *ngFor="let item of commentData">
+    <div class="each-comments-wrapper" *ngFor="let item of commentData; index as i">
         <div class="comment-user">
             <img [src]='item.user.imageURL'>
         </div>
 
         <div class='comment-details'>
-            <div class='comment-user-indentity'>
-                <div class="comment-user-name">{{ item.user.name}}</div>
-                <div class="dot"></div>
-                <div class='comment-post-time'>{{ item.postDate }}</div>
+            <div>
+                <div class='comment-user-indentity'>
+                    <div class="comment-user-name">{{ item.user.name}}</div>
+                    <div class="dot"></div>
+                    <div class='comment-post-time'>{{ item.postDate }}</div>
+                </div>
+                <div class="comment-user-id">{{ item.user.uniqueId }}</div>
+                <div class="comment-text">
+                    {{ item.commentText }}
+                </div>
             </div>
-            <div class="comment-user-id">{{ item.user.uniqueId }}</div>
-            <div class="comment-text">
-                {{ item.commentText }}
+            <div class="dlt-cmnt" (click)="deleteComment(i, item.id)" *ngIf="item.user.id === userId">
+                <i class="trash alternate outline icon" *ngIf="i !== deleteIndex"></i>
+                <div class="ui active mini inline loader" *ngIf="deleteLoader && i === deleteIndex"></div>
             </div>
+            
         </div>
     </div>
 </div>
