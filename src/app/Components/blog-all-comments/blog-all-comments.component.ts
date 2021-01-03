@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { take } from 'rxjs/operators';
+import { delay, take } from 'rxjs/operators';
 import { DataExchangeService } from 'src/app/services/data-exchange.service';
 import { InteractionService } from 'src/app/services/interaction.service';
 
@@ -27,21 +27,18 @@ export class BlogAllCommentsComponent implements OnInit {
     .subscribe((val: any) => {
       this.interaction.getAllUser()
       .pipe(take(1))
-      .subscribe(user => {
-        val.comments.map((item: any) => {
-          for (let i = 0; i < user.length; i++) {
-            if (item.commentedUserId === user[i].id) {
-              this.commentData.unshift({
-                user: user[i],
-                commentText: item.text,
-                postDate: val.postDate,
-                id: item.commentId
-              });
-              break;
-            }
-          }
+      .subscribe((user: any) => {
+        this.commentData = [];
+        val.comments.forEach((item: any) => {
+          const userData = user.filter(data => data.id === item.commentedUserId);
+
+          this.commentData.unshift({
+            user: userData[0],
+            commentText: item.text,
+            postDate: val.postDate,
+            id: item.commentId
+          });
         });
-        console.log('CMNT: ', this.commentData);
         if (this.pageName !== '') {
           this.commentData = this.commentData.slice(0, 2);
         }
@@ -53,17 +50,18 @@ export class BlogAllCommentsComponent implements OnInit {
     this.deleteLoader = true;
     this.deleteIndex = index;
     this.interaction.getBlogComments(this.postId)
+      .pipe(delay(1000))
       .pipe(take(1))
       .subscribe((post: any) => {
         const allComments = post.comments;
         const indexToDelete = allComments.findIndex(item => cmntId === item.commentId && item.commentedUserId === this.userId);
-        
-        console.log('BEFORE DLT: ', allComments);
+
         allComments.splice(indexToDelete, 1);
-        console.log('AFTER DLT: ', allComments);
         this.interaction.updateComment(allComments, this.postId);
         this.commentData.splice(index, 1);
+      
         this.deleteLoader = false;
+        this.deleteIndex = -1;
       })
   }
 

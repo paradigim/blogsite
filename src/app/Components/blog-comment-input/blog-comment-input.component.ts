@@ -26,7 +26,6 @@ export class BlogCommentInputComponent implements OnInit {
 
   // add comment
   addComment(): void {
-    console.log(this.comment);
     this.interaction.addCommentToPost(this.comment, this.postId);
   }
 
