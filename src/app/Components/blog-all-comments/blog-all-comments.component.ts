@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { delay, take } from 'rxjs/operators';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
+import { delay, take, takeUntil } from 'rxjs/operators';
 import { DataExchangeService } from 'src/app/services/data-exchange.service';
 import { InteractionService } from 'src/app/services/interaction.service';
 
@@ -8,13 +9,14 @@ import { InteractionService } from 'src/app/services/interaction.service';
   templateUrl: './blog-all-comments.component.html',
   styleUrls: ['./blog-all-comments.component.css']
 })
-export class BlogAllCommentsComponent implements OnInit {
+export class BlogAllCommentsComponent implements OnInit, OnDestroy {
   @Input() postId = '';
   @Input() pageName = '';
   @Input() userId = '';
 
   deleteLoader = false;
   deleteIndex = -1;
+  ngUnsubscribe = new Subject();
 
   commentData = [];
   constructor(
@@ -24,6 +26,7 @@ export class BlogAllCommentsComponent implements OnInit {
 
   ngOnInit(): void {
     this.interaction.getBlogComments(this.postId)
+    .pipe(takeUntil(this.ngUnsubscribe))
     .subscribe((val: any) => {
       this.interaction.getAllUser()
       .pipe(take(1))
@@ -63,6 +66,11 @@ export class BlogAllCommentsComponent implements OnInit {
         this.deleteLoader = false;
         this.deleteIndex = -1;
       })
+  }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
 }
