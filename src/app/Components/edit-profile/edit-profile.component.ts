@@ -27,7 +27,7 @@ export class EditProfileComponent implements OnInit {
   }
 
   modalStatusClose(e) {
-    this.showModal = e;
+    this.showModal = false;
   }
 
   logout(): void {

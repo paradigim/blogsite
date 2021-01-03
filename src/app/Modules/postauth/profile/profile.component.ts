@@ -78,7 +78,7 @@ export class ProfileComponent implements OnInit {
         const filterData = item.follower.filter(val => val.followingUserId === uid);
 
         if (filterData.length > 0) {
-          this.followingCount += 1;
+          this.followingCount = filterData.length;
         }
       })
     })

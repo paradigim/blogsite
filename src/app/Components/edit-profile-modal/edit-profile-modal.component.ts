@@ -62,7 +62,6 @@ export class EditProfileModalComponent implements OnInit {
     this.isDataLoaded = false;
     this.modalClose.emit(false);
     this.cdref.detectChanges();
-    
   }
 
   closeModal(e) {
