@@ -60,11 +60,11 @@ export class EditProfileModalComponent implements OnInit {
     this.interaction.updatePostData(dataToUpdate);
     this.dataExchange.checkIsUpdated(true);
     this.isDataLoaded = false;
-    this.modalClose.emit(false);
+    this.closeModal();
     this.cdref.detectChanges();
   }
 
-  closeModal(e) {
+  closeModal(e = null) {
     this.modalClose.emit(false);
   }
 
