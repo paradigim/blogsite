@@ -6,7 +6,7 @@
 .each-comments-wrapper {
     display: flex;
     align-items: flex-start;
-    padding-bottom: 30px;
+    padding-bottom: 20px;
 }
 
 .comment-user {

@@ -12,11 +12,13 @@ import { PostauthModule } from './Modules/postauth/postauth.module';
 
 import { SharedModule } from 'src/app/shared/shared.module';
 import { SuiModule } from 'ng2-semantic-ui';
+import { BlogDetailComponent } from './Components/blog-detail/blog-detail.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    BlogDetailComponent,
   ],
   imports: [
     BrowserModule,
