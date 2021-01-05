@@ -9,7 +9,7 @@
                 <div class='user-blog-info'>
                     <div class='user-blog-name'>{{ bookmark.userName }}</div>
                     <div class='dot'></div>
-                    <div class='user-blog-post-time'>{{ bookmark.postDate }}</div>
+                    <div class='user-blog-post-time'>{{ date.postDateFormat(bookmark.postDate) }}</div>
                 </div>
                 <button class="follow">Follow</button>
             </div>

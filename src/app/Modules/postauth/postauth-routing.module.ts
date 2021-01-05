@@ -22,6 +22,10 @@ const routes: Routes = [
       {
         path: 'profile',
         loadChildren: () => import('../postauth/profile/profile.module').then(m => m.ProfileModule)
+      },
+      {
+        path: 'detail',
+        loadChildren: () => import('../postauth/blog-details/blog-details.module').then(m => m.BlogDetailsModule)
       }
     ]
   }

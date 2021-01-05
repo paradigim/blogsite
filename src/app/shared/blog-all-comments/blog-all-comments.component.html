@@ -9,8 +9,8 @@
             <div>
                 <div class='comment-user-indentity'>
                     <div class="comment-user-name">{{ item.user.name}}</div>
-                    <!-- <div class="dot"></div>
-                    <div class='comment-post-time'>{{ item.postDate }}</div> -->
+                    <div class="dot"></div>
+                    <div class='comment-post-time'>{{ date.postDateFormat(item.time) }}</div>
                 </div>
                 <div class="comment-user-id">{{ item.user.uniqueId }}</div>
                 <div class="comment-text">

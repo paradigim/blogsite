@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DateService } from 'src/app/services/date.service';
 import { InteractionService } from 'src/app/services/interaction.service';
 
 @Component({
@@ -11,7 +12,8 @@ export class BookmarksComponent implements OnInit {
   bookmarkData: any;
 
   constructor(
-    private interaction: InteractionService
+    private interaction: InteractionService,
+    private date: DateService
   ) { }
 
   ngOnInit(): void {

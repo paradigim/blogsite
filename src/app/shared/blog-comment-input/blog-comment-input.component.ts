@@ -25,8 +25,10 @@ export class BlogCommentInputComponent implements OnInit {
 
 
   // add comment
-  addComment(): void {
-    this.interaction.addCommentToPost(this.comment, this.postId);
+  addComment(e): void {
+    e.stopPropagation();
+    const postDate = new Date().getTime();
+    this.interaction.addCommentToPost(this.comment, this.postId, postDate);
   }
 
   activeCommentBTN(e: any): void {

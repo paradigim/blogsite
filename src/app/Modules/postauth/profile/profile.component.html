@@ -28,7 +28,7 @@
 
     <!-- edit profile -->
     <div class="edit-icon">
-        <app-edit-profile></app-edit-profile>
+        <app-edit-profile [userStatus]="otherUserStatus"></app-edit-profile>
     </div>
 
     <div class='ec-blog-post' *ngFor="let post of posts; index as i;">

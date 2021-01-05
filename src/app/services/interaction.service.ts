@@ -108,7 +108,7 @@ export class InteractionService implements OnDestroy {
   }
 
   // add comment to post
-  addCommentToPost(comment, postId) {
+  addCommentToPost(comment, postId, postDate) {
     this.getPostWithId(postId)
     .pipe(take(1))
     .subscribe(val => {
@@ -116,7 +116,8 @@ export class InteractionService implements OnDestroy {
       const data = {
         text: comment,
         commentedUserId: this.userId,
-        commentId: getComment.length
+        commentId: getComment.length,
+        commentPostTime: postDate
       };
       getComment = [...getComment, data];
       this.updateComment(getComment, postId);

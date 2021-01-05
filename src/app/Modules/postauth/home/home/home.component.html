@@ -4,8 +4,8 @@
 
         <div 
             class='ec-blog-post' 
-            (click)="routeToBlogDetail($event)" 
             *ngFor="let item of postData; index as i;"
+            (click)="routeToBlogDetail($event, item.id)" 
         >
             <div class='user-blog-post'>
                 <img [src]="item.userImage">

@@ -11,6 +11,8 @@ import { BlogLikeComponent } from './blog-like/blog-like.component';
 import { BlogCommentComponent } from './blog-comment/blog-comment.component';
 import { BlogActivityMoreComponent } from './blog-activity-more/blog-activity-more.component';
 import { CommonModalComponent } from './common-modal/common-modal.component';
+import { BlogAllCommentsComponent } from './blog-all-comments/blog-all-comments.component';
+import { BlogCommentInputComponent } from './blog-comment-input/blog-comment-input.component';
 
 
 @NgModule({
@@ -20,7 +22,9 @@ import { CommonModalComponent } from './common-modal/common-modal.component';
     BlogLikeComponent,
     BlogCommentComponent,
     BlogActivityMoreComponent,
-    CommonModalComponent
+    CommonModalComponent,
+    BlogAllCommentsComponent,
+    BlogCommentInputComponent
   ],
   imports: [
     CommonModule,
@@ -35,7 +39,9 @@ import { CommonModalComponent } from './common-modal/common-modal.component';
     BlogLikeComponent,
     BlogCommentComponent,
     BlogActivityMoreComponent,
-    CommonModalComponent
+    CommonModalComponent,
+    BlogAllCommentsComponent,
+    BlogCommentInputComponent
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
   entryComponents: [BlogModalComponent]

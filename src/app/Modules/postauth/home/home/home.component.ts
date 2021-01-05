@@ -97,8 +97,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     e.stopPropagation();
   }
 
-  routeToBlogDetail(e: any): void {
-    // this.router.navigate();
+  routeToBlogDetail(e: any, postid): void { 
+    this.router.navigate(['/detail'], {
+      queryParams: {
+        id: postid,
+        userId: this.userId
+      }
+    });
   }
 
   // set status when click on follow button
@@ -112,7 +117,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     .subscribe(user => {
 
       for (const [i, item] of user.follower.entries()) {
-        console.log('uuuu---', item);
         if (item.followingUserId === this.userId) {
           follower = user.follower;
           follower.splice(i, 1);

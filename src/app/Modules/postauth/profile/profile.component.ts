@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { filter, skipWhile, take, takeUntil } from 'rxjs/operators';
 import { DataExchangeService } from 'src/app/services/data-exchange.service';
@@ -18,16 +19,24 @@ export class ProfileComponent implements OnInit {
   followingCount = 0;
   posts: any;
   ngUnsubscribe = new Subject();
+  otherUserId = '';
+  otherUserStatus: boolean;
 
   constructor(
     private interaction: InteractionService,
     private dataExchange: DataExchangeService,
-    private date: DateService
+    private date: DateService,
+    private route: ActivatedRoute,
+    private cdref: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
     this.isDataLoaded = true;
-    this.getUserData();
+    this.route.queryParamMap.subscribe(queryParams => {
+      this.otherUserId = queryParams.get('userId');
+      this.getUserData(this.otherUserId);
+    });
+    
     this.checkIsUpdated();
   }
 
@@ -42,7 +51,7 @@ export class ProfileComponent implements OnInit {
       });
   }
 
-  getUserData(): void {
+  getUserData(userId = ''): void {
     this.dataExchange.userId$
       .pipe(
         skipWhile(val => {
@@ -51,7 +60,14 @@ export class ProfileComponent implements OnInit {
       )
       .pipe(take(1))
       .subscribe(id => {
-        this.interaction.getUser(id)
+        const selectedUserId = userId ? userId : id;
+        if (selectedUserId !== id) {
+          this.otherUserStatus = true;
+        } else {
+          this.otherUserStatus = false;
+        }
+        this.cdref.markForCheck();
+        this.interaction.getUser(selectedUserId)
           .pipe(
             skipWhile(val => {
               return (val === null || val === undefined);

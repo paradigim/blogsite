@@ -2,6 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { delay, take, takeUntil } from 'rxjs/operators';
 import { DataExchangeService } from 'src/app/services/data-exchange.service';
+import { DateService } from 'src/app/services/date.service';
 import { InteractionService } from 'src/app/services/interaction.service';
 
 @Component({
@@ -21,7 +22,8 @@ export class BlogAllCommentsComponent implements OnInit, OnDestroy {
   commentData = [];
   constructor(
     private interaction: InteractionService,
-    private dataExchange: DataExchangeService
+    private dataExchange: DataExchangeService,
+    private date: DateService
   ) { }
 
   ngOnInit(): void {
@@ -39,7 +41,8 @@ export class BlogAllCommentsComponent implements OnInit, OnDestroy {
             user: userData[0],
             commentText: item.text,
             postDate: val.postDate,
-            id: item.commentId
+            id: item.commentId,
+            time: item.commentPostTime
           });
         });
         if (this.pageName !== '') {
