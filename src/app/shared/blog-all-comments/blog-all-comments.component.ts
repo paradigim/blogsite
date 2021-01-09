@@ -1,9 +1,11 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/auth';
 import { Subject } from 'rxjs';
 import { delay, take, takeUntil } from 'rxjs/operators';
 import { DataExchangeService } from 'src/app/services/data-exchange.service';
 import { DateService } from 'src/app/services/date.service';
 import { InteractionService } from 'src/app/services/interaction.service';
+import { PickerModule } from '@ctrl/ngx-emoji-mart';
 
 @Component({
   selector: 'app-blog-all-comments',
@@ -13,18 +15,25 @@ import { InteractionService } from 'src/app/services/interaction.service';
 export class BlogAllCommentsComponent implements OnInit, OnDestroy {
   @Input() postId = '';
   @Input() pageName = '';
-  @Input() userId = '';
 
   deleteLoader = false;
   deleteIndex = -1;
   ngUnsubscribe = new Subject();
-
   commentData = [];
+  userId = '';
+
   constructor(
     private interaction: InteractionService,
     private dataExchange: DataExchangeService,
-    private date: DateService
-  ) { }
+    private date: DateService,
+    private afAuth: AngularFireAuth
+  ) { 
+    this.afAuth.authState.subscribe(user => {
+      if (user){
+        this.userId = user.uid;
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.interaction.getBlogComments(this.postId)
@@ -52,7 +61,12 @@ export class BlogAllCommentsComponent implements OnInit, OnDestroy {
     });
   }
 
-  deleteComment(index, cmntId) {
+  ngOnChanges() {
+    console.log('USERID: ', this.userId);
+  }
+
+  deleteComment(index, cmntId, e) {
+    e.stopPropagation();
     this.deleteLoader = true;
     this.deleteIndex = index;
     this.interaction.getBlogComments(this.postId)

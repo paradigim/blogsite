@@ -1,7 +1,7 @@
 
 .notifications {
     display: flex;
-    padding: 20px 15px;
+    padding: 10px 15px;
     cursor: pointer;
 }
 
@@ -29,11 +29,38 @@
 }
 
 .nt-user-post {
-    margin-top: 10px;
     margin-bottom: 15px;
     color: #4b4b4b;
 }
 
 .not-read {
     background: var(--secondary-color);
+}
+
+.dot {
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    background: #828282;
+    margin: 0 10px;
+}
+
+.user-blog-post-time {
+    color: #747474;
+    font-size: 13px;
+}
+
+.user-blog-info {
+    display: flex;
+    margin-top: 10px;
+    align-items: center;
+}
+
+.data-loader {
+    height: 100vh;
+}
+
+.data-loader .loader {
+    top: 50%;
+    transform: translateY(-50%);
 }

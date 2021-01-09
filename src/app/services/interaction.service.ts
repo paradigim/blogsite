@@ -90,7 +90,8 @@ export class InteractionService implements OnDestroy {
         postDate,
         userName: user.name,
         uniqueId: user.uniqueId,
-        userImage: user.imageURL
+        userImage: user.imageURL,
+        read: []
       };
       return this.afs.collection('posts').add(postData).then((res) => {
         this.updatePost(res.id, postData.contents, postData.image, postData.video, postData.postDate).then(res => {
@@ -98,6 +99,14 @@ export class InteractionService implements OnDestroy {
         });
       });
     }));
+   }
+
+   // pritam
+   updateNotificationReadStatus(postid, userid, readData) {
+    const userRead = [...readData, userid]
+    return this.afs.collection('posts').doc(postid).update({
+      read: userRead
+    });
    }
 
   // bookmark

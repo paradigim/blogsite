@@ -43,9 +43,9 @@
                         [postUserId]="postData?.userid"
                     ></app-blog-activity-more>
                 </div>
-                <app-blog-all-comments [userId]="userId" [postId]="postData?.id"></app-blog-all-comments>
+                <app-blog-all-comments [postId]="postData?.id"></app-blog-all-comments>
                 <app-blog-comment-input 
-                    [index]="i" 
+                    [index]="0" 
                     [postId]="postData.id"
                     (click)="stopDefaultBehaviour($event)">
                 </app-blog-comment-input>

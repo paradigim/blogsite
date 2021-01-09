@@ -3,6 +3,8 @@
 /* @import 'semantic-ui-css/semantic.css'; */
 /* @import 'bulma/css/bulma.css'; */
 
+@import '~@ctrl/ngx-emoji-mart/picker';
+
 
 :root {
     --prime-color: #198f35;

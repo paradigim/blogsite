@@ -1,11 +1,20 @@
-<div class="notification-container">
+<div class="notification-container" *ngIf="!isDataLoaded">
     
-    <div class="notifications not-read" *ngFor="let item of postNotification">
+    <div 
+        class="notifications" 
+        *ngFor="let item of postNotification; index a i"
+        [class.not-read]="checkRead(item.read)"
+        (click)="changeReadStatus(item)"
+    >
         <div class="nt-user-image">
             <img [src]="item.userImage">
         </div>
         <div class="nt-content">
-            <div class="nt-user-name">{{ item.userName }}</div>
+            <div class='user-blog-info'>
+                <div class="nt-user-name">{{ item.userName }}</div>
+                <div class='dot'></div>
+                <div class='user-blog-post-time'>{{ date.postDateFormat(item.postDate) }}</div>
+            </div>
             <div class="nt-user-post">
                 {{ item.contents }} 
             </div>
@@ -14,4 +23,8 @@
 
 
     <app-right-side-menu></app-right-side-menu>
+</div>
+
+<div *ngIf="isDataLoaded" class="data-loader">
+    <div class="ui active centered inline loader"></div>
 </div>

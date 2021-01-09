@@ -17,7 +17,7 @@
                     {{ item.commentText }}
                 </div>
             </div>
-            <div class="dlt-cmnt" (click)="deleteComment(i, item.id)" *ngIf="item.user.id === userId">
+            <div class="dlt-cmnt" (click)="deleteComment(i, item.id, $event)" *ngIf="item.user.id === userId">
                 <i class="trash alternate outline icon" *ngIf="i !== deleteIndex"></i>
                 <div class="ui active mini inline loader" *ngIf="deleteLoader && i === deleteIndex"></div>
             </div>
