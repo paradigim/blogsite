@@ -16,8 +16,13 @@
             <div class='spec-icon'>
                 <i class="paperclip icon"></i>
             </div>
-            <div class='spec-icon'>
-                <i class="smile outline icon"></i>
+            <div class='spec-icon emojis'>
+                <i class="smile outline icon" (click)="showEmojiMart()"></i>
+                <emoji-mart 
+                    class="emoji-list"
+                    *ngIf="showEmoji"
+                    (emojiSelect)="selectEmoji($event)"
+                ></emoji-mart>
             </div>
         </div>
         <button 
@@ -28,3 +33,4 @@
         </button>
     </div>
 </div>
+

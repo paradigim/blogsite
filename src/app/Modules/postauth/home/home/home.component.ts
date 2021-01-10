@@ -1,10 +1,9 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { InteractionService } from 'src/app/services/interaction.service';
 import { Router } from '@angular/router';
-import { debounceTime, skipWhile, take, takeUntil } from 'rxjs/operators';
+import { delay, skipWhile, take, takeUntil } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Subject } from 'rxjs';
-import { format } from 'date-fns';
 import { DateService } from 'src/app/services/date.service';
 
 @Component({
@@ -26,8 +25,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     private interaction: InteractionService,
     private router: Router,
     private afAuth: AngularFireAuth,
-    private date: DateService,
-    private cdref: ChangeDetectorRef
+    private date: DateService
   ) {
     this.afAuth.authState.subscribe(user => {
       if (user){
@@ -45,6 +43,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   allPosts(): void {
     const users = this.interaction.getAllUser().pipe(takeUntil(this.unSubscribe));
     this.interaction.getAllPosts()
+      .pipe(delay(1000))
       .pipe(
         skipWhile(value => {
           return (value === null || value === undefined || value.length <= 0);

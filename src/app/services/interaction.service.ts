@@ -1,12 +1,11 @@
 import { Injectable, NgZone, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { auth, User } from 'firebase/app';
+import { auth } from 'firebase/app';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { map, skipWhile, take, takeUntil } from 'rxjs/operators';
-import { Observable, of, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { DataExchangeService } from './data-exchange.service';
-import { identifierModuleUrl } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root'
@@ -181,7 +180,7 @@ export class InteractionService implements OnDestroy {
 
   // get all posts
   getAllPosts(): Observable<any[]> {
-    return this.afs.collection('posts').valueChanges();
+    return this.afs.collection('posts', ref => ref.orderBy('postDate', 'desc')).valueChanges();
   }
 
   // get all users

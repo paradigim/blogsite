@@ -1,4 +1,6 @@
+
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { DateService } from 'src/app/services/date.service';
 import { InteractionService } from 'src/app/services/interaction.service';
 
@@ -13,7 +15,8 @@ export class BookmarksComponent implements OnInit {
 
   constructor(
     private interaction: InteractionService,
-    private date: DateService
+    private date: DateService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -33,6 +36,15 @@ export class BookmarksComponent implements OnInit {
   stopDefaultBehaviour(e): void {
     e.preventDefault();
     e.stopPropagation();
+  }
+
+  routeToBlogDetail(e: any, postid): void { 
+    this.router.navigate(['/detail'], {
+      queryParams: {
+        id: postid,
+        userId: 1
+      }
+    });
   }
 
 }

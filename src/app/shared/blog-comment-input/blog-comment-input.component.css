@@ -17,9 +17,20 @@ textarea.comment-box {
 
 .spec-icon {
     margin-right: 10px;
-    color: var(--prime-color);
+    color: var(--icon-color);
+    cursor: pointer;
 }
 
 .comment-button:disabled {
     background: #a4dfcf;
+}
+
+.emojis {
+    position: relative;
+}
+
+.emoji-list {
+    position: absolute;
+    bottom: 40px;
+    left: 0;
 }

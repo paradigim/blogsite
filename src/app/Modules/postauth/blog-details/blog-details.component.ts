@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { delay, takeUntil } from 'rxjs/operators';
 import { DateService } from 'src/app/services/date.service';
 import { InteractionService } from 'src/app/services/interaction.service';
 
@@ -36,6 +36,7 @@ export class BlogDetailsComponent implements OnInit, OnDestroy {
 
   getPostData(postId) {
     this.interaction.getPostWithId(postId)
+      .pipe(delay(1000))
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(post => {
         this.postData = post;
@@ -49,6 +50,11 @@ export class BlogDetailsComponent implements OnInit, OnDestroy {
         userId
       }
     })
+  }
+
+  stopDefaultBehaviour(e): void {
+    e.preventDefault();
+    e.stopPropagation();
   }
 
   ngOnDestroy() {

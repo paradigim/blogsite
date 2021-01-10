@@ -44,7 +44,8 @@ export class BlogLikeComponent implements OnInit {
     });
   }
 
-  likeCountStatusChange(): void {
+  likeCountStatusChange(e): void {
+      e.stopPropagation();
       this.interaction.setLikeData(this.likeCount, this.postId);
       this.setData(this.postId);
   }

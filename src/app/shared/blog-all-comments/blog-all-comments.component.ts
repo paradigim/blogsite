@@ -5,7 +5,6 @@ import { delay, take, takeUntil } from 'rxjs/operators';
 import { DataExchangeService } from 'src/app/services/data-exchange.service';
 import { DateService } from 'src/app/services/date.service';
 import { InteractionService } from 'src/app/services/interaction.service';
-import { PickerModule } from '@ctrl/ngx-emoji-mart';
 
 @Component({
   selector: 'app-blog-all-comments',

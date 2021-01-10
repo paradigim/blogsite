@@ -14,6 +14,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { SuiModule } from 'ng2-semantic-ui';
 
 
+
 @NgModule({
   declarations: [
     AppComponent

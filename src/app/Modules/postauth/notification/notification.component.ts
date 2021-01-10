@@ -20,6 +20,8 @@ export class NotificationComponent implements OnInit {
   postNotification = [];
   todayDate = format(new Date(), 'dd MMM, yyyy');
   isDataLoaded = true;
+  deleteLoader = false;
+  deleteIndex = -1;
 
   constructor(
     private afAuth: AngularFireAuth,

@@ -1,6 +1,9 @@
 <div class="bookmarks-container">
     
-    <div class='ec-blog-post' *ngFor="let bookmark of bookmarkData; index as i;">
+    <div 
+        class='ec-blog-post' 
+        *ngFor="let bookmark of bookmarkData; index as i;"
+        (click)="routeToBlogDetail($event, bookmark.id)">
         <div class='user-blog-post'>
             <img [src]="bookmark.userImage">
         </div>

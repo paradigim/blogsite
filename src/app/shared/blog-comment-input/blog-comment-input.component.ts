@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { InteractionService } from 'src/app/services/interaction.service';
 import * as data from 'src/assets/language.json';
 
+
 @Component({
   selector: 'app-blog-comment-input',
   templateUrl: './blog-comment-input.component.html',
@@ -15,14 +16,35 @@ export class BlogCommentInputComponent implements OnInit {
   isDisabled = true;
   commentBTN: any;
   textArea: any;
+  showEmoji = false;
 
   constructor(private interaction: InteractionService) { }
 
   ngOnInit(): void {
     this.commentBTN = document.querySelectorAll('.comment-button');
     this.textArea = document.querySelectorAll('.comment-box');
+
+    document.addEventListener('click', () => {
+      this.closeDropDown();
+    });
   }
 
+  closeDropDown() {
+    if (this.showEmoji) {
+      this.showEmoji = false;
+    }
+  }
+
+  showEmojiMart() {
+    this.showEmoji = !this.showEmoji;
+  }
+
+  selectEmoji(e) {
+    console.log('EMOJI: ', e);
+
+    this.comment = `${this.comment}${e.emoji.native}`;
+    this.showEmoji = !this.showEmoji;
+  }
 
   // add comment
   addComment(e): void {

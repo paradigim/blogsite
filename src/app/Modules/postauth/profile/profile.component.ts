@@ -108,5 +108,10 @@ export class ProfileComponent implements OnInit {
       })
   }
 
+  stopDefaultBehaviour(e): void {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
 
 }

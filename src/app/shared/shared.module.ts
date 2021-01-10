@@ -13,6 +13,8 @@ import { BlogActivityMoreComponent } from './blog-activity-more/blog-activity-mo
 import { CommonModalComponent } from './common-modal/common-modal.component';
 import { BlogAllCommentsComponent } from './blog-all-comments/blog-all-comments.component';
 import { BlogCommentInputComponent } from './blog-comment-input/blog-comment-input.component';
+import { PickerModule } from '@ctrl/ngx-emoji-mart';
+import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 
 
 @NgModule({
@@ -31,7 +33,9 @@ import { BlogCommentInputComponent } from './blog-comment-input/blog-comment-inp
     SuiModule,
     AutosizeModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    PickerModule,
+    EmojiModule
   ],
   exports: [
     BlogModalComponent,
