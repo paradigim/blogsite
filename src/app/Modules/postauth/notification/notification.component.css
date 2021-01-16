@@ -20,6 +20,8 @@
 .nt-content {
     flex: 1;
     margin-left: 10px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .nt-user-name {

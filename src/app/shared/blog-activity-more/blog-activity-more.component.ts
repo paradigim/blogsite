@@ -111,6 +111,11 @@ export class BlogActivityMoreComponent implements OnInit {
   deletePost(): void {
     this.interaction.deletePost(this.postId)
       .then(() => {
+        this.interaction.getNotification()
+          .subscribe(data => {
+            const notiAfterDelete = data.filter(item => item.notificationId !== this.postId);
+            this.interaction.deleteNoti(notiAfterDelete);
+          })
         console.log('Post has been removed')
       }).catch(err => {
         console.log('Post can not be removed');

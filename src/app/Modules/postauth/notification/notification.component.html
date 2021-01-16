@@ -2,7 +2,7 @@
     
     <div 
         class="notifications" 
-        *ngFor="let item of postNotification; index a i"
+        *ngFor="let item of postNotification; index as i"
         [class.not-read]="checkRead(item.read)"
         (click)="changeReadStatus(item)"
     >
@@ -10,13 +10,19 @@
             <img [src]="item.userImage">
         </div>
         <div class="nt-content">
-            <div class='user-blog-info'>
-                <div class="nt-user-name">{{ item.userName }}</div>
-                <div class='dot'></div>
-                <div class='user-blog-post-time'>{{ date.postDateFormat(item.postDate) }}</div>
+            <div class="notification-info">
+                <div class='user-blog-info'>
+                    <div class="nt-user-name">{{ item.userName }}</div>
+                    <div class='dot'></div>
+                    <div class='user-blog-post-time'>{{ date.postDateFormat(item.postDate) }}</div>
+                </div>
+                <div class="nt-user-post">
+                    {{ item.contents }} 
+                </div>
             </div>
-            <div class="nt-user-post">
-                {{ item.contents }} 
+            <div class="dlt-cmnt" (click)="deleteNotification(i, item.id, item.notificationId, $event)">
+                <i class="trash alternate outline icon" *ngIf="i !== deleteIndex"></i>
+                <div class="ui active mini inline loader" *ngIf="deleteLoader && i === deleteIndex"></div>
             </div>
         </div>
     </div>

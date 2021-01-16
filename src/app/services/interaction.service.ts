@@ -183,6 +183,45 @@ export class InteractionService implements OnDestroy {
     return this.afs.collection('posts', ref => ref.orderBy('postDate', 'desc')).valueChanges();
   }
 
+  // get the notification id's
+  getNotification(): Observable<any[]> {
+    return this.afs.collection('notification').valueChanges();
+  }
+
+  // set notification id's pritam
+  setNotification(post) {
+    post.map(data => {
+      const notificationData = {
+        notificationId: data.id,
+        deletePostByUser: this.userId,
+        deleteStatus: false
+      }
+      return this.afs.collection('notification').add(notificationData).then((res) => {
+        this.updateNotification(res.id);
+      });
+    })
+  }
+
+  updateNotification(id) {
+    this.afs.collection('notification').doc(id).update({
+      id: id
+    })
+  }
+
+  deleteNotificationFromDatabase(postid, notificationId) {
+    return this.afs.collection('notification').doc(notificationId).update({
+      deleteStatus: true
+    });
+  }
+
+  deleteNoti(notiAfterDelete): Promise<any> {
+    return this.afs.collection('notification').doc(notiAfterDelete[0].id).delete();
+    // notiAfterDelete.map(data => {
+    //   this.afs.collection('notification', ref => ref.where('ref.id', '==', 'data.id')).doc(data.id).delete();
+    // });
+    // return;
+  } 
+
   // get all users
   getAllUser(): Observable<any[]> {
     return this.afs.collection('users').valueChanges();
