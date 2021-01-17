@@ -73,14 +73,10 @@ export class NotificationComponent implements OnInit {
   checkUserFollowingByMe(userData) {
     let followTime = 0;
     const notiData = this.interaction.getNotification();
-    let postIdInNoti;
     userData.forEach(item => {
       const followerData = item.follower.filter(data => data.followingUserId === this.userId);
       if (followerData.length > 0) {
         followTime = followerData[0].followDate;
-        //todayTime = this.date.getTime(new Date());
-      }
-      if (followerData.length > 0) {
         const dataToPush = {
           uid: item.id,
           followTime
@@ -88,6 +84,7 @@ export class NotificationComponent implements OnInit {
         this.followingUserId.push(dataToPush);
       }
     });
+    
     this.interaction.getAllPosts()
       .pipe(skipWhile(item => item.length === 0))
       .pipe(takeUntil(this.ngUnsubscribe))
@@ -96,59 +93,47 @@ export class NotificationComponent implements OnInit {
         post.forEach(postItem => {
           const filterData = this.followingUserId.filter(item => item.uid === postItem.userid);
 
-
           if (filterData.length > 0 && (filterData[0].followTime < postItem.postDate)) {
-            // notiData.subscribe(data => {
-            //   data.map(item => {
-            //     if (item.notificationId === postItem.id) {
-            //       this.postNotification.push(postItem);
-            //     }
-            //   })
-            // })
-
-
             this.postNotification.push(postItem);
-            
-
-            this.interaction.getNotification()
-            .subscribe(postids => {
-              if (postids.length === 0) {
-                this.interaction.setNotification(this.postNotification);
-              } else {
-                // insert the notification id to postNotification
-                this.postNotification.map((item, i) => {
-                  postids.filter(data => {
-                    if (data.notificationId === item.id) {
-                      this.postNotification[i] = {...item, notificationId: data.id};
-                    }
-                  })
-                })
-
-                // check if any notification is deleted by the user
-                const ifPostExist = postids.filter(item => {
-                  return (item.notificationId === postItem.id && item.deleteStatus && item.deletePostByUser === this.userId);
-                });
-                if (ifPostExist.length > 0) {
-                  this.postNotification.map((item, i) => {
-                    ifPostExist.map(noti => {
-                      if (item.id !== noti.notificationId) {
-                        this.postNotification[i] = item;
-                      } else {
-                        this.postNotification.splice(i, 1);
-                      }
-                    });
-                  });
-                  this.isDataLoaded = false;
-                } else {
-                  this.isDataLoaded = false;
-                }
-              }
-            })
-    
           }
         });
-        // this.interaction.setNotification(this.postNotification);
-        console.log('NOTI: ', this.postNotification);
+
+        notiData
+          .pipe(takeUntil(this.ngUnsubscribe))
+          .subscribe(postids => {
+            if (postids.length === 0) {
+              this.interaction.setNotification(this.postNotification, this.userId);
+            } else {
+              // insert the notification id to postNotification
+              this.postNotification.map((item, i) => {
+                postids.map(data => {
+                  if (data.notificationId === item.id) {
+                    this.postNotification[i] = {...item, notificationId: data.id};
+                  }
+                })
+              })
+
+              // check if any notification is deleted by the user
+              const ifPostExist = postids.filter(item => {
+                // return (item.notificationId === postItem.id && item.deleteStatus && item.deletePostByUser === this.userId);
+                return (item.deleteStatus && item.deletePostByUser === this.userId);
+              });
+              if (ifPostExist.length > 0) {
+                this.postNotification.map((item, i) => {
+                  ifPostExist.map(noti => {
+                    if (item.id !== noti.notificationId) {
+                      this.postNotification[i] = item;
+                    } else {
+                      this.postNotification.splice(i, 1);
+                    }
+                  });
+                });
+                this.isDataLoaded = false;
+              } else {
+                this.isDataLoaded = false;
+              }
+            }
+          })
       });
   }
 

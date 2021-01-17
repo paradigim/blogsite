@@ -189,13 +189,17 @@ export class InteractionService implements OnDestroy {
   }
 
   // set notification id's pritam
-  setNotification(post) {
+  setNotification(post, currentUserId) {
+    let notificationData;
     post.map(data => {
-      const notificationData = {
-        notificationId: data.id,
-        deletePostByUser: this.userId,
-        deleteStatus: false
+      if (currentUserId !== data.id) {
+        notificationData = {
+          notificationId: data.id,
+          deletePostByUser: this.userId,
+          deleteStatus: false
+        }
       }
+      
       return this.afs.collection('notification').add(notificationData).then((res) => {
         this.updateNotification(res.id);
       });
