@@ -97,3 +97,13 @@
 .upload-pic input {
     display: none;
 }
+
+.emojis {
+    position: relative;
+}
+
+.emoji-list {
+    position: absolute;
+    bottom: 40px;
+    left: 0;
+}

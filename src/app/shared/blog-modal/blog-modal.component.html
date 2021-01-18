@@ -18,6 +18,7 @@
                 autosize
                 (focus)="statusPlaceholder()"
                 (blur)="statusPlaceholderBlur($event.target.value)"
+                [(ngModel)]="comment"
                 (input)="activeCommentBTN($event)">
               </textarea>
 
@@ -41,10 +42,29 @@
                 <!-- <input (change)='loadFile($event)' type='file'> -->
               </label>
 
-              <label class='upload-pic'>
-                <i class="smile outline icon"></i>
+              <label class='upload-pic emojis'>
+                <i class="smile outline icon" (click)="showEmojiMart()"></i>
+                <emoji-mart 
+                    class="emoji-list"
+                    *ngIf="showEmoji"
+                    (emojiSelect)="selectEmoji($event)"
+                ></emoji-mart>
                 <!-- <input (change)='loadFile($event)' type='file'> -->
               </label>
+
+
+              <!-- <div class='spec-icon emojis'>
+                <i class="smile outline icon" (click)="showEmojiMart()"></i>
+                <emoji-mart 
+                    class="emoji-list"
+                    *ngIf="showEmoji"
+                    (emojiSelect)="selectEmoji($event)"
+                ></emoji-mart>
+              </div> -->
+
+
+
+
             </div>
             <button class="blog-post-btn" [disabled]="postButton" (click)="postBlog($event)">
               {{ jsonData.button.post }}

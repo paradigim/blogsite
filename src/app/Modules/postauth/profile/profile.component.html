@@ -31,7 +31,11 @@
         <app-edit-profile [userStatus]="otherUserStatus"></app-edit-profile>
     </div>
 
-    <div class='ec-blog-post' *ngFor="let post of posts; index as i;">
+    <div 
+        class='ec-blog-post' 
+        *ngFor="let post of posts; index as i;"
+        (click)="goToPostDetail($event, post.id)"
+    >
         <div class='user-blog-post'>
             <img [src]="post.userImage">
         </div>

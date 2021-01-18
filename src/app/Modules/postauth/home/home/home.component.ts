@@ -147,6 +147,15 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
 
+  goOtherUserProfile(userId, e) {
+    e.stopPropagation();
+    this.router.navigate(['/profile'], {
+      queryParams: {
+        userId
+      }
+    })
+  }
+
   // on destroy of the component
   ngOnDestroy(): void {
     this.unSubscribe.next();

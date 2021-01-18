@@ -122,3 +122,9 @@
     top: 50%;
     transform: translateY(-50%);
 }
+
+.user-blog-name:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    color: var(--prime-color);
+}

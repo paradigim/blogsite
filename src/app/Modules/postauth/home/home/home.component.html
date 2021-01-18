@@ -13,7 +13,7 @@
             <div class='user-blog-wrapper'>
                 <div class="user-intro-follow">
                     <div class='user-blog-info'>
-                        <div class='user-blog-name'>{{ item.userName }}</div>
+                        <div class='user-blog-name' (click)="goOtherUserProfile(item.userid, $event)">{{ item.userName }}</div>
                         <div class='dot'></div>
                         <div class='user-blog-post-time'>{{ date.postDateFormat(item.postDate) }}</div>
                     </div>

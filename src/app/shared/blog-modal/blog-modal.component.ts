@@ -27,6 +27,8 @@ export class BlogModalComponent implements OnInit, OnChanges {
   isBlogPost = false;
   postButton = true;
   editPost = false;
+  showEmoji = false;
+  comment = '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -127,11 +129,22 @@ export class BlogModalComponent implements OnInit, OnChanges {
   }
 
   activeCommentBTN(e?: any): void {
+    this.comment = e.target.value;
+
     // activate comment button if there is value in textarea
     if (e.target.value) {
       this.postButton = false;
     } else {
       this.postButton = true;
     }
+  }
+
+  showEmojiMart() {
+    this.showEmoji = !this.showEmoji;
+  }
+
+  selectEmoji(e) {
+    this.comment = `${this.comment}${e.emoji.native}`;
+    this.showEmoji = !this.showEmoji;
   }
 }

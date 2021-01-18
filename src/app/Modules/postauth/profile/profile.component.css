@@ -90,6 +90,7 @@
     text-decoration: none;
     transition: 0.3s;
     flex-wrap: wrap;
+    cursor: pointer;
 }
 
 .ec-blog-post:not(:last-child) {

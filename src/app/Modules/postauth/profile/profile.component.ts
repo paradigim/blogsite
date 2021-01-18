@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { filter, skipWhile, take, takeUntil } from 'rxjs/operators';
 import { DataExchangeService } from 'src/app/services/data-exchange.service';
@@ -27,7 +27,8 @@ export class ProfileComponent implements OnInit {
     private dataExchange: DataExchangeService,
     private date: DateService,
     private route: ActivatedRoute,
-    private cdref: ChangeDetectorRef
+    private cdref: ChangeDetectorRef,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -106,6 +107,15 @@ export class ProfileComponent implements OnInit {
         this.posts = posts.filter(val => val.userid === uid);
         this.isDataLoaded = false;
       })
+  }
+
+  goToPostDetail(e: any, postid) {
+    this.router.navigate(['/detail'], {
+      queryParams: {
+        id: postid,
+        userId: this.otherUserId
+      }
+    });
   }
 
   stopDefaultBehaviour(e): void {

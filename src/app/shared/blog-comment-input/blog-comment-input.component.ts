@@ -40,8 +40,6 @@ export class BlogCommentInputComponent implements OnInit {
   }
 
   selectEmoji(e) {
-    console.log('EMOJI: ', e);
-
     this.comment = `${this.comment}${e.emoji.native}`;
     this.showEmoji = !this.showEmoji;
   }
