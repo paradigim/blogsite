@@ -213,7 +213,7 @@ export class InteractionService implements OnDestroy {
   }
 
   deleteNotificationFromDatabase(postid, notificationId) {
-    return this.afs.collection('notification').doc(notificationId).update({
+    this.afs.collection('notification').doc(notificationId).update({
       deleteStatus: true
     });
   }

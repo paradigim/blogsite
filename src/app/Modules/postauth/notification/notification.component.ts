@@ -84,6 +84,8 @@ export class NotificationComponent implements OnInit {
         this.followingUserId.push(dataToPush);
       }
     });
+
+    console.log('FOLOOE+WING USERID - who posted: ', this.followingUserId);
     
     this.interaction.getAllPosts()
       .pipe(skipWhile(item => item.length === 0))
@@ -98,20 +100,30 @@ export class NotificationComponent implements OnInit {
           }
         });
 
+        console.log('WHO POST: ', this.postNotification);
+
         notiData
           .pipe(takeUntil(this.ngUnsubscribe))
+          .pipe(take(1))
           .subscribe(postids => {
-            if (postids.length === 0) {
-              this.interaction.setNotification(this.postNotification, this.userId);
-            } else {
+            
+            // if (postids.length === 0 && this.postNotification.length > 0) {
+            //   this.interaction.setNotification(this.postNotification, this.userId);
+            // } 
+            if (this.postNotification.length > 0) {
               // insert the notification id to postNotification
+              this.interaction.setNotification(this.postNotification, this.userId);
               this.postNotification.map((item, i) => {
                 postids.map(data => {
                   if (data.notificationId === item.id) {
                     this.postNotification[i] = {...item, notificationId: data.id};
+                    // when first time notification get loaded, posids.length = 0 as there were no post before
+                    // so there is no  notificationId in postNotification (line - 120)
                   }
                 })
               })
+
+              
 
               // check if any notification is deleted by the user
               const ifPostExist = postids.filter(item => {

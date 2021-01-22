@@ -3,4 +3,5 @@
 <a [routerLink]="route" routerLinkActive="active" class="side-menu-items">
     <i [class]="icon"></i>
     <div>{{ text }}</div>
+    <div class="indicator" *ngIf="showIndicator"></div>
 </a>

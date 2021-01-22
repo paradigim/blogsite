@@ -12,6 +12,9 @@ export class DataExchangeService {
   private isUpdated = new BehaviorSubject<boolean>(false);
   public isUpdated$ = this.isUpdated.asObservable();
 
+  private indicator = new BehaviorSubject(false);
+  public indicator$ = this.indicator.asObservable();
+
   constructor() { }
 
   setUserId(id: string): void {
@@ -20,5 +23,13 @@ export class DataExchangeService {
 
   checkIsUpdated(status: boolean) {
     this.isUpdated.next(status);
+  }
+
+  setNotiIndicator(status: boolean) {
+    this.indicator.next(status);
+  }
+
+  getIndicatorStatus() {
+    return this.indicator.value;
   }
 }
