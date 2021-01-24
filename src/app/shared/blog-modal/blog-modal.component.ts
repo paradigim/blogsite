@@ -4,6 +4,8 @@ import { InteractionService } from 'src/app/services/interaction.service';
 import { Router } from '@angular/router';
 import { format } from 'date-fns';
 import * as data from 'src/assets/language.json';
+import { skipWhile, take, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-blog-modal',
@@ -13,6 +15,7 @@ import * as data from 'src/assets/language.json';
 export class BlogModalComponent implements OnInit, OnChanges {
   @Input() editPostData;
   @Input() userImage = './assets/images/default.png';
+  @Input() userId = '';
   @Output() modalStatus = new EventEmitter();
   @ViewChild('modal') modal: any;
   @ViewChild('textarea') textarea: any;
@@ -29,6 +32,8 @@ export class BlogModalComponent implements OnInit, OnChanges {
   editPost = false;
   showEmoji = false;
   comment = '';
+  ngUnsubscribe = new Subject();
+  userFollowers = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -42,6 +47,18 @@ export class BlogModalComponent implements OnInit, OnChanges {
       imageUrl: [''],
       videoUrl: ['']
     });
+    
+    this.interaction.getUser(this.userId)
+      .pipe(skipWhile(user => !user))
+      .pipe(take(1))
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((user) => {
+        user.follower.map(item => {
+          this.userFollowers.push(item.followingUserId);
+        })
+
+        console.log('FOLLOWERS: ', this.userFollowers);
+      })
   }
 
   ngOnChanges(): void {
@@ -94,12 +111,23 @@ export class BlogModalComponent implements OnInit, OnChanges {
         this.isBlogPost = false;
       });
     } else {
-      this.interaction.post(content, postDate, image, video).subscribe(res => {
-        this.modal.approve();
-        this.modalStatus.emit();
-        // this.sendNotification();
-        this.isBlogPost = false;
-        this.router.navigate(['/home']);
+      const id = this.interaction.createId();
+      console.log('G ID: ', id);
+      this.interaction.postNew(content, postDate, image, video, id).subscribe(res => {
+        console.log('RESPONSE: ', res);
+        if (this.userFollowers.length > 0) {
+          this.interaction.setNotification(id, this.userFollowers).then(() => {
+            this.modal.approve();
+            this.modalStatus.emit();
+            this.isBlogPost = false;
+            this.router.navigate(['/home']);
+          });
+        } else {
+          this.modal.approve();
+          this.modalStatus.emit();
+          this.isBlogPost = false;
+          this.router.navigate(['/home']);
+        }
       },
       err => {
         this.isBlogPost = false;
@@ -146,5 +174,10 @@ export class BlogModalComponent implements OnInit, OnChanges {
   selectEmoji(e) {
     this.comment = `${this.comment}${e.emoji.native}`;
     this.showEmoji = !this.showEmoji;
+  }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

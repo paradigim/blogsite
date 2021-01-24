@@ -55,7 +55,8 @@
     <app-blog-modal 
         *ngIf="modalShow" 
         (modalStatus)="changeModalStatus()"
-        [userImage]="photoUrl">
+        [userImage]="photoUrl"
+        [userId]="userData.id">
     </app-blog-modal>
     
 

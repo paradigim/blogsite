@@ -111,10 +111,10 @@ export class BlogActivityMoreComponent implements OnInit {
   deletePost(): void {
     this.interaction.deletePost(this.postId)
       .then(() => {
-        this.interaction.getNotification()
+        this.interaction.getAllNotification()
           .subscribe(data => {
             if (data.length > 0) {
-              const notiAfterDelete = data.filter(item => item.notificationId === this.postId);
+              const notiAfterDelete = data.filter(item => item.notificationPostId === this.postId);
               this.interaction.deleteNoti(notiAfterDelete);
             }
           })

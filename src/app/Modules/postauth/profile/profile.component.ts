@@ -21,6 +21,7 @@ export class ProfileComponent implements OnInit {
   ngUnsubscribe = new Subject();
   otherUserId = '';
   otherUserStatus: boolean;
+  defaultProfileImage = './assets/images/default.png';
 
   constructor(
     private interaction: InteractionService,

@@ -37,7 +37,7 @@
         (click)="goToPostDetail($event, post.id)"
     >
         <div class='user-blog-post'>
-            <img [src]="post.userImage">
+            <img [src]="post.userImage ? post.userImage : defaultProfileImage">
         </div>
         <div class='user-blog-wrapper'>
             <div class="user-intro-follow">

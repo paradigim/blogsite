@@ -62,19 +62,11 @@ export class InteractionService implements OnDestroy {
     });
   }
 
-  // update post
-  updatePost(postId?: string, contents?: string, image?: string, video?: string, lastUpdateDate?: number | string): Promise<any> {
-    return this.afs.collection('posts').doc(postId).update({
-      id: postId,
-      image,
-      video,
-      contents,
-      lastUpdateDate
-    });
+  createId() {
+    return this.afs.createId();
   }
 
-  // add new post
-  post(postText: string, postDate: string | number, image = '', video = ''): Observable<any> {
+  postNew(postText: string, postDate: string | number, image = '', video = '', postId): Observable<any> {
     return this.getUser()
     .pipe(map((user): any => {
       const postData = {
@@ -90,15 +82,34 @@ export class InteractionService implements OnDestroy {
         userName: user.name,
         uniqueId: user.uniqueId,
         userImage: user.imageURL,
-        read: []
+        read: [],
+        id: postId
       };
-      return this.afs.collection('posts').add(postData).then((res) => {
-        this.updatePost(res.id, postData.contents, postData.image, postData.video, postData.postDate).then(res => {
+
+      return this.afs.collection('posts').doc(postId).set(postData).then(res => {
+        return this.updatePost(postId, postData.contents, postData.image, postData.video, postData.postDate).then(res => {
           return res;
         });
-      });
+      })
     }));
    }
+
+    // update post
+  updatePost(postId?: string, contents?: string, image?: string, video?: string, lastUpdateDate?: number | string): Promise<any> {
+    return this.afs.collection('posts').doc(postId).update({
+      id: postId,
+      image,
+      video,
+      contents,
+      lastUpdateDate
+    });
+  }
+
+  getAllNotification(): Observable<any[]> {
+    return this.afs.collection('notification').valueChanges();
+  }
+
+
 
    // pritam
    updateNotificationReadStatus(postid, userid, readData) {
@@ -188,33 +199,43 @@ export class InteractionService implements OnDestroy {
     return this.afs.collection('notification').valueChanges();
   }
 
-  // set notification id's pritam
-  setNotification(post, currentUserId) {
-    let notificationData;
-    post.map(data => {
-      if (currentUserId !== data.id) {
-        notificationData = {
-          notificationId: data.id,
-          deletePostByUser: this.userId,
-          deleteStatus: false
-        }
-      }
-      
-      return this.afs.collection('notification').add(notificationData).then((res) => {
-        this.updateNotification(res.id);
-      });
-    })
+  setNotification(postId, followers): Promise<any> {
+    const notificationData = {
+      notificationPostId: postId,
+      deletePostByUserToAllow: followers,
+      deleteStatus: false,
+      deletedByUsers: []
+    }
+    
+    return this.afs.collection('notification').add(notificationData).then((res) => {
+      return this.updateNotification(res.id);
+    });
   }
 
-  updateNotification(id) {
-    this.afs.collection('notification').doc(id).update({
+  setMoreNotification(item, currentUserId) {
+    let notificationData;
+    notificationData = {
+      notificationId: item.id,
+      deletePostByUser: this.userId,
+      deleteStatus: false
+    }
+
+    return this.afs.collection('notification').add(notificationData).then((res) => {
+      this.updateNotification(res.id);
+    });
+  }
+
+  updateNotification(id): Promise<any> {
+    return this.afs.collection('notification').doc(id).update({
       id: id
     })
   }
 
-  deleteNotificationFromDatabase(postid, notificationId) {
+  // pritam
+  deleteNotificationFromDatabase(postid, notificationId, deletedBy) {
     this.afs.collection('notification').doc(notificationId).update({
-      deleteStatus: true
+      deleteStatus: true,
+      deletedByUsers: deletedBy
     });
   }
 
@@ -294,7 +315,7 @@ export class InteractionService implements OnDestroy {
       id: userData.uid,
       follower: [],
       uniqueId: this.uniqueUserName.toLowerCase(),
-      imageURL: uniqueUserName,
+      imageURL: userData.photoURL,
       name: userData.displayName,
       phone: '',
       totalEarnings: 0,

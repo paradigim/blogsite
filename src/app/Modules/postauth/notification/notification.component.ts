@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { format } from 'date-fns';
 import { Subject } from 'rxjs';
@@ -7,6 +7,7 @@ import { InteractionService } from 'src/app/services/interaction.service';
 import { DateService } from 'src/app/services/date.service';
 import { Router } from '@angular/router';
 import { isNgTemplate } from '@angular/compiler';
+import { post } from 'jquery';
 
 @Component({
   selector: 'app-notification',
@@ -23,12 +24,15 @@ export class NotificationComponent implements OnInit {
   isDataLoaded = true;
   deleteLoader = false;
   deleteIndex = -1;
+  postToShowInNotification = [];
+  postNotificationIds = [];
 
   constructor(
     private afAuth: AngularFireAuth,
     private interaction: InteractionService,
     private date: DateService,
-    private router: Router
+    private router: Router,
+    private cdref: ChangeDetectorRef
   ) {
   }
 
@@ -62,102 +66,75 @@ export class NotificationComponent implements OnInit {
   }
 
   getNotification() {
-    this.interaction.getAllUser()
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(user => {
-        this.userData = user;
-        this.checkUserFollowingByMe(this.userData);
-      });
-  }
-
-  checkUserFollowingByMe(userData) {
-    let followTime = 0;
-    const notiData = this.interaction.getNotification();
-    userData.forEach(item => {
-      const followerData = item.follower.filter(data => data.followingUserId === this.userId);
-      if (followerData.length > 0) {
-        followTime = followerData[0].followDate;
-        const dataToPush = {
-          uid: item.id,
-          followTime
-        };
-        this.followingUserId.push(dataToPush);
-      }
-    });
-
-    console.log('FOLOOE+WING USERID - who posted: ', this.followingUserId);
-    
-    this.interaction.getAllPosts()
-      .pipe(skipWhile(item => item.length === 0))
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(post => {
-        this.postNotification = []
-        post.forEach(postItem => {
-          const filterData = this.followingUserId.filter(item => item.uid === postItem.userid);
-
-          if (filterData.length > 0 && (filterData[0].followTime < postItem.postDate)) {
-            this.postNotification.push(postItem);
+    // this.interaction.getAllUser()
+    //   .pipe(takeUntil(this.ngUnsubscribe))
+    //   .subscribe(user => {
+    //     this.userData = user;
+    //   });
+    this.interaction.getAllNotification()
+      .pipe(take(1))
+      .subscribe(data => {
+        data.map(val => {
+          const ifDeletedByUser = val.deletedByUsers;
+          const checkIfUserDeleteNotification = val.deletedByUsers.filter(item => item === this.userId);
+          const notificationFilter = val.deletePostByUserToAllow.filter(item => item === this.userId && checkIfUserDeleteNotification.length <= 0);
+          if (notificationFilter.length > 0) {
+            this.postNotificationIds.push({
+              postId: val.notificationPostId,
+              notificationId: val.id,
+              deletedBy: ifDeletedByUser
+            });
           }
-        });
-
-        console.log('WHO POST: ', this.postNotification);
-
-        notiData
-          .pipe(takeUntil(this.ngUnsubscribe))
-          .pipe(take(1))
-          .subscribe(postids => {
-            
-            // if (postids.length === 0 && this.postNotification.length > 0) {
-            //   this.interaction.setNotification(this.postNotification, this.userId);
-            // } 
-            if (this.postNotification.length > 0) {
-              // insert the notification id to postNotification
-              this.interaction.setNotification(this.postNotification, this.userId);
-              this.postNotification.map((item, i) => {
-                postids.map(data => {
-                  if (data.notificationId === item.id) {
-                    this.postNotification[i] = {...item, notificationId: data.id};
-                    // when first time notification get loaded, posids.length = 0 as there were no post before
-                    // so there is no  notificationId in postNotification (line - 120)
-                  }
-                })
-              })
-
-              
-
-              // check if any notification is deleted by the user
-              const ifPostExist = postids.filter(item => {
-                // return (item.notificationId === postItem.id && item.deleteStatus && item.deletePostByUser === this.userId);
-                return (item.deleteStatus && item.deletePostByUser === this.userId);
-              });
-              if (ifPostExist.length > 0) {
-                this.postNotification.map((item, i) => {
-                  ifPostExist.map(noti => {
-                    if (item.id !== noti.notificationId) {
-                      this.postNotification[i] = item;
-                    } else {
-                      this.postNotification.splice(i, 1);
-                    }
-                  });
-                });
-                this.isDataLoaded = false;
-              } else {
-                this.isDataLoaded = false;
-              }
-            }
-          })
+        })
+        console.log('DELETE: ', this.postNotificationIds);
+        if (this.postNotificationIds.length > 0) {
+          this.getAllNotificationPost(this.postNotificationIds);
+        } else {
+          this.isDataLoaded = false;
+        }
       });
   }
 
-  deleteNotification(index, postid, notificationId, e) {
+  getAllNotificationPost(postIds) {
+    this.interaction.getAllPosts()
+      .pipe(take(1))
+      .subscribe(posts => {
+        console.log('ALL POSTS: ', posts);
+        console.log('POST IDS: ', postIds);
+        postIds.map((item, i) => {
+          this.postToShowInNotification = [...this.postToShowInNotification, ...posts.filter(val => val.id === item.postId)];
+          this.postToShowInNotification[i].notificationId = item.notificationId;
+          this.postToShowInNotification[i].deletedBy = item.deletedBy;
+        });
+        console.log('POSTS: ', this.postToShowInNotification);
+        this.isDataLoaded = false;
+      },
+      (err) => {
+        this.isDataLoaded = false;
+      })
+  }
+
+
+  deleteNotification(index, postid, notificationId, e, deletedBy) {
     e.stopPropagation();
     this.deleteLoader = true;
     this.deleteIndex = index;
 
+    if (deletedBy.length > 0) {
+      const updatedDeletedByUserIndex = deletedBy.findIndex(item => item === this.userId);
+      if (updatedDeletedByUserIndex < 0) {
+        deletedBy.push(this.userId);
+      }
+    } else {
+      deletedBy.push(this.userId);
+    }
+
+
+
     //this.interaction.deleteNotificationFromDatabase(postid, notificationId)
     setTimeout(() => {
-      this.interaction.deleteNotificationFromDatabase(postid, notificationId)
-      // this.postNotification.splice(index, 1);
+      this.interaction.deleteNotificationFromDatabase(postid, notificationId, deletedBy);
+      this.postToShowInNotification.splice(index, 1);
       this.deleteLoader = false;
       this.deleteIndex = -1;
     }, 1000);
