@@ -320,7 +320,8 @@ export class InteractionService implements OnDestroy {
       phone: '',
       totalEarnings: 0,
       availableEarnings: 0,
-      pendingEarnings: 0
+      pendingEarnings: 0,
+      notificationToRead: false
     }, {merge: true}).then(res => {
       console.log('response', this.afAuth.authState);
       return;
@@ -376,6 +377,20 @@ export class InteractionService implements OnDestroy {
       imageURL: data.image,
       name: data.uname
     });
+  }
+
+  updateUserNotificationReadStatus(userArr) {
+    userArr.map((id: any) => {
+      return this.afs.collection('users').doc(id).update({
+        notificationToRead: true
+      })
+    })
+  }
+
+  chnageNotificationAlertStatus(): Promise<any> {
+    return this.afs.collection('users').doc(this.userId).update({
+      notificationToRead: false
+    })
   }
 
   // pritam

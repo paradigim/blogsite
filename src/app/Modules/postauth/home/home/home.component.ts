@@ -3,8 +3,9 @@ import { InteractionService } from 'src/app/services/interaction.service';
 import { Router } from '@angular/router';
 import { delay, skipWhile, take, takeUntil } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { DateService } from 'src/app/services/date.service';
+import { DataExchangeService } from 'src/app/services/data-exchange.service';
 
 @Component({
   selector: 'app-home',
@@ -14,12 +15,13 @@ import { DateService } from 'src/app/services/date.service';
 export class HomeComponent implements OnInit, OnDestroy {
 
   likeCount: number;
-  postData: any;
+  postData = [];
   userId: string;
   checkFollow = false;
   isDataLoaded = false;
   unSubscribe = new Subject();
   followDate = new Date().getTime();
+  allPostData: any;
 
   constructor(
     private interaction: InteractionService,
@@ -42,37 +44,45 @@ export class HomeComponent implements OnInit, OnDestroy {
   // set following status on init
   allPosts(): void {
     const users = this.interaction.getAllUser().pipe(takeUntil(this.unSubscribe));
+  
+
+    //this.interaction.getAllPosts()
     this.interaction.getAllPosts()
       .pipe(delay(1000))
-      .pipe(
-        skipWhile(value => {
-          return (value === null || value === undefined || value.length <= 0);
-        }),
-        take(1)
-      )
+      // .pipe(
+      //   skipWhile((value: any) => {
+      //     return (value === null || value === undefined || value.length <= 0);
+      //   }),
+      //   take(1)
+      // )
       .pipe(takeUntil(this.unSubscribe))
       .subscribe((data: any) => {
         this.postData = data;
-        this.postData.map((item, i) => {
-          users
-          .pipe(take(1))
-          .subscribe(val => {
-            for (const user of val) {
-              if (user.id === item.userid) {
-                this.postData[i] = {
-                  ...this.postData[i],
-                  followStatus: this.checkFollower(user, true)
-                };
-                const flTxt = this.postData[i].followStatus ? 'Following' : 'Follow';
-                this.postData[i].followText = flTxt;
-                break;
+        if (this.postData.length === 0) {
+          this.isDataLoaded = false;
+        } else {
+          this.postData.map((item, i) => {
+            users
+            .pipe(take(1))
+            .subscribe(val => {
+              for (const user of val) {
+                if (user.id === item.userid) {
+                  this.postData[i] = {
+                    ...this.postData[i],
+                    followStatus: this.checkFollower(user, true)
+                  };
+                  const flTxt = this.postData[i].followStatus ? 'Following' : 'Follow';
+                  this.postData[i].followText = flTxt;
+                  break;
+                }
               }
-            }
-            // this.isDataLoaded = false;
+              // this.isDataLoaded = false;
+            });
           });
-        });
-        this.isDataLoaded = false;
+          this.isDataLoaded = false;
+        }
       });
+      // this.isDataLoaded = false;
   }
 
   // check if followed by the current user and return the status
@@ -108,6 +118,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   // set status when click on follow button
   followUser(userId, e): void {
     e.preventDefault();
+    e.stopPropagation();
     this.checkFollow = false;
     let follower = [];
     this.interaction.getUser(userId)

@@ -6,6 +6,7 @@ import { format } from 'date-fns';
 import * as data from 'src/assets/language.json';
 import { skipWhile, take, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { DataExchangeService } from 'src/app/services/data-exchange.service';
 
 @Component({
   selector: 'app-blog-modal',
@@ -38,7 +39,8 @@ export class BlogModalComponent implements OnInit, OnChanges {
   constructor(
     private formBuilder: FormBuilder,
     private interaction: InteractionService,
-    public router: Router
+    public router: Router,
+    private dataService: DataExchangeService
   ) { }
 
   ngOnInit(): void {
@@ -112,11 +114,12 @@ export class BlogModalComponent implements OnInit, OnChanges {
       });
     } else {
       const id = this.interaction.createId();
-      console.log('G ID: ', id);
       this.interaction.postNew(content, postDate, image, video, id).subscribe(res => {
         console.log('RESPONSE: ', res);
         if (this.userFollowers.length > 0) {
           this.interaction.setNotification(id, this.userFollowers).then(() => {
+            this.dataService.saveUsersForNotificationAlert(this.userFollowers);
+            this.interaction.updateUserNotificationReadStatus(this.userFollowers);
             this.modal.approve();
             this.modalStatus.emit();
             this.isBlogPost = false;

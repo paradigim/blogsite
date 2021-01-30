@@ -15,6 +15,9 @@ export class DataExchangeService {
   private indicator = new BehaviorSubject(false);
   public indicator$ = this.indicator.asObservable();
 
+  private userAlertForNotification = new BehaviorSubject(null);
+  public userAlertForNotification$ = this.userAlertForNotification.asObservable();
+
   constructor() { }
 
   setUserId(id: string): void {
@@ -31,5 +34,9 @@ export class DataExchangeService {
 
   getIndicatorStatus() {
     return this.indicator.value;
+  }
+
+  saveUsersForNotificationAlert(followers: any) {
+    this.userAlertForNotification.next(followers);
   }
 }

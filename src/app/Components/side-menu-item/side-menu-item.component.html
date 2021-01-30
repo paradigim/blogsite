@@ -1,7 +1,7 @@
 
 
-<a [routerLink]="route" routerLinkActive="active" class="side-menu-items">
+<a [routerLink]="route" routerLinkActive="active" class="side-menu-items" (click)="stopAlert($event)">
     <i [class]="icon"></i>
     <div>{{ text }}</div>
-    <div class="indicator" *ngIf="showIndicator"></div>
+    <div class="indicator" *ngIf="alert"></div>
 </a>

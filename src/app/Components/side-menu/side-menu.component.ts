@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { DataExchangeService } from 'src/app/services/data-exchange.service';
 import { InteractionService } from 'src/app/services/interaction.service';
 
 @Component({
@@ -8,16 +9,17 @@ import { InteractionService } from 'src/app/services/interaction.service';
   styleUrls: ['./side-menu.component.css']
 })
 export class SideMenuComponent implements OnInit {
-
   userName = 'Anisya olga';
   photoUrl = './assets/images/default.png';
   userData: any;
   modalShow = false;
   uniqueUserId = '';
+  userNotificationAlert = []
 
   constructor(
     private afAuth: AngularFireAuth,
-    private interaction: InteractionService
+    private interaction: InteractionService,
+    private dataService: DataExchangeService
   ) { }
 
   ngOnInit(): void {
@@ -31,10 +33,13 @@ export class SideMenuComponent implements OnInit {
         } else if (auth.photoURL != null) {
           this.interaction.updateUserData(auth.uid, auth.photoURL);
         }
-        console.log('userData : ', this.userData);
-        // this.spinner.hide();
       });
    });
+
+   this.dataService.userAlertForNotification$
+    .subscribe(data => {
+      this.userNotificationAlert = data;
+    })
   }
 
   changeModalStatus(): void {

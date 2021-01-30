@@ -44,6 +44,12 @@ export class NotificationComponent implements OnInit {
       }
     });
 
+    // this.dataService.userAlertForNotification$
+    // .subscribe(data => {
+    //   this.userNotificationAlert = data;
+    //   console.log('DATA---------', this.userNotificationAlert);
+    // })
+
     // this.setReadClass();
   }
 
