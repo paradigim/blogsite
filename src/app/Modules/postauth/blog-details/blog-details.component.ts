@@ -16,6 +16,7 @@ export class BlogDetailsComponent implements OnInit, OnDestroy {
   postData: any;
   userId = '';
   isDataLoaded = true;
+  followStatus: boolean;
 
   ngUnsubscribe = new Subject();
 
@@ -30,6 +31,7 @@ export class BlogDetailsComponent implements OnInit, OnDestroy {
     this.route.queryParamMap.subscribe(queryParams => {
       this.postId = queryParams.get('id');
       this.userId = queryParams.get('userId');
+      this.followStatus = Boolean(queryParams.get('followStatus'));
       this.getPostData(this.postId);
     });
   }

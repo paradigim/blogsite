@@ -13,14 +13,7 @@
                         <div class='dot'></div>
                         <div class='user-blog-post-time'>{{ date.postDateFormat(postData.postDate) }}</div>
                     </div>
-                    <button 
-                        class="follow" 
-                        (click)="followUser(postData.userid, $event)"
-                        [class.is-following]="postData.followStatus"
-                    >
-                        {{ postData.followText }}
-                    </button>
-                    <!-- [class.is-following]="isFollowed(item.userid)" -->
+                    <div class='follow-status' *ngIf="followStatus">Following</div>
                 </div>
                 <div class="user-unique-id">{{ postData.uniqueId }}</div>
                 <div class='user-blog-content'>

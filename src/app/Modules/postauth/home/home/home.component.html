@@ -5,7 +5,7 @@
         <div 
             class='ec-blog-post' 
             *ngFor="let item of postData; index as i;"
-            (click)="routeToBlogDetail($event, item.id)" 
+            (click)="routeToBlogDetail($event, item.id, item.followStatus)" 
         >
             <div class='user-blog-post'>
                 <img [src]="item.userImage">
@@ -17,15 +17,7 @@
                         <div class='dot'></div>
                         <div class='user-blog-post-time'>{{ date.postDateFormat(item.postDate) }}</div>
                     </div>
-                    <button 
-                        class="follow" 
-                        (click)="followUser(item.userid, $event)"
-                        [class.is-following]="item.followStatus"
-                        *ngIf="item.userid !== userId"
-                    >
-                        {{ item.followText }}
-                    </button>
-                    <!-- [class.is-following]="isFollowed(item.userid)" -->
+                    <div class='follow-status' *ngIf="item.followStatus">Following</div>
                 </div>
                 <div class="user-unique-id">{{ item.uniqueId }}</div>
                 <div class='user-blog-content'>

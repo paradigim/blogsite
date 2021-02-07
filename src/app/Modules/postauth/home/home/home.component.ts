@@ -43,48 +43,24 @@ export class HomeComponent implements OnInit, OnDestroy {
   allPosts(): void {
     const users = this.interaction.getAllUser().pipe(takeUntil(this.unSubscribe));
     this.interaction.getAllPosts()
-      .pipe(delay(1000))
-      .pipe(
-        skipWhile(value => {
-          return (value === null || value === undefined || value.length <= 0);
-        }),
-        take(1)
-      )
       .pipe(takeUntil(this.unSubscribe))
       .subscribe((data: any) => {
         this.postData = data;
-        this.postData.map((item, i) => {
-          users
-          .pipe(take(1))
-          .subscribe(val => {
-            for (const user of val) {
-              if (user.id === item.userid) {
-                this.postData[i] = {
-                  ...this.postData[i],
-                  followStatus: this.checkFollower(user, true)
-                };
-                const flTxt = this.postData[i].followStatus ? 'Following' : 'Follow';
-                this.postData[i].followText = flTxt;
-                break;
-              }
+        users.subscribe(users => {
+          users.map(user => {
+            if (user.follower.includes(this.userId)) {
+              this.postData.forEach((post, i) => {
+                if (post.userid === user.id) {
+                  this.postData[i]['followStatus'] = true;
+                } else {
+                  this.postData[i]['followStatus'] = false;
+                }
+              });
             }
-            // this.isDataLoaded = false;
-          });
-        });
-        this.isDataLoaded = false;
+          })
+          this.isDataLoaded = false;
+        })
       });
-  }
-
-  // check if followed by the current user and return the status
-  checkFollower(user, initial: boolean): boolean {
-      const index = user.follower.findIndex(item => {
-        return (item.followingUserId === this.userId);
-      });
-      if (!initial) {
-        this.allPosts();
-      } else {
-        return (index !== -1) ? true : false;
-      }
   }
 
   getLikeCounts(event: number): void {
@@ -96,56 +72,16 @@ export class HomeComponent implements OnInit, OnDestroy {
     e.stopPropagation();
   }
 
-  routeToBlogDetail(e: any, postid): void { 
+  routeToBlogDetail(e: any, postid, followStatus): void { 
     this.router.navigate(['/detail'], {
       queryParams: {
         id: postid,
-        userId: this.userId
+        userId: this.userId,
+        followStatus: followStatus
       }
     });
   }
 
-  // set status when click on follow button
-  followUser(userId, e): void {
-    e.preventDefault();
-    this.checkFollow = false;
-    let follower = [];
-    this.interaction.getUser(userId)
-    .pipe(take(1))
-    .pipe(takeUntil(this.unSubscribe))
-    .subscribe(user => {
-
-      for (const [i, item] of user.follower.entries()) {
-        if (item.followingUserId === this.userId) {
-          follower = user.follower;
-          follower.splice(i, 1);
-          this.checkFollow = true;
-          break;
-        }
-      }
-
-      if (!this.checkFollow) {
-        const data = {
-          followingUserId: this.userId,
-          followDate: this.followDate
-        };
-        follower = [...user.follower, data];
-      }
-      // debugger;
-      this.interaction.updateFollower(follower, userId);
-      this.checkFollowerStatus(userId);
-    });
-  }
-
-  // set the follow status after click on the button
-  checkFollowerStatus(uid): void {
-    this.interaction.getUser(uid)
-      .pipe(take(1))
-      .pipe(takeUntil(this.unSubscribe))
-      .subscribe(user => {
-      this.checkFollower(user, false);
-    });
-  }
 
   goOtherUserProfile(userId, e) {
     e.stopPropagation();

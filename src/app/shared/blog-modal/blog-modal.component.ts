@@ -55,11 +55,7 @@ export class BlogModalComponent implements OnInit, OnChanges {
       .pipe(take(1))
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((user) => {
-        user.follower.map(item => {
-          this.userFollowers.push(item.followingUserId);
-        })
-
-        console.log('FOLLOWERS: ', this.userFollowers);
+        this.userFollowers = user.follower;
       })
   }
 
@@ -106,7 +102,6 @@ export class BlogModalComponent implements OnInit, OnChanges {
       this.interaction.updatePost(this.editPostData.id, content, image, video, postDate).then(res => {
         this.modal.approve();
         this.modalStatus.emit();
-        // this.sendNotification();
         this.isBlogPost = false;
         this.router.navigate(['/home']);
       }).catch(err => {

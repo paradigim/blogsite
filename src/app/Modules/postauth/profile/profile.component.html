@@ -9,6 +9,7 @@
         <button 
             class="follow" 
             (click)="followUser(userData.id, $event)"
+            *ngIf="userData.id !== userId"
             [class.is-following]="followStatus"
         >
             {{followText}}

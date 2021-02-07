@@ -31,6 +31,6 @@ textarea.comment-box {
 
 .emoji-list {
     position: absolute;
-    bottom: 40px;
-    left: 0;
+    bottom: -130px;
+    left: 40px;
 }
