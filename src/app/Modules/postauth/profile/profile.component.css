@@ -189,3 +189,25 @@
 .user-info {
     margin-bottom: 40px;
 }
+
+.follow {
+    border: 1px solid #666;
+    background: none;
+    border-radius: 4px;
+    padding: 6px 15px;
+    color: #666;
+    font-size: 13px;
+    outline: none;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 20px;
+    margin-top: 5px;
+    cursor: pointer;
+}
+
+.is-following {
+    background: var(--prime-color);
+    color: #fff;
+    border-color: var(--prime-color);
+}

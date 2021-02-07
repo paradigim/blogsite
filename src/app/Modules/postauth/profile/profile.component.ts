@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/auth';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { filter, skipWhile, take, takeUntil } from 'rxjs/operators';
@@ -22,6 +23,11 @@ export class ProfileComponent implements OnInit {
   otherUserId = '';
   otherUserStatus: boolean;
   defaultProfileImage = './assets/images/default.png';
+  ngUnSubscribe = new Subject();
+  userId = '';
+  followStatus: boolean;
+  followText = 'Follow';
+  isFollowedByCurrentUser: any;
 
   constructor(
     private interaction: InteractionService,
@@ -29,8 +35,15 @@ export class ProfileComponent implements OnInit {
     private date: DateService,
     private route: ActivatedRoute,
     private cdref: ChangeDetectorRef,
-    private router: Router
-  ) { }
+    private router: Router,
+    private afAuth: AngularFireAuth
+  ) { 
+    this.afAuth.authState.subscribe(user => {
+      if (user){
+        this.userId = user.uid;
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.isDataLoaded = true;
@@ -78,6 +91,11 @@ export class ProfileComponent implements OnInit {
           .pipe(take(1))
           .subscribe((data: any) => {
             this.userData = data;
+            this.isFollowedByCurrentUser = this.userData.follower.filter(item => item === this.userId);
+            if (this.userData.follower.includes(this.userId)) {
+              this.followStatus = true;
+              this.followText = 'Following';
+            }
             this.getFollowerData(this.userData);
             this.getFollowingData(this.userData.id);
             this.getUserPosts(this.userData.id);
@@ -122,6 +140,28 @@ export class ProfileComponent implements OnInit {
   stopDefaultBehaviour(e): void {
     e.preventDefault();
     e.stopPropagation();
+  }
+
+  followUser(followedUserId, e) {
+    e.preventDefault();
+    let follower = [];
+    this.interaction.getUser(followedUserId)
+    .pipe(take(1))
+    .pipe(takeUntil(this.ngUnSubscribe))
+    .subscribe(user => {
+      const isFollowerExist = user.follower.filter(item => item === this.userId);
+      if (isFollowerExist.length > 0) {
+        follower = user.follower.filter(item => item !== this.userId);
+        this.interaction.updateFollower(follower, followedUserId);
+        this.followText = 'Follow'
+        this.followStatus = false;
+      } else {
+        follower = [...user.follower, this.userId];
+        this.interaction.updateFollower(follower, followedUserId);
+        this.followText = 'Following';
+        this.followStatus = true;
+      }
+    })
   }
 
 

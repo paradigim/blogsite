@@ -6,6 +6,13 @@
         </div>
         <div class="user-name text-center">{{ userData.name }}</div>
         <div class="user-unique-name text-center">{{ userData.uniqueId }}</div>
+        <button 
+            class="follow" 
+            (click)="followUser(userData.id, $event)"
+            [class.is-following]="followStatus"
+        >
+            {{followText}}
+        </button>
         <div class="flr-block">
             <div class="ui labeled button btn-gap">
                 <div class="ui button green u-flrn">
