@@ -19,7 +19,7 @@
                     </div>
                     <div class='follow-status' *ngIf="item.followStatus">Following</div>
                 </div>
-                <div class="user-unique-id">{{ item.uniqueId }}</div>
+                <div class="user-unique-id" (click)="$event.stopPropagation()">{{ item.uniqueId }}</div>
                 <div class='user-blog-content'>
                     {{ item.contents }}
                 </div>

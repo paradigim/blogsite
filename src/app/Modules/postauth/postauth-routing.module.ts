@@ -16,6 +16,10 @@ const routes: Routes = [
         loadChildren: () => import('../postauth/notification/notification.module').then(m => m.NotificationModule)
       },
       {
+        path: 'explore',
+        loadChildren: () => import('../postauth/explore/explore.module').then(m => m.ExploreModule)
+      },
+      {
         path: 'bookmarks',
         loadChildren: () => import('../postauth/bookmarks/bookmarks.module').then(m => m.BookmarksModule)
       },

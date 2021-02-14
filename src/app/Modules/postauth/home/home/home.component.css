@@ -81,6 +81,7 @@
 .user-unique-id {
     color: #666;
     font-size: 14px;
+    cursor: text;
 }
 
 .user-intro-follow {
@@ -91,7 +92,7 @@
 
 .follow-status {
     font-size: 13px;
-    color: var(--prime-color);
+    color: var(--third-color);
     font-weight: bold;
 }
 

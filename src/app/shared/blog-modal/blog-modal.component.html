@@ -34,13 +34,14 @@
                   (change)='loadFile($event)' 
                   type="file"
                   value=""
+                  accept="image/png, image/jpeg, image/jpg, image/GIF"
                   #imageUpload>
               </label>
               
-              <label class='upload-pic'>
+              <!-- <label class='upload-pic'>
                 <i class="video icon"></i>
-                <!-- <input (change)='loadFile($event)' type='file'> -->
-              </label>
+                <input (change)='loadFile($event)' type='file'>
+              </label> -->
 
               <label class='upload-pic emojis'>
                 <i class="smile outline icon" (click)="showEmojiMart()"></i>

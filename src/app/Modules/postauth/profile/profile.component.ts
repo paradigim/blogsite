@@ -164,5 +164,10 @@ export class ProfileComponent implements OnInit {
     })
   }
 
+  stopDefaultBrowserBehaviour(e) {
+    e.stopPropagation();
+    e.cancelBubble=true;
+    e.returnValue=false;
+  }
 
 }

@@ -1,0 +1,33 @@
+<div>
+    <div class="cont">
+
+        <div class="search-input">
+            <div class="ui small fluid icon input loading">
+                <input type="text" placeholder="Search..." (input)="filterInputData($event)">
+                <i class="search icon" *ngIf="searching"></i>
+            </div>
+        </div>
+
+                
+        <div class="result-container">
+            <div *ngFor="let item of filteredItems" (click)="redirectToUserProfile(item.id, $event)">
+                <div class="user-detail">
+                    <div class="user-img">
+                        <img [src]="item.imageURL" />
+                    </div>
+                    <div class="right-details">
+                        <div class="name-flw">
+                            <div class="user-name">{{ item.name }}</div>
+                            <div class="dot"></div>
+                            <div class="user-follower-size">{{ item.follower.length }} Follower</div>
+                        </div>
+                        <div class="user-unique-id" (click)="stopDefaultBehaviour($event)">{{ item.uniqueId }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <app-right-side-menu></app-right-side-menu>
+</div>

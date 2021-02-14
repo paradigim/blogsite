@@ -52,12 +52,11 @@ export class HomeComponent implements OnInit, OnDestroy {
               this.postData.forEach((post, i) => {
                 if (post.userid === user.id) {
                   this.postData[i]['followStatus'] = true;
-                } else {
-                  this.postData[i]['followStatus'] = false;
-                }
+                } 
               });
             }
           })
+          console.log('POST DATA: ', this.postData);
           this.isDataLoaded = false;
         })
       });
@@ -68,8 +67,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   stopDefaultBehaviour(e): void {
-    e.preventDefault();
-    e.stopPropagation();
+    e.cancelBubble=true;
+    e.returnValue=false;
   }
 
   routeToBlogDetail(e: any, postid, followStatus): void { 

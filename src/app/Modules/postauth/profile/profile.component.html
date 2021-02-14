@@ -56,7 +56,7 @@
                 </div>
                 <!-- <button class="follow">Follow</button> -->
             </div>
-            <div class="user-unique-id">{{ post.uniqueId }}</div>
+            <div class="user-unique-id" (click)="stopDefaultBrowserBehaviour($event)">{{ post.uniqueId }}</div>
             <div class='user-blog-content'>
                 {{ post.contents }}
             </div>

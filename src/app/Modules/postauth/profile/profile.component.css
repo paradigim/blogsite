@@ -211,3 +211,9 @@
     color: #fff;
     border-color: var(--prime-color);
 }
+
+.user-unique-id {
+    color: #666;
+    font-size: 14px;
+    cursor: text;
+}

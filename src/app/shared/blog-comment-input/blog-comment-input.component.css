@@ -33,4 +33,5 @@ textarea.comment-box {
     position: absolute;
     bottom: -130px;
     left: 40px;
+    z-index: 1;
 }
