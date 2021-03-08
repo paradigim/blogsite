@@ -143,6 +143,7 @@ export class BlogModalComponent implements OnInit, OnChanges {
     reader.onload = () => {
       this.imageURL = reader.result as string;
       this.postForm.get('imageUrl').setValue(this.imageURL);
+      this.postButton = false;
     };
     reader.readAsDataURL(file);
   }
@@ -161,7 +162,11 @@ export class BlogModalComponent implements OnInit, OnChanges {
     if (e.target.value) {
       this.postButton = false;
     } else {
-      this.postButton = true;
+      if (this.imageURL) {
+        this.postButton = false;
+      } else {
+        this.postButton = true;
+      }
     }
   }
 

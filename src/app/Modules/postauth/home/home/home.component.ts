@@ -5,6 +5,7 @@ import { delay, skipWhile, take, takeUntil } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Subject } from 'rxjs';
 import { DateService } from 'src/app/services/date.service';
+// import { PushNotification } from 'src/app/services/push-notification.service';
 
 @Component({
   selector: 'app-home',
@@ -20,12 +21,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   isDataLoaded = false;
   unSubscribe = new Subject();
   followDate = new Date().getTime();
+  message;
 
   constructor(
     private interaction: InteractionService,
     private router: Router,
     private afAuth: AngularFireAuth,
-    private date: DateService
+    private date: DateService,
+    // private pushNotificationService: PushNotification
   ) {
     this.afAuth.authState.subscribe(user => {
       if (user){
@@ -37,6 +40,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.isDataLoaded = true;
     this.allPosts();
+    // this.pushNotificationService.requestPermission();
+    // this.pushNotificationService.receiveMessage();
+    // this.message = this.pushNotificationService.currentMessage;
   }
 
   // set following status on init

@@ -10,3 +10,33 @@
     flex: 1;
     margin-right: 300px;
 }
+
+.topbar-cont {
+    padding: 10px 0;
+    background: #fff;
+    display: none;
+    position: relative;
+}
+
+.menubar {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 20px;
+}
+
+.menubar input {
+    display: none;
+}
+
+@media screen and (max-width: 768px) {
+    .main-container {
+        margin-right: auto
+    }
+    .app-container {
+        width: 100%;
+    }
+    .topbar-cont {
+        display: block;
+    }
+}

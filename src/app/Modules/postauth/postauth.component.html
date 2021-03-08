@@ -1,7 +1,19 @@
 
 
+<div class="topbar-cont">
+    <div class="topbar-logo text-center">LOGO</div>
+    <label class="menubar">
+        <input type="checkbox">
+        <i class="bars icon" (click)="sideMenuStatus()"></i>
+    </label>
+</div>
+
 <div class="app-container">
-    <app-side-menu></app-side-menu>
+    <app-side-menu 
+        class="test" 
+        [menuStatus]="menuStatus"
+        (changeMenuStatus)="setStatus($event)"
+    ></app-side-menu>
 
     <div class='main-container'>
         <router-outlet></router-outlet>

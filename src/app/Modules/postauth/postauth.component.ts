@@ -6,11 +6,22 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./postauth.component.css']
 })
 export class PostauthComponent implements OnInit {
+
+  menuStatus = false;
+
   constructor(
   ) { }
 
   ngOnInit(): void {
     
+  }
+
+  sideMenuStatus() {
+    this.menuStatus = !this.menuStatus;
+  }
+
+  setStatus(e) {
+    this.menuStatus = e;
   }
 
 }

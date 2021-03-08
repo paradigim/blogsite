@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, ɵɵNgOnChangesFeature } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { DataExchangeService } from 'src/app/services/data-exchange.service';
 import { InteractionService } from 'src/app/services/interaction.service';
@@ -6,7 +6,10 @@ import { InteractionService } from 'src/app/services/interaction.service';
 @Component({
   selector: 'app-side-menu',
   templateUrl: './side-menu.component.html',
-  styleUrls: ['./side-menu.component.css']
+  styleUrls: ['./side-menu.component.css'],
+  host: {
+    '(document:click)': 'onClick($event)',
+  },
 })
 export class SideMenuComponent implements OnInit {
   userName = 'Anisya olga';
@@ -15,6 +18,9 @@ export class SideMenuComponent implements OnInit {
   modalShow = false;
   uniqueUserId = '';
   userNotificationAlert = []
+
+  @Input() menuStatus;
+  @Output() changeMenuStatus = new EventEmitter<boolean>();
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -36,10 +42,24 @@ export class SideMenuComponent implements OnInit {
       });
    });
 
+
    this.dataService.userAlertForNotification$
     .subscribe(data => {
       this.userNotificationAlert = data;
     })
+  }
+
+  onClick(e) {
+    console.log('EVENT: ', e.target.parentElement.className);
+    if (e.target.parentElement.className !== 'menubar' && this.menuStatus === true) {
+      this.menuStatus = false;
+      this.changeMenuStatus.emit(this.menuStatus);
+      console.log('MENU STATUS----', this.menuStatus);
+    }
+  }
+
+  ngOnChanges() {
+    console.log('P MENU: ', this.menuStatus);
   }
 
   changeModalStatus(): void {

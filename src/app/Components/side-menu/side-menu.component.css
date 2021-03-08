@@ -12,7 +12,11 @@
     width: 300px;
     overflow-y: auto;
     border-right: 1px solid #ddd;
+    background: #fff;
+    z-index: 11;
 }
+
+
 
 /* app logo design */
 .app-logo {
@@ -79,4 +83,19 @@
     margin-top: 10px;
     cursor: pointer;
     outline: none;
+}
+
+@media screen and (max-width: 768px) {
+    :host {
+        width: 0;
+    }
+    .side-menu-container {
+        transition: .3s;
+        left: -100%;
+        padding-left: 15px;
+        width: 80%;
+    }
+    .showMenu.side-menu-container {
+        left: 0;
+    }
 }

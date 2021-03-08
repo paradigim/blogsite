@@ -43,10 +43,10 @@ export class ExploreComponent implements OnInit {
     this.searching = false;
   }
 
-  stopDefaultBehaviour(e) {
-    e.cancelBubble=true;
-    e.returnValue=false;
-  }
+  // stopDefaultBehaviour(e) {
+  //   e.cancelBubble=true;
+  //   e.returnValue=false;
+  // }
 
   redirectToUserProfile(userId, e) {
     this.router.navigate(['/profile'], {

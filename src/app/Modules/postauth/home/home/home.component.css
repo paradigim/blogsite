@@ -82,6 +82,7 @@
     color: #666;
     font-size: 14px;
     cursor: text;
+    display: inline-block;
 }
 
 .user-intro-follow {
