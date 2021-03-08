@@ -8,12 +8,12 @@ export class PushNotification {
 
   constructor(private angularFireMessaging: AngularFireMessaging) {
 
-    this.angularFireMessaging.messages.subscribe(
-      (messaging) => {
-        // messaging.onMessage = messaging.onMessage.bind(messaging);
-        // messaging.onTokenRefresh = messaging.onTokenRefresh.bind(messaging);
-      }
-    );
+    // this.angularFireMessaging.messaging.subscribe(
+    //   (messaging) => {
+    //     messaging.onMessage = messaging.onMessage.bind(messaging);
+    //     messaging.onTokenRefresh = messaging.onTokenRefresh.bind(messaging);
+    //   }
+    // );
 
   }
   
