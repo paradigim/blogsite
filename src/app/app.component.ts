@@ -13,8 +13,11 @@ export class AppComponent {
   constructor(private pushNotificationService: PushNotification) { }
 
   ngOnInit() {
-    this.pushNotificationService.requestPermission();
-    this.pushNotificationService.receiveMessage();
-    this.message = this.pushNotificationService.currentMessage;
+    
   }
+
+  // {
+  //   "publicKey":"BF7ekuEOKJrtvX4ornpRrZkkv_ALrNVb4r5RzeqzOgZP-oorGGxQsUROVK2oTymCDEkQKlaNb2WVYplrrtp9MtE",
+  //   "privateKey":"M9B2G_q8S6QaN_QwOhshyNa-4tvhm4KzsSrNF51ZNGg"
+  // }
 }

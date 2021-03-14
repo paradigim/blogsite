@@ -21,6 +21,7 @@ import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { PushNotification } from './services/push-notification.service';
 import { AsyncPipe } from '../../node_modules/@angular/common';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 
 
@@ -45,6 +46,7 @@ import { AsyncPipe } from '../../node_modules/@angular/common';
       adClient: 'ca-pub-9786874165700163',
       adSlot: 7259870550,
     }),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
   providers: [PushNotification, AsyncPipe],
