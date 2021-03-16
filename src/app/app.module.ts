@@ -22,6 +22,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { PushNotification } from './services/push-notification.service';
 import { AsyncPipe } from '../../node_modules/@angular/common';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { HttpClientModule } from '@angular/common/http';
 
 
 
@@ -47,6 +48,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
       adSlot: 7259870550,
     }),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    HttpClientModule
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
   providers: [PushNotification, AsyncPipe],
