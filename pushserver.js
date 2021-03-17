@@ -8,6 +8,8 @@ const vapidKeys = {
 
 const app = express();
 
+app.use(express.static(__dirname + '/dist/blog'));
+
 webpush.setVapidDetails(
     'mailto:example@yourdomain.org',
     vapidKeys.publicKey,
