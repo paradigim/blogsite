@@ -2,7 +2,7 @@
   "name": "blog",
   "version": "0.0.0",
   "scripts": {
-    "heroku-postbuild": "ng build --prod",
+    "postinstall": "ng build --prod",
     "ng": "ng",
     "start": "node pushserver.js",
     "build": "ng build",
