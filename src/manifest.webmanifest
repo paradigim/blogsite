@@ -6,6 +6,11 @@
   "display": "standalone",
   "scope": "./",
   "start_url": "./",
+  "gcm_sender_id": "97460591548",
+  "related_applications": [{
+    "platform": "webapp",
+    "url": "https://blog-9a5ab.web.app.com/manifest.webmanifest"
+  }],
   "icons": [
     {
       "src": "assets/icons/icon-72x72.png",
