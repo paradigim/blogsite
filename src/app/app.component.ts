@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/auth';
 import { SwPush, SwUpdate } from '@angular/service-worker';
+import { DataExchangeService } from './services/data-exchange.service';
+import { InteractionService } from './services/interaction.service';
 import { PushNotification } from './services/push-notification.service';
 
 @Component({
@@ -12,30 +15,29 @@ export class AppComponent {
 
   defferedPrompt;
   subscriptionObj: any;
+  userId;
 
   VAPID_PUBLIC_KEY = "BF7ekuEOKJrtvX4ornpRrZkkv_ALrNVb4r5RzeqzOgZP-oorGGxQsUROVK2oTymCDEkQKlaNb2WVYplrrtp9MtE";
 
   constructor(
     private swPush: SwPush,
     private swUpdate: SwUpdate,
-    private pushNotificationService: PushNotification
+    private pushNotificationService: PushNotification,
+    private afAuth: AngularFireAuth,
+    private interaction: InteractionService,
+    private data: DataExchangeService
   ) {}
 
   ngOnInit() {
-    // window.addEventListener('beforeinstallprompt', (e) => {
-    //   e.preventDefault();
-    //   this.defferedPrompt = e;
-    //   this.defferedPrompt.prompt();
-
-    //   this.defferedPrompt.userChoice.then(choice => {
-    //     if (choice.outcome === 'accepted') {
-    //       console.log('Accepted');
-    //     }
-    //     this.defferedPrompt = null;
-    //   })
-    // })
-    // this.updateApp();
-    this.subscribeToNotifications();
+    this.afAuth.authState.subscribe(user => {
+      if (user){
+        this.userId = user.uid;
+        this.subscribeToNotifications(this.userId);
+      }
+    });
+    if (window.matchMedia('(display-mode: standalone)').matches) {  
+      console.log('Not installed');
+    }
     this.getPushNotificationMsg();
     this.pushActionOnClick();
   }
@@ -60,9 +62,7 @@ export class AppComponent {
     })
   }
 
-  subscribeToNotifications() {
-    console.log('ENABLED: ', this.swPush.isEnabled);
-
+  subscribeToNotifications(userId) {
     if (this.swPush.isEnabled) {
       this.swPush.requestSubscription({
         serverPublicKey: this.VAPID_PUBLIC_KEY
@@ -70,13 +70,20 @@ export class AppComponent {
       .then(sub => {
         console.log('SUB: ', sub);
         this.subscriptionObj = sub;
-        // this.pushNotificationService.addPushSubscriber(sub).subscribe()
+        this.data.saveSubcription(this.subscriptionObj);
+        this.interaction.getUser().subscribe(data => {
+          if (!data.uniqueEndpoint) {
+            console.log('SUB STRINGI: ', JSON.stringify(sub));
+            this.interaction.saveUniqueEndpoint(JSON.stringify(sub));
+          }
+        })
       })
       .catch(err => console.error("Could not subscribe to notifications", err));
     }
   }
 
-  sendNotificationRequest() {
-    this.pushNotificationService.addPushSubscriber(this.subscriptionObj).subscribe()
-  }
+  // sendNotificationRequest() {
+  //   console.log('SUBSCRIPTION: ', this.subscriptionObj);
+  //   this.pushNotificationService.addPushSubscriber(this.subscriptionObj).subscribe();
+  // }
 }

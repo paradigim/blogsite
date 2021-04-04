@@ -60,13 +60,12 @@ export class SideMenuItemComponent implements OnInit {
         this.interaction.getPostWithId(data[i].notificationPostId)
         .pipe(take(1))
         .subscribe(post => {
-          const postReadByUser = post.read.filter(item => item === this.userId);
+          const postReadByUser = post?.read.filter(item => item === this.userId);
           if (this.userToReadNotification && this.text === 'Notifications' && userDeleteAllow.length > 0 && userdeletedNoti.length <= 0 && postReadByUser.length <= 0) {
             this.alert = true;
           }
         })
       }
-      console.log('FETCH NOTI: ', data);
     })
   }
 

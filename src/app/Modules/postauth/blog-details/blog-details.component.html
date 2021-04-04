@@ -3,19 +3,26 @@
     <div class='home-wrapper'>
 
         <div class='ec-blog-post'>
-            <div class='user-blog-post'>
+            <div class='user-blog-post r-hide'>
                 <img [src]="postData.userImage">
             </div>
             <div class='user-blog-wrapper'>
-                <div class="user-intro-follow">
-                    <div class='user-blog-info'>
-                        <div class='user-blog-name' (click)="goOtherUserProfile(postData.userid)">{{ postData.userName }}</div>
-                        <div class='dot'></div>
-                        <div class='user-blog-post-time'>{{ date.postDateFormat(postData.postDate) }}</div>
+                <div class="r-cont">
+                    <div class='user-blog-post'>
+                        <img [src]="postData.userImage">
                     </div>
-                    <div class='follow-status' *ngIf="followStatus">Following</div>
+                    <div class="user-data-cont">
+                        <div class="user-intro-follow">
+                            <div class='user-blog-info'>
+                                <div class='user-blog-name' (click)="goOtherUserProfile(postData.userid)">{{ postData.userName }}</div>
+                                <div class='dot'></div>
+                                <div class='user-blog-post-time'>{{ date.postDateFormat(postData.postDate) }}</div>
+                            </div>
+                            <div class='follow-status' *ngIf="followStatus">Following</div>
+                        </div>
+                        <div class="user-unique-id">{{ postData.uniqueId }}</div>
+                    </div>
                 </div>
-                <div class="user-unique-id">{{ postData.uniqueId }}</div>
                 <div class='user-blog-content'>
                     {{ postData.contents }}
                 </div>

@@ -24,6 +24,7 @@
     height: 60px;
     border-radius: 50%;
     overflow: hidden;
+    margin-right: 10px;
 }
 
 .user-blog-post img {
@@ -33,7 +34,6 @@
 
 .user-blog-wrapper {
     flex: 1;
-    margin-left: 10px;
 }
 
 .user-blog-info {
@@ -119,4 +119,29 @@
     cursor: pointer;
     text-decoration: underline;
     color: var(--prime-color);
+}
+
+.r-cont {
+    display: flex;
+}
+
+.r-cont .user-blog-post {
+    display: none;
+}
+
+@media screen and (max-width: 768px) {
+    .r-cont .user-blog-post {
+        display: block;
+    }
+    .r-hide {
+        display: none;
+    }
+    .ec-blog-post {
+        padding: 10px 0;
+    }
+    .r-cont,
+    .user-blog-content,
+    .blog-activities {
+        padding: 0 15px;
+    }
 }

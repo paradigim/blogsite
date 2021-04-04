@@ -18,6 +18,12 @@ export class DataExchangeService {
   private userAlertForNotification = new BehaviorSubject(null);
   public userAlertForNotification$ = this.userAlertForNotification.asObservable();
 
+  private subscription = new BehaviorSubject(null);
+  public subscription$ = this.subscription.asObservable();
+
+  private isNewPost = new BehaviorSubject(false);
+  public isNewPost$ = this.isNewPost.asObservable();
+
   constructor() { }
 
   setUserId(id: string): void {
@@ -38,5 +44,21 @@ export class DataExchangeService {
 
   saveUsersForNotificationAlert(followers: any) {
     this.userAlertForNotification.next(followers);
+  }
+
+  saveSubcription(data) {
+    this.subscription.next(data);
+  }
+
+  getSubscription() {
+    return this.subscription.value;
+  }
+
+  setNewPostStatus(status) {
+    this.isNewPost.next(status);
+  }
+
+  getNewPostStatus() {
+    return this.isNewPost.value;
   }
 }

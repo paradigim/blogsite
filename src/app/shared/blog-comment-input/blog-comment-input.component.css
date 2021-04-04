@@ -35,3 +35,9 @@ textarea.comment-box {
     left: 40px;
     z-index: 1;
 }
+
+@media screen and (max-width: 768px) {
+    .comment-wrapper {
+        padding: 0 15px;
+    }
+ }

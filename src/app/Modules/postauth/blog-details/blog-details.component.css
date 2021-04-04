@@ -23,6 +23,7 @@
     height: 60px;
     border-radius: 50%;
     overflow: hidden;
+    margin-right: 10px;
 }
 
 .user-blog-post img {
@@ -32,7 +33,10 @@
 
 .user-blog-wrapper {
     flex: 1;
-    margin-left: 10px;
+}
+
+.r-cont {
+    display: flex;
 }
 
 .user-blog-info {
@@ -116,4 +120,22 @@
 .data-loader .loader {
     top: 50%;
     transform: translateY(-50%);
+}
+
+.r-cont .user-blog-post {
+    display: none;
+}
+
+@media screen and (max-width: 768px) {
+    .r-hide {
+        display: none;
+    }
+    .ec-blog-post {
+        padding: 10px 0;
+    }
+    .r-cont,
+    .user-blog-content,
+    .blog-activities {
+        padding: 0 15px;
+    }
 }

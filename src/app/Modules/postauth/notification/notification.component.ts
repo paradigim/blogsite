@@ -8,6 +8,8 @@ import { DateService } from 'src/app/services/date.service';
 import { Router } from '@angular/router';
 import { isNgTemplate } from '@angular/compiler';
 import { post } from 'jquery';
+import { PushNotification } from 'src/app/services/push-notification.service';
+import { DataExchangeService } from 'src/app/services/data-exchange.service';
 
 @Component({
   selector: 'app-notification',
@@ -32,7 +34,8 @@ export class NotificationComponent implements OnInit {
     private interaction: InteractionService,
     private date: DateService,
     private router: Router,
-    private cdref: ChangeDetectorRef
+    private pushNotificationService: PushNotification,
+    private data: DataExchangeService
   ) {
   }
 
@@ -43,14 +46,6 @@ export class NotificationComponent implements OnInit {
         this.getNotification();
       }
     });
-
-    // this.dataService.userAlertForNotification$
-    // .subscribe(data => {
-    //   this.userNotificationAlert = data;
-    //   console.log('DATA---------', this.userNotificationAlert);
-    // })
-
-    // this.setReadClass();
   }
 
   checkRead(readData) {
@@ -72,11 +67,6 @@ export class NotificationComponent implements OnInit {
   }
 
   getNotification() {
-    // this.interaction.getAllUser()
-    //   .pipe(takeUntil(this.ngUnsubscribe))
-    //   .subscribe(user => {
-    //     this.userData = user;
-    //   });
     this.interaction.getAllNotification()
       .pipe(take(1))
       .subscribe(data => {
@@ -92,7 +82,6 @@ export class NotificationComponent implements OnInit {
             });
           }
         })
-        console.log('DELETE: ', this.postNotificationIds);
         if (this.postNotificationIds.length > 0) {
           this.getAllNotificationPost(this.postNotificationIds);
         } else {
@@ -102,17 +91,20 @@ export class NotificationComponent implements OnInit {
   }
 
   getAllNotificationPost(postIds) {
+    console.log('POST IDS: ', postIds);
     this.interaction.getAllPosts()
       .pipe(take(1))
       .subscribe(posts => {
-        console.log('ALL POSTS: ', posts);
-        console.log('POST IDS: ', postIds);
+        debugger;
         postIds.map((item, i) => {
           this.postToShowInNotification = [...this.postToShowInNotification, ...posts.filter(val => val.id === item.postId)];
           this.postToShowInNotification[i].notificationId = item.notificationId;
           this.postToShowInNotification[i].deletedBy = item.deletedBy;
         });
-        console.log('POSTS: ', this.postToShowInNotification);
+        console.log('SUB DATA------------------', this.data.getSubscription());
+        // this.pushNotificationService.addPushSubscriber(this.data.getSubscription()).subscribe(() => {
+        //   this.isDataLoaded = false;
+        // });
         this.isDataLoaded = false;
       },
       (err) => {

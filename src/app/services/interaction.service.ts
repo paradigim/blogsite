@@ -6,6 +6,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { map, skipWhile, take, takeUntil } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
 import { DataExchangeService } from './data-exchange.service';
+import { data } from 'jquery';
 
 @Injectable({
   providedIn: 'root'
@@ -410,6 +411,13 @@ export class InteractionService implements OnDestroy {
     })
 
     // this.afs.collection('posts', ref => ref.where('ref.userid', '==', this.userId));
+  }
+
+  // pritam
+  saveUniqueEndpoint(endpoint) {
+    return this.afs.collection('users').doc(this.userId).update({
+      uniqueEndpoint: endpoint
+    });
   }
 
   // on destroy of the component

@@ -46,3 +46,9 @@
     text-transform: capitalize;
     color: #000;
 }
+
+@media screen and (max-width: 768px) {
+    .all-comment-container {
+        padding: 0 15px
+    }
+}

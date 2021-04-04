@@ -7,6 +7,7 @@ import * as data from 'src/assets/language.json';
 import { skipWhile, take, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { DataExchangeService } from 'src/app/services/data-exchange.service';
+import { PushNotification } from 'src/app/services/push-notification.service';
 
 @Component({
   selector: 'app-blog-modal',
@@ -40,7 +41,8 @@ export class BlogModalComponent implements OnInit, OnChanges {
     private formBuilder: FormBuilder,
     private interaction: InteractionService,
     public router: Router,
-    private dataService: DataExchangeService
+    private dataService: DataExchangeService,
+    private pushNotificationService: PushNotification
   ) { }
 
   ngOnInit(): void {
@@ -110,21 +112,27 @@ export class BlogModalComponent implements OnInit, OnChanges {
     } else {
       const id = this.interaction.createId();
       this.interaction.postNew(content, postDate, image, video, id).subscribe(res => {
-        console.log('RESPONSE: ', res);
         if (this.userFollowers.length > 0) {
           this.interaction.setNotification(id, this.userFollowers).then(() => {
             this.dataService.saveUsersForNotificationAlert(this.userFollowers);
             this.interaction.updateUserNotificationReadStatus(this.userFollowers);
+            this.dataService.setNewPostStatus(true);
             this.modal.approve();
             this.modalStatus.emit();
             this.isBlogPost = false;
-            this.router.navigate(['/home']);
+            // this.router.navigate(['/home']);
+            this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+              this.router.navigate(['/home']);
+            });
           });
         } else {
           this.modal.approve();
           this.modalStatus.emit();
           this.isBlogPost = false;
-          this.router.navigate(['/home']);
+          //this.router.navigate(['/home']);
+          this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+            this.router.navigate(['/home']);
+          });
         }
       },
       err => {

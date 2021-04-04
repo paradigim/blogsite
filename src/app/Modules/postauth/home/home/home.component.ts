@@ -5,6 +5,8 @@ import { delay, skipWhile, take, takeUntil } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Subject } from 'rxjs';
 import { DateService } from 'src/app/services/date.service';
+import { PushNotification } from 'src/app/services/push-notification.service';
+import { DataExchangeService } from 'src/app/services/data-exchange.service';
 // import { PushNotification } from 'src/app/services/push-notification.service';
 
 @Component({
@@ -28,7 +30,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     private router: Router,
     private afAuth: AngularFireAuth,
     private date: DateService,
-    // private pushNotificationService: PushNotification
+    private pushNotificationService: PushNotification,
+    private data: DataExchangeService
   ) {
     this.afAuth.authState.subscribe(user => {
       if (user){
@@ -38,11 +41,34 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    console.log('HELLO INIT');
     this.isDataLoaded = true;
     this.allPosts();
-    // this.pushNotificationService.requestPermission();
-    // this.pushNotificationService.receiveMessage();
-    // this.message = this.pushNotificationService.currentMessage;
+    this.showNotificationToUser();
+  }
+
+  showNotificationToUser() {
+    const notificationShowStatus = this.data.getNewPostStatus();
+    console.log('STATUS NOTI: ', notificationShowStatus);
+    if (notificationShowStatus) {
+      this.interaction.getUser()
+      .subscribe(user => {
+        console.log('CURRENT USER: ', user);
+        this.fetchUserTosendNotification(user.follower);
+      })
+    }
+  }
+
+  fetchUserTosendNotification(followers) {
+    followers.forEach(userid => {
+      this.interaction.getUser(userid)
+      .subscribe(user => {
+        if (user.uniqueEndpoint) {
+          console.log('SUB OBJ: ', JSON.parse(user.uniqueEndpoint));
+          this.pushNotificationService.addPushSubscriber(JSON.parse(user.uniqueEndpoint)).subscribe();
+        }
+      });
+    });
   }
 
   // set following status on init
@@ -62,7 +88,6 @@ export class HomeComponent implements OnInit, OnDestroy {
               });
             }
           })
-          console.log('POST DATA: ', this.postData);
           this.isDataLoaded = false;
         })
       });
