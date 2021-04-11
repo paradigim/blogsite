@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { InteractionService } from 'src/app/services/interaction.service';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { format } from 'date-fns';
 import * as data from 'src/assets/language.json';
 import { skipWhile, take, takeUntil } from 'rxjs/operators';
@@ -36,6 +36,7 @@ export class BlogModalComponent implements OnInit, OnChanges {
   comment = '';
   ngUnsubscribe = new Subject();
   userFollowers = [];
+  currentRoute = '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -43,7 +44,9 @@ export class BlogModalComponent implements OnInit, OnChanges {
     public router: Router,
     private dataService: DataExchangeService,
     private pushNotificationService: PushNotification
-  ) { }
+  ) {
+    this.currentRoute = this.router.url;
+  }
 
   ngOnInit(): void {
     this.postForm = this.formBuilder.group({
@@ -111,28 +114,42 @@ export class BlogModalComponent implements OnInit, OnChanges {
       });
     } else {
       const id = this.interaction.createId();
-      this.interaction.postNew(content, postDate, image, video, id).subscribe(res => {
+      this.interaction.postNew(content, postDate, image, video, id)
+      .pipe(take(1))
+      .subscribe(res => {
         if (this.userFollowers.length > 0) {
           this.interaction.setNotification(id, this.userFollowers).then(() => {
             this.dataService.saveUsersForNotificationAlert(this.userFollowers);
             this.interaction.updateUserNotificationReadStatus(this.userFollowers);
             this.dataService.setNewPostStatus(true);
+            this.dataService.loadAfterNewPost(true); // pritam
             this.modal.approve();
             this.modalStatus.emit();
             this.isBlogPost = false;
-            // this.router.navigate(['/home']);
-            this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-              this.router.navigate(['/home']);
-            });
+            // if (this.currentRoute === '/home') {
+            //   window.location.reload();
+            // } else {
+            //   this.router.navigate(['/home']);
+            // }
+            this.router.navigate(['/home']);
+            // this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+            //   this.router.navigate(['/home']);
+            // });
           });
         } else {
+          this.dataService.loadAfterNewPost(true); //pritam
           this.modal.approve();
           this.modalStatus.emit();
           this.isBlogPost = false;
-          //this.router.navigate(['/home']);
-          this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-            this.router.navigate(['/home']);
-          });
+          // if (this.currentRoute === '/home') {
+          //   window.location.reload();
+          // } else {
+          //   this.router.navigate(['/home']);
+          // }
+          this.router.navigate(['/home']);
+          // this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+          //   this.router.navigate(['/home']);
+          // });
         }
       },
       err => {

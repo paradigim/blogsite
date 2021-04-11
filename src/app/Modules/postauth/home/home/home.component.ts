@@ -42,9 +42,19 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     console.log('HELLO INIT');
+    this.data.isLoad$
+    .subscribe(isStatus => {
+      console.log('STATUS: ', isStatus);
+      if (isStatus) {
+        console.log('INSIDE STATUS: ', isStatus);
+        this.allPosts();
+        // this.data.loadAfterNewPost(false);
+      }
+    });
     this.isDataLoaded = true;
     this.allPosts();
     this.showNotificationToUser();
+    
   }
 
   showNotificationToUser() {
@@ -52,6 +62,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     console.log('STATUS NOTI: ', notificationShowStatus);
     if (notificationShowStatus) {
       this.interaction.getUser()
+      .pipe(take(1))
       .subscribe(user => {
         console.log('CURRENT USER: ', user);
         this.fetchUserTosendNotification(user.follower);
@@ -73,14 +84,20 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   // set following status on init
   allPosts(): void {
+    console.log('ALLPOST - 1');
     const users = this.interaction.getAllUser().pipe(takeUntil(this.unSubscribe));
     this.interaction.getAllPosts()
       .pipe(takeUntil(this.unSubscribe))
+      .pipe(take(1))
       .subscribe((data: any) => {
+        console.log('ALLPOST - 2');
         this.postData = data;
         users.subscribe(users => {
+          console.log('ALLPOST - 3');
           users.map(user => {
             if (user.follower.includes(this.userId)) {
+              console.log('POST DATA: ', this.postData.length);
+              console.log('POST DATA: ', this.postData);
               this.postData.forEach((post, i) => {
                 if (post.userid === user.id) {
                   this.postData[i]['followStatus'] = true;
@@ -91,6 +108,13 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.isDataLoaded = false;
         })
       });
+  }
+
+  deletePostFromList(e, i) {
+    if (e) {
+      this.allPosts();
+      // this.postData.splice(i, 1);
+    }
   }
 
   getLikeCounts(event: number): void {

@@ -14,6 +14,7 @@ declare var $: any;
 export class BlogActivityMoreComponent implements OnInit {
 
   @Output() chngStatus = new EventEmitter<boolean>();
+  @Output() isPostDelete = new EventEmitter<boolean>();
   @Input() elemId = '';
   @Input() index: number;
   @Input() postId = '';
@@ -114,6 +115,7 @@ export class BlogActivityMoreComponent implements OnInit {
         this.interaction.getAllNotification()
           .subscribe(data => {
             if (data.length > 0) {
+              this.isPostDelete.emit(true);
               const notiAfterDelete = data.filter(item => item.notificationPostId === this.postId);
               this.interaction.deleteNoti(notiAfterDelete);
             }

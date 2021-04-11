@@ -24,7 +24,19 @@ export class DataExchangeService {
   private isNewPost = new BehaviorSubject(false);
   public isNewPost$ = this.isNewPost.asObservable();
 
+  private isLoad = new BehaviorSubject(false);
+  public isLoad$ = this.isLoad.asObservable();
+
   constructor() { }
+
+  loadAfterNewPost(status) {
+    console.log('DATA STATUS: ', status);
+    this.isLoad.next(status);
+  }
+
+  getLoadAfterNewPost() {
+    return this.isLoad.value;
+  }
 
   setUserId(id: string): void {
     this.userId.next(id);

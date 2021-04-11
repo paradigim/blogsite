@@ -45,6 +45,7 @@
                         (click)="stopDefaultBehaviour($event)"
                         [postId]="item.id"
                         [postUserId]="item.userid"
+                        (isPostDelete)="deletePostFromList($event, i)"
                     ></app-blog-activity-more>
                 </div>
                 <app-blog-all-comments [postId]="item?.id" pageName='home'></app-blog-all-comments>

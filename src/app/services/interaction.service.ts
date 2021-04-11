@@ -233,8 +233,8 @@ export class InteractionService implements OnDestroy {
   }
 
   // pritam
-  deleteNotificationFromDatabase(postid, notificationId, deletedBy) {
-    this.afs.collection('notification').doc(notificationId).update({
+  deleteNotificationFromDatabase(postid, notificationId, deletedBy): Promise<any> {
+    return this.afs.collection('notification').doc(notificationId).update({
       deleteStatus: true,
       deletedByUsers: deletedBy
     });

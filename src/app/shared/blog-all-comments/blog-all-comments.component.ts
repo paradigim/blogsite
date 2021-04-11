@@ -37,6 +37,7 @@ export class BlogAllCommentsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.interaction.getBlogComments(this.postId)
     .pipe(takeUntil(this.ngUnsubscribe))
+    .pipe(take(1))
     .subscribe((val: any) => {
       this.interaction.getAllUser()
       .pipe(takeUntil(this.ngUnsubscribe))

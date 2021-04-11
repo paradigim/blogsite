@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { SwPush, SwUpdate } from '@angular/service-worker';
+import { take } from 'rxjs/operators';
 import { DataExchangeService } from './services/data-exchange.service';
 import { InteractionService } from './services/interaction.service';
 import { PushNotification } from './services/push-notification.service';
@@ -71,7 +72,9 @@ export class AppComponent {
         console.log('SUB: ', sub);
         this.subscriptionObj = sub;
         this.data.saveSubcription(this.subscriptionObj);
-        this.interaction.getUser().subscribe(data => {
+        this.interaction.getUser()
+        .pipe(take(1))
+        .subscribe(data => {
           if (!data.uniqueEndpoint) {
             console.log('SUB STRINGI: ', JSON.stringify(sub));
             this.interaction.saveUniqueEndpoint(JSON.stringify(sub));

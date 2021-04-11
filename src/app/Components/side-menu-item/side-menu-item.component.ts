@@ -34,7 +34,6 @@ export class SideMenuItemComponent implements OnInit {
       this.userId = auth.uid;
       this.interaction.getUser()
         .subscribe(user => {
-          console.log('new user-----------', user);
           this.userToReadNotification = user.notificationToRead;
           if (!user.notificationToRead) {
             this.alert = false;
@@ -72,13 +71,11 @@ export class SideMenuItemComponent implements OnInit {
   stopAlert(e) {
     e.preventDefault();
     if (this.text === 'Notifications') {
-      this.alert = false;
       this.interaction.chnageNotificationAlertStatus().then(res => {
         this.alert = false;
-        this.router.navigate([this.route]);
+        // this.router.navigate([this.route]);
       });
     }
-    
   }
 
   setNotificationIndicator() {
