@@ -122,35 +122,19 @@ export class BlogModalComponent implements OnInit, OnChanges {
             this.dataService.saveUsersForNotificationAlert(this.userFollowers);
             this.interaction.updateUserNotificationReadStatus(this.userFollowers);
             this.dataService.setNewPostStatus(true);
-            this.dataService.loadAfterNewPost(true); // pritam
             this.modal.approve();
             this.modalStatus.emit();
             this.isBlogPost = false;
-            // if (this.currentRoute === '/home') {
-            //   window.location.reload();
-            // } else {
-            //   this.router.navigate(['/home']);
-            // }
             this.router.navigate(['/home']);
-            // this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-            //   this.router.navigate(['/home']);
-            // });
           });
         } else {
-          this.dataService.loadAfterNewPost(true); //pritam
           this.modal.approve();
           this.modalStatus.emit();
           this.isBlogPost = false;
-          // if (this.currentRoute === '/home') {
-          //   window.location.reload();
-          // } else {
-          //   this.router.navigate(['/home']);
-          // }
           this.router.navigate(['/home']);
-          // this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-          //   this.router.navigate(['/home']);
-          // });
         }
+        console.log('BEFORE: ', this.dataService.getLoadAfterNewPost());
+        this.dataService.loadAfterNewPost(true);
       },
       err => {
         this.isBlogPost = false;

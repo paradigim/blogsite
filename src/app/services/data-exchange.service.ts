@@ -30,7 +30,6 @@ export class DataExchangeService {
   constructor() { }
 
   loadAfterNewPost(status) {
-    console.log('DATA STATUS: ', status);
     this.isLoad.next(status);
   }
 

@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { InteractionService } from 'src/app/services/interaction.service';
 import { Router } from '@angular/router';
-import { delay, skipWhile, take, takeUntil } from 'rxjs/operators';
+import { delay, filter, skipWhile, take, takeUntil } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Subject } from 'rxjs';
 import { DateService } from 'src/app/services/date.service';
@@ -31,7 +31,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     private afAuth: AngularFireAuth,
     private date: DateService,
     private pushNotificationService: PushNotification,
-    private data: DataExchangeService
+    private data: DataExchangeService,
+    private cdref: ChangeDetectorRef
   ) {
     this.afAuth.authState.subscribe(user => {
       if (user){
@@ -41,20 +42,16 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log('HELLO INIT');
     this.data.isLoad$
+    .pipe(filter(val => val === true))
     .subscribe(isStatus => {
-      console.log('STATUS: ', isStatus);
       if (isStatus) {
-        console.log('INSIDE STATUS: ', isStatus);
         this.allPosts();
-        // this.data.loadAfterNewPost(false);
       }
     });
     this.isDataLoaded = true;
     this.allPosts();
     this.showNotificationToUser();
-    
   }
 
   showNotificationToUser() {
@@ -84,20 +81,15 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   // set following status on init
   allPosts(): void {
-    console.log('ALLPOST - 1');
     const users = this.interaction.getAllUser().pipe(takeUntil(this.unSubscribe));
     this.interaction.getAllPosts()
-      .pipe(takeUntil(this.unSubscribe))
       .pipe(take(1))
+      .pipe(takeUntil(this.unSubscribe))
       .subscribe((data: any) => {
-        console.log('ALLPOST - 2');
         this.postData = data;
         users.subscribe(users => {
-          console.log('ALLPOST - 3');
           users.map(user => {
             if (user.follower.includes(this.userId)) {
-              console.log('POST DATA: ', this.postData.length);
-              console.log('POST DATA: ', this.postData);
               this.postData.forEach((post, i) => {
                 if (post.userid === user.id) {
                   this.postData[i]['followStatus'] = true;
@@ -105,6 +97,7 @@ export class HomeComponent implements OnInit, OnDestroy {
               });
             }
           })
+          this.data.loadAfterNewPost(false);
           this.isDataLoaded = false;
         })
       });
@@ -113,7 +106,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   deletePostFromList(e, i) {
     if (e) {
       this.allPosts();
-      // this.postData.splice(i, 1);
     }
   }
 
