@@ -18,7 +18,7 @@ export class BlogCommentComponent implements OnInit {
   }
 
   likeCountStatusChange(): void {
-    console.log('COMMENT');
+    
   }
 
 }

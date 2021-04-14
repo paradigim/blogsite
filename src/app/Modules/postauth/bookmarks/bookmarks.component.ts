@@ -29,7 +29,6 @@ export class BookmarksComponent implements OnInit {
         this.bookmarkData = res.filter(item => {
           return item.bookmark === true;
         });
-        console.log('BOOKMARK: ', this.bookmarkData);
       });
   }
 

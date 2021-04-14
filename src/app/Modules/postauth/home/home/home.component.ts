@@ -56,12 +56,10 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   showNotificationToUser() {
     const notificationShowStatus = this.data.getNewPostStatus();
-    console.log('STATUS NOTI: ', notificationShowStatus);
     if (notificationShowStatus) {
       this.interaction.getUser()
       .pipe(take(1))
       .subscribe(user => {
-        console.log('CURRENT USER: ', user);
         this.fetchUserTosendNotification(user.follower);
       })
     }

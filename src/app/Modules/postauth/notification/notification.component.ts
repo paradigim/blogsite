@@ -114,19 +114,12 @@ export class NotificationComponent implements OnInit {
   }
 
   getAllNotificationPost(postIds) {
-    console.log('POST IDS: ', postIds);
-    // this.postToShowInNotification = [];
     this.interaction.getAllPosts()
-      // .pipe(skip(1))
-      // .pipe(take(1))
       .subscribe(posts => {
-        console.log('POSTS: ', posts.length);
         this.postToShowInNotification = [];
         postIds.forEach((item, i) => {
           this.postToShowInNotification = [...this.postToShowInNotification, ...posts.filter(val => val.id === item.postId)];
-          console.log('postToShowInNotification: ', this.postToShowInNotification);
           if (this.postToShowInNotification?.length > 0) {
-            console.log('I: ', i);
             if (i <= this.postToShowInNotification?.length - 1) {
               this.postToShowInNotification[i].notificationId = item.notificationId;
               this.postToShowInNotification[i].deletedBy = item.deletedBy;
@@ -145,7 +138,6 @@ export class NotificationComponent implements OnInit {
     e.stopPropagation();
     this.deleteLoader = true;
     this.deleteIndex = index;
-    console.log('DELETED BY: ', deletedBy);
 
     if (deletedBy.length > 0) {
       const updatedDeletedByUserIndex = deletedBy.findIndex(item => item === this.userId);

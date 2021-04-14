@@ -120,7 +120,6 @@ export class BlogActivityMoreComponent implements OnInit {
               this.interaction.deleteNoti(notiAfterDelete);
             }
           })
-        console.log('Post has been removed')
       }).catch(err => {
         console.log('Post can not be removed');
       });

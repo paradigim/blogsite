@@ -165,13 +165,11 @@ export class InteractionService implements OnDestroy {
       const index = getData.findIndex(item => {
         return item === this.userId;
       });
-      console.log('INDEX: ', index);
       if (index < 0) {
         getData = [...getData , this.userId];
       }
       else {
         getData.splice(index, 1);
-        console.log('AFTER DLT: ', getData);
       }
       // call the function to save liked user's id in database
       this.updateLike(getData, postId);
@@ -285,7 +283,6 @@ export class InteractionService implements OnDestroy {
     const randomNo = this.getUniqueId();
     const randomIndex = this.getSymbolIndex();
     const randomUniqueId = `@${name}${randomNo}${this.symbols[randomIndex]}`;
-    console.log('randomUniqueId: ', randomUniqueId, typeof randomUniqueId);
 
     return this.afs.collection('users').valueChanges()
       .pipe(map((x: any) => {
@@ -324,7 +321,6 @@ export class InteractionService implements OnDestroy {
       pendingEarnings: 0,
       notificationToRead: false
     }, {merge: true}).then(res => {
-      console.log('response', this.afAuth.authState);
       return;
     }).catch(err => {
       console.log(err);

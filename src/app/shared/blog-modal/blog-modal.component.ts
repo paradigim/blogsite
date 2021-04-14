@@ -133,7 +133,6 @@ export class BlogModalComponent implements OnInit, OnChanges {
           this.isBlogPost = false;
           this.router.navigate(['/home']);
         }
-        console.log('BEFORE: ', this.dataService.getLoadAfterNewPost());
         this.dataService.loadAfterNewPost(true);
       },
       err => {

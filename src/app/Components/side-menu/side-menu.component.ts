@@ -50,17 +50,13 @@ export class SideMenuComponent implements OnInit {
   }
 
   onClick(e) {
-    console.log('EVENT: ', e.target.parentElement.className);
     if (e.target.parentElement.className !== 'menubar' && this.menuStatus === true) {
       this.menuStatus = false;
       this.changeMenuStatus.emit(this.menuStatus);
-      console.log('MENU STATUS----', this.menuStatus);
     }
   }
 
-  ngOnChanges() {
-    console.log('P MENU: ', this.menuStatus);
-  }
+  ngOnChanges() {}
 
   changeModalStatus(): void {
     this.modalShow = !this.modalShow;

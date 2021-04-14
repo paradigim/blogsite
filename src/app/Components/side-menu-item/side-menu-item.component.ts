@@ -47,7 +47,6 @@ export class SideMenuItemComponent implements OnInit {
   }
 
   ngOnChanges() {
-    // console.log('DATA NOTI ITEM: ', this.userToNotify);
     this.interaction.getNotification()
     .pipe(skipWhile(item => item.length <= 0))
     .pipe(take(1))
@@ -73,7 +72,6 @@ export class SideMenuItemComponent implements OnInit {
     if (this.text === 'Notifications') {
       this.interaction.chnageNotificationAlertStatus().then(res => {
         this.alert = false;
-        // this.router.navigate([this.route]);
       });
     }
   }

@@ -60,9 +60,7 @@ export class BlogAllCommentsComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnChanges() {
-    console.log('USERID: ', this.userId);
-  }
+  ngOnChanges() {}
 
   deleteComment(index, cmntId, e) {
     e.stopPropagation();
