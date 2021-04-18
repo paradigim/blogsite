@@ -10,7 +10,7 @@ export class PushNotification {
     private http: HttpClient
   ) {}
   
-  addPushSubscriber(sub: PushSubscription) {
+  addPushSubscriber(sub: PushSubscription[]) {
     return this.http.post(this.notificationURL, sub);
   }
 }

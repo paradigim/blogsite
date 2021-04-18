@@ -1,9 +1,9 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { InteractionService } from 'src/app/services/interaction.service';
 import { Router } from '@angular/router';
-import { delay, filter, skipWhile, take, takeUntil } from 'rxjs/operators';
+import { delay, filter, skipWhile, switchMap, take, takeUntil } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { Subject } from 'rxjs';
+import { combineLatest, Subject } from 'rxjs';
 import { DateService } from 'src/app/services/date.service';
 import { PushNotification } from 'src/app/services/push-notification.service';
 import { DataExchangeService } from 'src/app/services/data-exchange.service';
@@ -31,8 +31,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     private afAuth: AngularFireAuth,
     private date: DateService,
     private pushNotificationService: PushNotification,
-    private data: DataExchangeService,
-    private cdref: ChangeDetectorRef
+    private data: DataExchangeService
   ) {
     this.afAuth.authState.subscribe(user => {
       if (user){
@@ -47,27 +46,43 @@ export class HomeComponent implements OnInit, OnDestroy {
     .subscribe(isStatus => {
       if (isStatus) {
         this.allPosts();
+        this.showNotificationToUser();
       }
     });
     this.isDataLoaded = true;
     this.allPosts();
-    this.showNotificationToUser();
+    // this.showNotificationToUser();
   }
 
   showNotificationToUser() {
     const notificationShowStatus = this.data.getNewPostStatus();
-    if (notificationShowStatus) {
-      this.interaction.getUser()
-      .pipe(take(1))
-      .subscribe(user => {
-        this.fetchUserTosendNotification(user.follower);
-      })
-    }
+    console.log('N STATUS: ', notificationShowStatus);
+      if (notificationShowStatus) {
+        this.interaction.getUser()
+        .pipe(take(1))
+        .subscribe(user => {
+          this.data.setNewPostStatus(false);
+          console.log('USER N: ', user);
+          this.fetchUserTosendNotification(user.follower);
+        })
+      }
   }
 
-  fetchUserTosendNotification(followers) {
+  fetchUserTosendNotification(followers: string[]) {
+    // const obsUserArr = followers.map(userid => this.interaction.getUser(userid));
+
+    // combineLatest(obsUserArr)
+    // .subscribe((users: any[]) => {
+      
+    //   const body = users.filter(u => !!u.uniqueEndpoint).map(u => JSON.parse(u.uniqueEndpoint));
+    //   this.pushNotificationService.addPushSubscriber(body).subscribe(res => {
+    //     console.log(res);
+    //   });
+    // })
+    
     followers.forEach(userid => {
       this.interaction.getUser(userid)
+      .pipe(take(1))
       .subscribe(user => {
         if (user.uniqueEndpoint) {
           console.log('SUB OBJ: ', JSON.parse(user.uniqueEndpoint));

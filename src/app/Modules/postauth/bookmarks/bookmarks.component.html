@@ -1,40 +1,41 @@
 <div class="bookmarks-container">
-    
-    <div 
-        class='ec-blog-post' 
-        *ngFor="let bookmark of bookmarkData; index as i;"
-        (click)="routeToBlogDetail($event, bookmark.id)">
-        <div class='user-blog-post'>
-            <img [src]="bookmark.userImage">
-        </div>
-        <div class='user-blog-wrapper'>
-            <div class="user-intro-follow">
-                <div class='user-blog-info'>
-                    <div class='user-blog-name'>{{ bookmark.userName }}</div>
-                    <div class='dot'></div>
-                    <div class='user-blog-post-time'>{{ date.postDateFormat(bookmark.postDate) }}</div>
+    <ngContainer *ngIf="bookmarkData.length > 0">
+        <div 
+            class='ec-blog-post' 
+            *ngFor="let bookmark of bookmarkData; index as i;"
+            (click)="routeToBlogDetail($event, bookmark.id)">
+            <div class='user-blog-post'>
+                <img [src]="bookmark.userImage">
+            </div>
+            <div class='user-blog-wrapper'>
+                <div class="user-intro-follow">
+                    <div class='user-blog-info'>
+                        <div class='user-blog-name'>{{ bookmark.userName }}</div>
+                        <div class='dot'></div>
+                        <div class='user-blog-post-time'>{{ date.postDateFormat(bookmark.postDate) }}</div>
+                    </div>
+                </div>
+                <div class="user-unique-id">{{ bookmark.uniqueId }}</div>
+                <div class='user-blog-content'>
+                    {{ bookmark.contents }}
+                </div>
+                <div class="user-blog-post-image">
+                    <img [src]="bookmark.image">
+                </div>
+                <div class='blog-activities'>
+                    <app-blog-like [postId]="bookmark.id" [likedUserIds]="bookmark.likedUserId"></app-blog-like>
+                    <app-blog-comment [commentCount]="bookmark.comments.length"></app-blog-comment>
+                    <app-blog-activity-more
+                        [index]="i" 
+                        [elemId]="i"
+                        [postId]="bookmark.id"
+                        [postUserId]="bookmark.userid"
+                        (click)="stopDefaultBehaviour($event)">
+                    </app-blog-activity-more>
                 </div>
             </div>
-            <div class="user-unique-id">{{ bookmark.uniqueId }}</div>
-            <div class='user-blog-content'>
-                {{ bookmark.contents }}
-            </div>
-            <div class="user-blog-post-image">
-                <img [src]="bookmark.image">
-            </div>
-            <div class='blog-activities'>
-                <app-blog-like [postId]="bookmark.id" [likedUserIds]="bookmark.likedUserId"></app-blog-like>
-                <app-blog-comment [commentCount]="bookmark.comments.length"></app-blog-comment>
-                <app-blog-activity-more
-                    [index]="i" 
-                    [elemId]="i"
-                    [postId]="bookmark.id"
-                    [postUserId]="bookmark.userid"
-                    (click)="stopDefaultBehaviour($event)">
-                </app-blog-activity-more>
-            </div>
         </div>
-    </div>
+    </ngContainer>
 
     <app-right-side-menu></app-right-side-menu>
 </div>

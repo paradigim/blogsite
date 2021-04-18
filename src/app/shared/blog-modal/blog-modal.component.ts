@@ -118,10 +118,11 @@ export class BlogModalComponent implements OnInit, OnChanges {
       .pipe(take(1))
       .subscribe(res => {
         if (this.userFollowers.length > 0) {
+          this.dataService.setNewPostStatus(true);
           this.interaction.setNotification(id, this.userFollowers).then(() => {
             this.dataService.saveUsersForNotificationAlert(this.userFollowers);
             this.interaction.updateUserNotificationReadStatus(this.userFollowers);
-            this.dataService.setNewPostStatus(true);
+            // this.dataService.setNewPostStatus(true);
             this.modal.approve();
             this.modalStatus.emit();
             this.isBlogPost = false;

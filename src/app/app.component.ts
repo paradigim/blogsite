@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { SwPush, SwUpdate } from '@angular/service-worker';
-import { take } from 'rxjs/operators';
+import { skipWhile, take } from 'rxjs/operators';
 import { DataExchangeService } from './services/data-exchange.service';
 import { InteractionService } from './services/interaction.service';
 import { PushNotification } from './services/push-notification.service';
@@ -36,9 +36,9 @@ export class AppComponent {
         this.subscribeToNotifications(this.userId);
       }
     });
-    if (window.matchMedia('(display-mode: standalone)').matches) {  
-      console.log('Not installed');
-    }
+    // if (window.matchMedia('(display-mode: standalone)').matches) {  
+    //   console.log('Not installed');
+    // }
     this.getPushNotificationMsg();
     this.pushActionOnClick();
   }
@@ -64,6 +64,7 @@ export class AppComponent {
   }
 
   subscribeToNotifications(userId) {
+    console.log('ENABLE: ', this.swPush.isEnabled);
     if (this.swPush.isEnabled) {
       this.swPush.requestSubscription({
         serverPublicKey: this.VAPID_PUBLIC_KEY
@@ -73,6 +74,7 @@ export class AppComponent {
         this.subscriptionObj = sub;
         this.data.saveSubcription(this.subscriptionObj);
         this.interaction.getUser()
+        .pipe(skipWhile(data => !data))
         .pipe(take(1))
         .subscribe(data => {
           if (!data.uniqueEndpoint) {
