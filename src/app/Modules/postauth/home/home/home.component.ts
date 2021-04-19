@@ -85,8 +85,14 @@ export class HomeComponent implements OnInit, OnDestroy {
       .pipe(take(1))
       .subscribe(user => {
         if (user.uniqueEndpoint) {
+          console.log('USER SEND N: ', user);
           console.log('SUB OBJ: ', JSON.parse(user.uniqueEndpoint));
-          this.pushNotificationService.addPushSubscriber(JSON.parse(user.uniqueEndpoint)).subscribe();
+          this.pushNotificationService.addPushSubscriber(JSON.parse(user.uniqueEndpoint))
+          .subscribe(res => {
+            console.log('PUSH RESPONSE: ', res);
+          }, error => {
+            console.log('RES ERROR: ', error);
+          });
         }
       });
     });
