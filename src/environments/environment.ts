@@ -13,7 +13,8 @@ export const environment = {
     messagingSenderId: "97460591548",
     appId: "1:97460591548:web:0382f5da7008cabd9969b9",
     measurementId: "G-PRYCPK52S2"
-  }
+  },
+  serverKey: "AAAAFrEam7w:APA91bGfgaguGwRvtnRLc2YnsO5UqhktjrLmTSK_1awInWz-uGWBNr97LpHqanSA3LIvSR3l-lnsTMkJh6mgKwh7BgX_EUOjpo2peNTLf4PsSzruY7MflNiHCc72OXfAU4Ox9nTdKg-5"
 };
 
 /*

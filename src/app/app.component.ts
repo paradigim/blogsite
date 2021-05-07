@@ -19,7 +19,7 @@ export class AppComponent {
   userId;
 
   VAPID_PUBLIC_KEY = "BF7ekuEOKJrtvX4ornpRrZkkv_ALrNVb4r5RzeqzOgZP-oorGGxQsUROVK2oTymCDEkQKlaNb2WVYplrrtp9MtE";
-
+  // VAPID_PUBLIC_KEY = "BIDfKRckGeFnvXPpufCU5aVrd3WiBl4A__m7rzo2WVKV8NniO901ybBz6hxgzmhBktzHJ124y-fFoutriKN7IBU";
   constructor(
     private swPush: SwPush,
     private swUpdate: SwUpdate,
@@ -30,65 +30,7 @@ export class AppComponent {
   ) {}
 
   ngOnInit() {
-    this.afAuth.authState.subscribe(user => {
-      if (user){
-        this.userId = user.uid;
-        this.subscribeToNotifications(this.userId);
-      }
-    });
-    // if (window.matchMedia('(display-mode: standalone)').matches) {  
-    //   console.log('Not installed');
-    // }
-    this.getPushNotificationMsg();
-    this.pushActionOnClick();
+    
   }
 
-  pushActionOnClick() {
-    this.swPush.notificationClicks.subscribe(payload => {
-      window.open(payload.notification.data.url);
-    })
-  }
-
-  // updateApp() {
-  //   this.swUpdate.available.subscribe(() => {
-  //     this.swUpdate.activateUpdate().then(() => {
-  //       document.location.reload();
-  //     })
-  //   })
-  // }
-
-  getPushNotificationMsg() {
-    this.swPush.messages.subscribe(data => {
-      console.log('DATA: ', data);
-    })
-  }
-
-  subscribeToNotifications(userId) {
-    console.log('ENABLE: ', this.swPush.isEnabled);
-    if (this.swPush.isEnabled) {
-      this.swPush.requestSubscription({
-        serverPublicKey: this.VAPID_PUBLIC_KEY
-      })
-      .then(sub => {
-        console.log('SUB: ', sub);
-        this.subscriptionObj = sub;
-        this.data.saveSubcription(this.subscriptionObj);
-        this.interaction.getUser()
-        .pipe(skipWhile(data => !data))
-        .pipe(take(1))
-        .subscribe(data => {
-          if (!data.uniqueEndpoint) {
-            console.log('SUB STRINGI: ', JSON.stringify(sub));
-            this.interaction.saveUniqueEndpoint(JSON.stringify(sub));
-          }
-        })
-      })
-      .catch(err => console.error("Could not subscribe to notifications", err));
-    }
-  }
-
-  // sendNotificationRequest() {
-  //   console.log('SUBSCRIPTION: ', this.subscriptionObj);
-  //   this.pushNotificationService.addPushSubscriber(this.subscriptionObj).subscribe();
-  // }
 }

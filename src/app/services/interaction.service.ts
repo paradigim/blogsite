@@ -110,15 +110,12 @@ export class InteractionService implements OnDestroy {
     return this.afs.collection('notification').valueChanges();
   }
 
-
-
-   // pritam
-   updateNotificationReadStatus(postid, userid, readData) {
+  updateNotificationReadStatus(postid, userid, readData) {
     const userRead = [...readData, userid]
     return this.afs.collection('posts').doc(postid).update({
       read: userRead
     });
-   }
+  }
 
   // bookmark
   changeBookMark(postId: string, bookmarkStatus: boolean): void {
@@ -230,7 +227,6 @@ export class InteractionService implements OnDestroy {
     })
   }
 
-  // pritam
   deleteNotificationFromDatabase(postid, notificationId, deletedBy): Promise<any> {
     return this.afs.collection('notification').doc(notificationId).update({
       deleteStatus: true,
@@ -390,7 +386,6 @@ export class InteractionService implements OnDestroy {
     })
   }
 
-  // pritam
   updatePostData(dataToChange) {
     this.getAllPosts()
     .pipe(skipWhile(val => !val))
@@ -413,6 +408,13 @@ export class InteractionService implements OnDestroy {
   saveUniqueEndpoint(endpoint) {
     return this.afs.collection('users').doc(this.userId).update({
       uniqueEndpoint: endpoint
+    });
+  }
+
+  // pritam
+  updateFCMToken(token = []) {
+    this.afs.collection('users').doc(this.userId).update({
+      fcmToken: token
     });
   }
 
