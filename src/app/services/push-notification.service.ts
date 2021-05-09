@@ -9,8 +9,6 @@ import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class PushNotification {
-  
-  notificationURL = 'https://blogpush.herokuapp.com/subscribe';
 
   currentMessage = new BehaviorSubject(null);
 
@@ -74,12 +72,6 @@ export class PushNotification {
         body,
       }
     };
-
-    // webpush: {
-    //   fcm_options: {
-    //     link: "https://blog-9a5ab.web.app/home"
-    //   }
-    // }
 
     const httpOptionsuser = {
       headers: new HttpHeaders({

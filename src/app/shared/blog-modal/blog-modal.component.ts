@@ -1,13 +1,13 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { InteractionService } from 'src/app/services/interaction.service';
-import { NavigationEnd, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { format } from 'date-fns';
 import * as data from 'src/assets/language.json';
 import { skipWhile, take, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { DataExchangeService } from 'src/app/services/data-exchange.service';
-import { PushNotification } from 'src/app/services/push-notification.service';
+import { AngularFireStorage } from '@angular/fire/storage';
 
 @Component({
   selector: 'app-blog-modal',
@@ -22,6 +22,7 @@ export class BlogModalComponent implements OnInit, OnChanges {
   @ViewChild('modal') modal: any;
   @ViewChild('textarea') textarea: any;
   @ViewChild('imageUpload') imageUpload: any;
+  @ViewChild('videoUpload') videoUpload: any;
   jsonData = (data as any).default;
 
   content: string;
@@ -37,13 +38,18 @@ export class BlogModalComponent implements OnInit, OnChanges {
   ngUnsubscribe = new Subject();
   userFollowers = [];
   currentRoute = '';
+  videoURL = '';
+  selectedFile: any;
+  percentageUpload;
+  task;
+  fileType = '';
 
   constructor(
     private formBuilder: FormBuilder,
     private interaction: InteractionService,
     public router: Router,
     private dataService: DataExchangeService,
-    private pushNotificationService: PushNotification
+    private afs: AngularFireStorage
   ) {
     this.currentRoute = this.router.url;
   }
@@ -69,7 +75,8 @@ export class BlogModalComponent implements OnInit, OnChanges {
       this.editPost = true;
       this.postForm.patchValue({
         content: this.editPostData.contents,
-        imageUrl: this.editPostData.image
+        imageUrl: this.editPostData.image,
+        videoUrl: this.editPostData.video
       });
       this.postButton = false;
       this.userImage = this.editPostData.userImage;
@@ -117,11 +124,20 @@ export class BlogModalComponent implements OnInit, OnChanges {
       this.interaction.postNew(content, postDate, image, video, id)
       .pipe(take(1))
       .subscribe(res => {
+        if (this.fileType === 'video') {
+          this.afs.upload(`/videos/${new Date().getTime()}_${this.selectedFile.name}`, this.selectedFile);
+        } else {
+          this.afs.upload(`/images/${new Date().getTime()}_${this.selectedFile.name}`, this.selectedFile);
+        }
+        
         if (this.userFollowers.length > 0) {
+          debugger;
           this.dataService.setNewPostStatus(true);
           this.interaction.setNotification(id, this.userFollowers).then(() => {
+            debugger;
             this.dataService.saveUsersForNotificationAlert(this.userFollowers);
             this.interaction.updateUserNotificationReadStatus(this.userFollowers);
+            debugger;
             // this.dataService.setNewPostStatus(true);
             this.modal.approve();
             this.modalStatus.emit();
@@ -146,15 +162,31 @@ export class BlogModalComponent implements OnInit, OnChanges {
   }
 
   // load post image in modal
-  loadFile(e): void {
-    const file = e.target.files[0];
+  loadFile(e, fileType = ''): void {
+    this.fileType = fileType;
+    this.selectedFile = e.target.files[0];
     const reader = new FileReader();
     reader.onload = () => {
-      this.imageURL = reader.result as string;
-      this.postForm.get('imageUrl').setValue(this.imageURL);
+      if (fileType === 'video') {
+        this.imageURL = '';
+        this.videoURL = reader.result as string;
+        this.postForm.get('imageUrl').setValue('');
+        this.postForm.get('videoUrl').setValue(this.videoURL);
+        // this.task = this.afs.upload(`/videos/${new Date().getTime()}_${this.selectedFile.name}`, this.selectedFile);
+      } else {
+        this.videoURL = '';
+        this.imageURL = reader.result as string;
+        this.postForm.get('videoUrl').setValue('');
+        this.postForm.get('imageUrl').setValue(this.imageURL);
+        // this.task = this.afs.upload(`/images/${new Date().getTime()}_${this.selectedFile.name}`, this.selectedFile);
+      }
+      // this.percentageUpload = this.task.percentageChanges();
+      // this.percentageUpload.subscribe(data => {
+      //   console.log('PERCENTGE: ', data);
+      // });
       this.postButton = false;
     };
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(this.selectedFile);
   }
 
   // delete post image from modal

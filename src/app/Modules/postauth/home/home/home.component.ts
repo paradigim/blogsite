@@ -88,7 +88,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         }
         if (i === followers.length - 1) {
           this.pushNotificationService.addPushSubscriber(this.userFCMToken, 'Blog', 'You have got a notification')
-          .pipe(take(1))
           .subscribe(res => {
             this.userFCMToken = [];
           }, 

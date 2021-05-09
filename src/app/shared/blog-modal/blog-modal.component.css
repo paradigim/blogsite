@@ -85,8 +85,11 @@
 }
 
 .added-img {
-    display: flex;
-    align-items: flex-end;
+    margin-top: 50px;
+}
+
+.added-img img {
+    width: 100%;
 }
 
 .dlt-btn {
@@ -107,4 +110,9 @@
     bottom: -130px;
     left: 40px;
     z-index: 1;
+}
+
+.upload-video {
+    width: 100%;
+    max-height: 300px;
 }

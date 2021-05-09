@@ -34,14 +34,19 @@
                   (change)='loadFile($event)' 
                   type="file"
                   value=""
-                  accept="image/png, image/jpeg, image/jpg, image/GIF"
+                  accept="image/*"
                   #imageUpload>
               </label>
               
-              <!-- <label class='upload-pic'>
+              <label class='upload-pic'>
                 <i class="video icon"></i>
-                <input (change)='loadFile($event)' type='file'>
-              </label> -->
+                <input 
+                  (change)="loadFile($event, 'video')"
+                  type='file'
+                  value=""
+                  accept="video/*"
+                  #videoUpload>
+              </label>
 
               <label class='upload-pic emojis'>
                 <i class="smile outline icon" (click)="showEmojiMart()"></i>
@@ -73,13 +78,26 @@
           </div>
 
           <div class="added-img">
-            <img class="ui small image" [src]="this.postForm.get('imageUrl').value">
-            <button class="ui red button dlt-btn" *ngIf="this.postForm.get('imageUrl').value" (click)="deleteImage()">
+            <img class="ui image" *ngIf="imageURL" [src]="this.postForm.get('imageUrl').value">
+            <video class="video-fluid z-depth-1 upload-video" controls muted *ngIf="videoURL">
+              <source [src]="this.postForm.get('videoUrl').value" type="video/mp4" />
+            </video>
+            <button 
+              class="ui red button dlt-btn" 
+              *ngIf="imageURL || videoURL" 
+              (click)="deleteImage()"
+            >
               {{ jsonData.button.delete }}
             </button>
           </div>
         </form>
       </div>
+
+      <!-- <div *ngIf="percentageUpload | async as pct">{{ pct | number }}%</div>
+      <div class="ui segment" *ngIf="percentageUpload | async as pct">
+        <sui-progress class="top attached purple active" [value]="pct | number" [autoSuccess]="false"></sui-progress>
+        <sui-progress class="indicating" [value]="pct | number">Indicating</sui-progress>
+      </div> -->
 
     </div>
 

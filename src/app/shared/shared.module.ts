@@ -15,6 +15,7 @@ import { BlogAllCommentsComponent } from './blog-all-comments/blog-all-comments.
 import { BlogCommentInputComponent } from './blog-comment-input/blog-comment-input.component';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
+import { AngularFireStorageModule } from '@angular/fire/storage'
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
     FormsModule,
     ReactiveFormsModule,
     PickerModule,
-    EmojiModule
+    EmojiModule,
+    AngularFireStorageModule
   ],
   exports: [
     BlogModalComponent,
