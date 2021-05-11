@@ -4,7 +4,7 @@ import { InteractionService } from 'src/app/services/interaction.service';
 import { Router } from '@angular/router';
 import { format } from 'date-fns';
 import * as data from 'src/assets/language.json';
-import { skipWhile, take, takeUntil } from 'rxjs/operators';
+import { finalize, skipWhile, take, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { DataExchangeService } from 'src/app/services/data-exchange.service';
 import { AngularFireStorage } from '@angular/fire/storage';
@@ -43,6 +43,7 @@ export class BlogModalComponent implements OnInit, OnChanges {
   percentageUpload;
   task;
   fileType = '';
+  fileRef;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -121,36 +122,37 @@ export class BlogModalComponent implements OnInit, OnChanges {
       });
     } else {
       const id = this.interaction.createId();
-      this.interaction.postNew(content, postDate, image, video, id)
-      .pipe(take(1))
-      .subscribe(res => {
+      this.interaction.postNew(content, postDate, id)
+      .subscribe(async res => {
         if (this.fileType === 'video') {
-          this.afs.upload(`/videos/${new Date().getTime()}_${this.selectedFile.name}`, this.selectedFile);
-        } else {
-          this.afs.upload(`/images/${new Date().getTime()}_${this.selectedFile.name}`, this.selectedFile);
+          const snap = await this.afs.upload(`/videos/${new Date().getTime()}_${this.selectedFile.name}`, this.selectedFile);
+          this.saveFile(snap, id);
+          
+        } else if(this.fileType === 'image') {
+          const snap = await this.afs.upload(`/images/${new Date().getTime()}_${this.selectedFile.name}`, this.selectedFile);
+          this.saveFile(snap, id);
         }
         
         if (this.userFollowers.length > 0) {
-          debugger;
           this.dataService.setNewPostStatus(true);
           this.interaction.setNotification(id, this.userFollowers).then(() => {
-            debugger;
             this.dataService.saveUsersForNotificationAlert(this.userFollowers);
             this.interaction.updateUserNotificationReadStatus(this.userFollowers);
-            debugger;
             // this.dataService.setNewPostStatus(true);
+            // this.dataService.loadAfterNewPost(true);
             this.modal.approve();
             this.modalStatus.emit();
             this.isBlogPost = false;
             this.router.navigate(['/home']);
           });
         } else {
+          // this.dataService.loadAfterNewPost(true);
           this.modal.approve();
           this.modalStatus.emit();
           this.isBlogPost = false;
           this.router.navigate(['/home']);
         }
-        this.dataService.loadAfterNewPost(true);
+        // this.dataService.loadAfterNewPost(true);
       },
       err => {
         this.isBlogPost = false;
@@ -159,6 +161,15 @@ export class BlogModalComponent implements OnInit, OnChanges {
         this.router.navigate(['/home']);
       });
     }
+  }
+
+  // save the video or image url to the respective post
+  saveFile(snap, postId) {
+    snap.ref.getDownloadURL().then(url => {
+      this.interaction.updateVideoImage(postId, this.fileType, url).then(res => {
+        this.dataService.loadAfterNewPost(true);
+      });
+    });
   }
 
   // load post image in modal
@@ -172,12 +183,14 @@ export class BlogModalComponent implements OnInit, OnChanges {
         this.videoURL = reader.result as string;
         this.postForm.get('imageUrl').setValue('');
         this.postForm.get('videoUrl').setValue(this.videoURL);
+        this.fileRef = this.afs.ref(`/videos/${new Date().getTime()}_${this.selectedFile.name}`);
         // this.task = this.afs.upload(`/videos/${new Date().getTime()}_${this.selectedFile.name}`, this.selectedFile);
       } else {
         this.videoURL = '';
         this.imageURL = reader.result as string;
         this.postForm.get('videoUrl').setValue('');
         this.postForm.get('imageUrl').setValue(this.imageURL);
+        this.fileRef = this.afs.ref(`/images/${new Date().getTime()}_${this.selectedFile.name}`);
         // this.task = this.afs.upload(`/images/${new Date().getTime()}_${this.selectedFile.name}`, this.selectedFile);
       }
       // this.percentageUpload = this.task.percentageChanges();

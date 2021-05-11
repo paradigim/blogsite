@@ -31,7 +31,7 @@
               <label class='upload-pic'>
                 <i class="image outline icon"></i>
                 <input 
-                  (change)='loadFile($event)' 
+                  (change)="loadFile($event, 'image')" 
                   type="file"
                   value=""
                   accept="image/*"

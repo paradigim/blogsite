@@ -7,6 +7,7 @@ import { map, skipWhile, take, takeUntil } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
 import { DataExchangeService } from './data-exchange.service';
 import { data } from 'jquery';
+import { AngularFireStorage } from '@angular/fire/storage';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +26,8 @@ export class InteractionService implements OnDestroy {
     public router: Router,
     public afs: AngularFirestore,
     public ngZone: NgZone,
-    private dataExchange: DataExchangeService
+    private dataExchange: DataExchangeService,
+    private afStorage: AngularFireStorage
   ) {
     this.afAuth.authState.subscribe(user => {
       if (user){
@@ -67,7 +69,7 @@ export class InteractionService implements OnDestroy {
     return this.afs.createId();
   }
 
-  postNew(postText: string, postDate: string | number, image = '', video = '', postId): Observable<any> {
+  postNew(postText: string, postDate: string | number, postId, image = '', video = ''): Observable<any> {
     return this.getUser()
     .pipe(map((user): any => {
       const postData = {
@@ -94,6 +96,13 @@ export class InteractionService implements OnDestroy {
       })
     }));
    }
+
+  updateVideoImage(postId, fileType, url) {
+    return this.afs.collection('posts').doc(postId).update({
+      video: fileType === 'video' ? url : '',
+      image: fileType === 'image' ? url : ''
+    })
+  }
 
     // update post
   updatePost(postId?: string, contents?: string, image?: string, video?: string, lastUpdateDate?: number | string): Promise<any> {
@@ -411,11 +420,15 @@ export class InteractionService implements OnDestroy {
     });
   }
 
-  // pritam
   updateFCMToken(token = []) {
     this.afs.collection('users').doc(this.userId).update({
       fcmToken: token
     });
+  }
+
+  deleteFileFromStaorage(url) {
+    const urlToDelete = this.afStorage.storage.refFromURL(url);
+    urlToDelete.delete();
   }
 
   // on destroy of the component

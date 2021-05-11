@@ -139,7 +139,7 @@ export class NotificationComponent implements OnInit {
     this.deleteLoader = true;
     this.deleteIndex = index;
 
-    if (deletedBy.length > 0) {
+    if (deletedBy?.length > 0) {
       const updatedDeletedByUserIndex = deletedBy.findIndex(item => item === this.userId);
       if (updatedDeletedByUserIndex < 0) {
         deletedBy.push(this.userId);

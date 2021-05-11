@@ -1,5 +1,6 @@
 import { Component, OnInit, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFireStorage } from '@angular/fire/storage';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { InteractionService } from 'src/app/services/interaction.service';
@@ -19,6 +20,8 @@ export class BlogActivityMoreComponent implements OnInit {
   @Input() index: number;
   @Input() postId = '';
   @Input() postUserId = '';
+  @Input() videoUrl = '';
+  @Input() imageUrl = '';
 
   bookmarkStatus: boolean;
   bookmarkText = 'Bookmark';
@@ -30,7 +33,8 @@ export class BlogActivityMoreComponent implements OnInit {
 
   constructor(
     private interaction: InteractionService,
-    private afAuth: AngularFireAuth
+    private afAuth: AngularFireAuth,
+    private afStorage: AngularFireStorage
   ) { }
 
   ngOnInit(): void {
@@ -110,6 +114,12 @@ export class BlogActivityMoreComponent implements OnInit {
 
   // delete the post
   deletePost(): void {
+    let url = '';
+    if (this.videoUrl) {
+      url = this.videoUrl;
+    } else if(this.imageUrl) {
+      url = this.imageUrl;
+    }
     this.interaction.deletePost(this.postId)
       .then(() => {
         this.interaction.getAllNotification()
@@ -118,6 +128,9 @@ export class BlogActivityMoreComponent implements OnInit {
               this.isPostDelete.emit(true);
               const notiAfterDelete = data.filter(item => item.notificationPostId === this.postId);
               this.interaction.deleteNoti(notiAfterDelete);
+              if (url) {
+                this.interaction.deleteFileFromStaorage(url);
+              }
             }
           })
       }).catch(err => {

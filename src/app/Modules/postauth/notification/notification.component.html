@@ -1,4 +1,4 @@
-<div class="notification-container" *ngIf="!isDataLoaded">
+<div class="notification-container" *ngIf="!isDataLoaded && postToShowInNotification?.length > 0">
     
     <div 
         class="notifications" 
@@ -20,7 +20,7 @@
                     {{ item.contents }} 
                 </div>
             </div>
-            <div class="dlt-cmnt" (click)="deleteNotification(i, item.id, item.notificationId, $event, item.deletedBy)">
+            <div class="dlt-cmnt" (click)="deleteNotification(i, item?.id, item?.notificationId, $event, item?.deletedBy)">
                 <i class="trash alternate outline icon" *ngIf="i !== deleteIndex"></i>
                 <div class="ui active mini inline loader" *ngIf="deleteLoader && i === deleteIndex"></div>
             </div>

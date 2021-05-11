@@ -30,11 +30,11 @@
                 <div class='user-blog-content'>
                     {{ item.contents }}
                 </div>
-                <video class="video-fluid z-depth-1" autoplay loop controls muted *ngIf="item.video">
-                    <source [src]="item.visual" type="video/mp4" />
+                <video class="video-fluid z-depth-1 home-videos" controls muted *ngIf="item.video">
+                    <source [src]="item?.video" type="video/mp4" />
                 </video>
                 <div class="user-blog-post-image" *ngIf="item.image">
-                    <img [src]="item.image">
+                    <img [src]="item?.image">
                 </div>
                 <div class='blog-activities'>
                     <app-blog-like [postId]="item.id" [likedUserIds]="item.likedUserId"></app-blog-like>
@@ -45,6 +45,8 @@
                         (click)="stopDefaultBehaviour($event)"
                         [postId]="item.id"
                         [postUserId]="item.userid"
+                        [videoUrl]="item.video"
+                        [imageUrl]="item.image"
                         (isPostDelete)="deletePostFromList($event, i)"
                     ></app-blog-activity-more>
                 </div>

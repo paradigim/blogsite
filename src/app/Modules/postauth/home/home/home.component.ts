@@ -52,31 +52,29 @@ export class HomeComponent implements OnInit, OnDestroy {
     .pipe(filter(val => val === true))
     .subscribe(isStatus => {
       if (isStatus) {
+        this.data.loadAfterNewPost(false);
         this.allPosts();
         this.showNotificationToUser();
       }
     });
     this.isDataLoaded = true;
     this.allPosts();
-    // this.showNotificationToUser();
   }
 
   showNotificationToUser() {
     const notificationShowStatus = this.data.getNewPostStatus();
-    console.log('N STATUS: ', notificationShowStatus);
       if (notificationShowStatus) {
         this.interaction.getUser()
-        //.pipe(take(1))
+        .pipe(skipWhile(data => !data))
+        .pipe(take(1))
         .subscribe(user => {
           this.data.setNewPostStatus(false);
-          console.log('USER N: ', user);
           this.fetchUserTosendNotification(user.follower);
         })
       }
   }
 
   fetchUserTosendNotification(followers: string[]) {
-    
     followers.forEach((userid, i) => {
       this.interaction.getUser(userid)
       .pipe(take(1))
@@ -119,6 +117,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           })
           this.data.loadAfterNewPost(false);
           this.isDataLoaded = false;
+          console.log('POSTS L: ', this.postData.length);
         })
       });
   }

@@ -129,6 +129,11 @@
     display: none;
 }
 
+.home-videos {
+    width: 100%;
+    max-height: 300px;
+}
+
 @media screen and (max-width: 768px) {
     .r-cont .user-blog-post {
         display: block;
