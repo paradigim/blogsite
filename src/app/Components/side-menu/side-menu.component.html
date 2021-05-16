@@ -1,75 +1,62 @@
+<div class="side-menu-container" [class]="{ showMenu: menuStatus }">
+  <!-- website logo -->
+  <div class="app-logo">LOGO</div>
 
-<div class="side-menu-container" [class]="{'showMenu' : menuStatus}">
-    <!-- website logo -->
-    <div class="app-logo">LOGO</div>
+  <!-- left side main menu bar -->
+  <app-side-menu-item text="Home" route="home" icon="home icon">
+  </app-side-menu-item>
 
+  <app-side-menu-item text="Explore" route="explore" icon="search icon">
+  </app-side-menu-item>
 
-    <!-- left side main menu bar -->
-    <app-side-menu-item 
-        text="Home"
-        route="home"
-        icon="home icon">
-    </app-side-menu-item>
+  <app-side-menu-item
+    text="Bookmarks"
+    route="bookmarks"
+    icon="bookmark outline icon"
+  >
+  </app-side-menu-item>
 
-    <app-side-menu-item 
-        text="Explore"
-        route="explore"
-        icon="search icon">
-    </app-side-menu-item>
-    
-    <app-side-menu-item 
-        text="Bookmarks"
-        route="bookmarks"
-        icon="bookmark outline icon">
-    </app-side-menu-item>
+  <app-side-menu-item
+    text="Notifications"
+    route="notification"
+    icon="bell outline icon"
+    [userToNotify]="userNotificationAlert"
+  >
+  </app-side-menu-item>
 
-    <app-side-menu-item 
-        text="Notifications"
-        route="notification"
-        icon="bell outline icon"
-        [userToNotify]="userNotificationAlert">
-    </app-side-menu-item>
+  <app-side-menu-item text="Profile" route="profile" icon="user outline icon">
+  </app-side-menu-item>
 
-    <app-side-menu-item 
-        text="Profile"
-        route="profile"
-        icon="user outline icon">
-    </app-side-menu-item>
+  <app-side-menu-item text="Help" route="help" icon="exclamation icon">
+  </app-side-menu-item>
 
-    <app-side-menu-item 
-        text="Help"
-        route="help"
-        icon="exclamation icon">
-    </app-side-menu-item>
+  <app-side-menu-item
+    text="Piggy Bank"
+    route="piggybank"
+    icon="exclamation icon"
+  >
+  </app-side-menu-item>
 
-    <app-side-menu-item 
-        text="More"
-        route="more"
-        icon="ellipsis horizontal icon">
-    </app-side-menu-item>
+  <app-side-menu-item text="More" route="more" icon="ellipsis horizontal icon">
+  </app-side-menu-item>
 
+  <button class="blog-post-button" (click)="changeModalStatus()">Post</button>
+  <app-blog-modal
+    *ngIf="modalShow"
+    (modalStatus)="changeModalStatus()"
+    [userImage]="photoUrl"
+    [userId]="userData.id"
+  >
+  </app-blog-modal>
 
-    
-    <button class="blog-post-button" (click)="changeModalStatus()">
-        Post
-    </button>
-    <app-blog-modal 
-        *ngIf="modalShow" 
-        (modalStatus)="changeModalStatus()"
-        [userImage]="photoUrl"
-        [userId]="userData.id">
-    </app-blog-modal>
-    
-
-
-    <!-- user information -->
-    <div class="user-info">
-        <div class='user-image'>
-            <img [src]='photoUrl'>
-        </div>
-        <div class='user-name-id'>
-            <div class='user-name' *ngIf="userData">{{ userData.name }}</div>
-            <div class='user-id'>{{ uniqueUserId }}</div>
-        </div>
+  <!-- user information -->
+  <div class="user-info">
+    <div class="user-image">
+      <img [src]="photoUrl" />
     </div>
+    <div class="user-name-id">
+      <div class="user-name" *ngIf="userData">{{ userData.name }}</div>
+      <div class="user-id">{{ uniqueUserId }}</div>
+    </div>
+  </div>
 </div>

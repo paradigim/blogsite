@@ -9,34 +9,57 @@ const routes: Routes = [
     children: [
       {
         path: 'home',
-        loadChildren: () => import('../postauth/home/home.module').then(m => m.HomeModule),
+        loadChildren: () =>
+          import('../postauth/home/home.module').then((m) => m.HomeModule),
       },
       {
         path: 'notification',
-        loadChildren: () => import('../postauth/notification/notification.module').then(m => m.NotificationModule)
+        loadChildren: () =>
+          import('../postauth/notification/notification.module').then(
+            (m) => m.NotificationModule
+          ),
       },
       {
         path: 'explore',
-        loadChildren: () => import('../postauth/explore/explore.module').then(m => m.ExploreModule)
+        loadChildren: () =>
+          import('../postauth/explore/explore.module').then(
+            (m) => m.ExploreModule
+          ),
       },
       {
         path: 'bookmarks',
-        loadChildren: () => import('../postauth/bookmarks/bookmarks.module').then(m => m.BookmarksModule)
+        loadChildren: () =>
+          import('../postauth/bookmarks/bookmarks.module').then(
+            (m) => m.BookmarksModule
+          ),
       },
       {
         path: 'profile',
-        loadChildren: () => import('../postauth/profile/profile.module').then(m => m.ProfileModule)
+        loadChildren: () =>
+          import('../postauth/profile/profile.module').then(
+            (m) => m.ProfileModule
+          ),
       },
       {
         path: 'detail',
-        loadChildren: () => import('../postauth/blog-details/blog-details.module').then(m => m.BlogDetailsModule)
-      }
-    ]
-  }
+        loadChildren: () =>
+          import('../postauth/blog-details/blog-details.module').then(
+            (m) => m.BlogDetailsModule
+          ),
+      },
+      {
+        path: 'piggybank',
+        loadChildren: () =>
+          import('../postauth/piggy-bank/piggy-bank.module').then(
+            (m) => m.PiggyBankModule
+          ),
+      },
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class PostauthRoutingModule { }
+export class PostauthRoutingModule {}

@@ -1,0 +1,96 @@
+<div>
+  <div class="cont">
+    <div class="">
+      <input
+        type="checkbox"
+        (change)="togglePayment()"
+        [checked]="isPaymentModeOn"
+      />
+      <label class="ml-2 has-text-success" *ngIf="isPaymentModeOn"
+        >Payment mode is active.
+      </label>
+      <label class="ml-2 has-text-info" *ngIf="!isPaymentModeOn"
+        >Turn on payment mode.</label
+      >
+    </div>
+
+    <div class="ui hidden divider"></div>
+
+    <!-- Balance And Filter Row #start -->
+    <div class="balance-and-filter-row flex centered">
+      <div class="balance-box">
+        <h4 class="has-text-weight-bold">
+          <span>{{ "1500" | currency: "INR" }}</span>
+          <span><i class="fas fa-rupee-sign"></i></span>
+        </h4>
+      </div>
+      <div class="filters-box">
+        <input type="month" [formControl]="monthAndYear" />
+      </div>
+    </div>
+    <!-- Balance And Filter Row #row -->
+
+    <div class="ui hidden divider"></div>
+
+    <!-- Filtered Results #start -->
+    <table class="ui celled padded table">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Name</th>
+          <th><abbr title="View Ratio">Ratio</abbr></th>
+          <th>Earning</th>
+          <th>Posted On</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="is-size-6">1</td>
+          <td class="is-size-6">Best PC Covers</td>
+          <td class="is-size-6">78%</td>
+          <td class="is-size-6">
+            {{ "1500" | currency: "INR" }}
+          </td>
+          <td class="is-size-6">27th May, 2021</td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- Filtered Results #end -->
+  </div>
+</div>
+
+<!-- Payment Terms Modal #start -->
+<sui-modal
+  size="medium"
+  [isClosable]="false"
+  (dismissed)="toggleModal($event)"
+  *ngIf="isPaymentTermsModalOpen"
+>
+  <div class="content">
+    <h1>{{ isPaymentModeOn }}</h1>
+    <div class="ui steps fluid">
+      <div
+        [class.completed]="term.isAccepted"
+        [class.disabled]="i + 1 !== currentAcceptedStepIndex"
+        class="step"
+        *ngFor="let term of termsList; let i = index"
+      >
+        <ng-container>
+          <i class="handshake icon"></i>
+          <div class="content">
+            <div class="title">Term {{ currentAcceptedStepIndex }}</div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="description">
+      {{ currentStepContent }}
+    </div>
+  </div>
+  <div class="actions">
+    <button class="positive ui button" (click)="nextStep()">
+      {{ currentAcceptedStepIndex === 3 ? "Accept and Close" : "Next" }}
+    </button>
+  </div>
+</sui-modal>
+<!-- Payment Terms Modal #end -->
