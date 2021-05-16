@@ -27,7 +27,7 @@
                     {{ postData.contents }}
                 </div>
                 <video class="video-fluid z-depth-1" autoplay loop controls muted *ngIf="postData.video">
-                    <source [src]="postData.visual" type="video/mp4" />
+                    <source [src]="postData.video" type="video/mp4" />
                 </video>
                 <div class="user-blog-post-image" *ngIf="postData.image">
                     <img [src]="postData.image">

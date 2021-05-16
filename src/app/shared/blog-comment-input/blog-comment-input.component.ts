@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { DataExchangeService } from 'src/app/services/data-exchange.service';
 import { InteractionService } from 'src/app/services/interaction.service';
 import * as data from 'src/assets/language.json';
 
@@ -11,6 +12,7 @@ import * as data from 'src/assets/language.json';
 export class BlogCommentInputComponent implements OnInit {
   @Input() index = 0;
   @Input() postId = '';
+  @Input() commentsCount = 0;
   comment = '';
   jsonData = (data as any).default;
   isDisabled = true;
@@ -18,7 +20,10 @@ export class BlogCommentInputComponent implements OnInit {
   textArea: any;
   showEmoji = false;
 
-  constructor(private interaction: InteractionService) { }
+  constructor(
+    private interaction: InteractionService,
+    private dataExchange: DataExchangeService
+  ) { }
 
   ngOnInit(): void {
     this.commentBTN = document.querySelectorAll('.comment-button');

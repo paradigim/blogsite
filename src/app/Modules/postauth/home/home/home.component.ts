@@ -25,6 +25,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   followDate = new Date().getTime();
   message;
   userFCMToken = [];
+  totalComment = 0;
+  updateCountToPostId = '';
 
   constructor(
     private interaction: InteractionService,
@@ -32,19 +34,20 @@ export class HomeComponent implements OnInit, OnDestroy {
     private afAuth: AngularFireAuth,
     private date: DateService,
     private pushNotificationService: PushNotification,
-    private data: DataExchangeService
+    private data: DataExchangeService,
+    private cdref: ChangeDetectorRef
   ) {
     this.afAuth.authState.subscribe(user => {
       if (user){
         this.userId = user.uid;
+        this.pushNotificationService.requestPermission();
       }
     });
   }
 
   ngOnInit(): void {
     //fcm
-    // this.pushNotificationService.requestPermission()
-    this.pushNotificationService.receiveMessage()
+    this.pushNotificationService.receiveMessage();
     this.message = this.pushNotificationService.currentMessage;
     //fcm
 
@@ -52,13 +55,23 @@ export class HomeComponent implements OnInit, OnDestroy {
     .pipe(filter(val => val === true))
     .subscribe(isStatus => {
       if (isStatus) {
-        this.data.loadAfterNewPost(false);
         this.allPosts();
         this.showNotificationToUser();
+        this.data.loadAfterNewPost(false);
       }
     });
     this.isDataLoaded = true;
     this.allPosts();
+  }
+
+  redirectLink(e) {
+    e.stopPropagation();
+    console.log('LINK E: ', e);
+  }
+
+  setCommentsLength(e, postId) {
+    this.updateCountToPostId = postId;
+    this.totalComment = e;
   }
 
   showNotificationToUser() {
@@ -77,15 +90,16 @@ export class HomeComponent implements OnInit, OnDestroy {
   fetchUserTosendNotification(followers: string[]) {
     followers.forEach((userid, i) => {
       this.interaction.getUser(userid)
-      .pipe(take(1))
+      // .pipe(take(1))
       .subscribe(data => {
-        if (data.fcmToken) {
+        if (data.fcmToken.length > 0) {
           data?.fcmToken.forEach(item => {
             this.userFCMToken.push(item)
           });
         }
         if (i === followers.length - 1) {
-          this.pushNotificationService.addPushSubscriber(this.userFCMToken, 'Blog', 'You have got a notification')
+          this.pushNotificationService.addPushSubscriber(this.userFCMToken, 'Heyllo.com', 'You have got a notification')
+          .pipe(takeUntil(this.unSubscribe))
           .subscribe(res => {
             this.userFCMToken = [];
           }, 
@@ -117,7 +131,6 @@ export class HomeComponent implements OnInit, OnDestroy {
           })
           this.data.loadAfterNewPost(false);
           this.isDataLoaded = false;
-          console.log('POSTS L: ', this.postData.length);
         })
       });
   }

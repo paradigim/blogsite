@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { AutosizeModule } from 'ngx-autosize';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { SuiModule } from 'ng2-semantic-ui';
+import { PipesModule } from 'src/app/pipes/pipes.module';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { SuiModule } from 'ng2-semantic-ui';
     FormsModule,
     AutosizeModule,
     SharedModule,
-    SuiModule
+    SuiModule,
+    PipesModule
   ],
 })
 export class HomeModule { }

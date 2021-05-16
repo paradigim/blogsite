@@ -27,8 +27,8 @@
                         <div class="user-unique-id" (click)="$event.stopPropagation()">{{ item.uniqueId }}</div>
                     </div>        
                 </div>
-                <div class='user-blog-content'>
-                    {{ item.contents }}
+                <div class='user-blog-content' [innerHTML]="item.contents | anchor" (click)="redirectLink($event)">
+                    <!-- {{ item.contents | anchor }} -->
                 </div>
                 <video class="video-fluid z-depth-1 home-videos" controls muted *ngIf="item.video">
                     <source [src]="item?.video" type="video/mp4" />
@@ -38,7 +38,7 @@
                 </div>
                 <div class='blog-activities'>
                     <app-blog-like [postId]="item.id" [likedUserIds]="item.likedUserId"></app-blog-like>
-                    <app-blog-comment [commentCount]="item.comments?.length"></app-blog-comment>
+                    <app-blog-comment [totalComment]="updateCountToPostId === item.id && totalComment" [commentCount]="item.comments?.length"></app-blog-comment>
                     <app-blog-activity-more 
                         [index]="i" 
                         [elemId]="i" 
@@ -50,10 +50,15 @@
                         (isPostDelete)="deletePostFromList($event, i)"
                     ></app-blog-activity-more>
                 </div>
-                <app-blog-all-comments [postId]="item?.id" pageName='home'></app-blog-all-comments>
+                <app-blog-all-comments 
+                    [postId]="item?.id" 
+                    pageName='home'
+                    (totalCommentLength)="setCommentsLength($event, item.id)"
+                ></app-blog-all-comments>
                 <app-blog-comment-input 
                     [index]="i" 
                     [postId]="item.id"
+                    [commentsCount]="item.comments.length"
                     (click)="stopDefaultBehaviour($event)">
                 </app-blog-comment-input>
             </div>

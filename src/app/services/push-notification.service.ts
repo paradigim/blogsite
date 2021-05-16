@@ -19,7 +19,7 @@ export class PushNotification {
     private interaction: InteractionService
   ) {}
 
-  private updateToken(token) {
+  updateToken(token) {
     this.afAuth.authState
     .pipe(take(1))
     .subscribe(user => {
@@ -80,7 +80,6 @@ export class PushNotification {
       })
     };
     return this.http.post(`https://fcm.googleapis.com/fcm/send`, dataSet, httpOptionsuser);
-
   }
 
   

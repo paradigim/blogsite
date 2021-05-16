@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Subject } from 'rxjs';
 import { delay, take, takeUntil } from 'rxjs/operators';
@@ -14,6 +14,7 @@ import { InteractionService } from 'src/app/services/interaction.service';
 export class BlogAllCommentsComponent implements OnInit, OnDestroy {
   @Input() postId = '';
   @Input() pageName = '';
+  @Output() totalCommentLength = new EventEmitter();
 
   deleteLoader = false;
   deleteIndex = -1;
@@ -56,6 +57,7 @@ export class BlogAllCommentsComponent implements OnInit, OnDestroy {
         if (this.pageName !== '') {
           this.commentData = this.commentData.slice(0, 2);
         }
+        this.totalCommentLength.emit(val.comments.length);
       });
     });
   }

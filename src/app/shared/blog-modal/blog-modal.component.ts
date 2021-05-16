@@ -138,21 +138,19 @@ export class BlogModalComponent implements OnInit, OnChanges {
           this.interaction.setNotification(id, this.userFollowers).then(() => {
             this.dataService.saveUsersForNotificationAlert(this.userFollowers);
             this.interaction.updateUserNotificationReadStatus(this.userFollowers);
-            // this.dataService.setNewPostStatus(true);
-            // this.dataService.loadAfterNewPost(true);
+            this.dataService.loadAfterNewPost(true);
             this.modal.approve();
             this.modalStatus.emit();
             this.isBlogPost = false;
             this.router.navigate(['/home']);
           });
         } else {
-          // this.dataService.loadAfterNewPost(true);
+          this.dataService.loadAfterNewPost(true);
           this.modal.approve();
           this.modalStatus.emit();
           this.isBlogPost = false;
           this.router.navigate(['/home']);
         }
-        // this.dataService.loadAfterNewPost(true);
       },
       err => {
         this.isBlogPost = false;
@@ -211,6 +209,8 @@ export class BlogModalComponent implements OnInit, OnChanges {
 
   activeCommentBTN(e?: any): void {
     this.comment = e.target.value;
+
+    console.log('E: ', e)
 
     // activate comment button if there is value in textarea
     if (e.target.value) {

@@ -33,9 +33,7 @@ export class NotificationComponent implements OnInit {
     private afAuth: AngularFireAuth,
     private interaction: InteractionService,
     private date: DateService,
-    private router: Router,
-    private pushNotificationService: PushNotification,
-    private data: DataExchangeService
+    private router: Router
   ) {
   }
 
@@ -134,7 +132,7 @@ export class NotificationComponent implements OnInit {
   }
 
 
-  deleteNotification(index, postid, notificationId, e, deletedBy) {
+  deleteNotification(index, postid, notificationId, e, deletedBy = []) {
     e.stopPropagation();
     this.deleteLoader = true;
     this.deleteIndex = index;
