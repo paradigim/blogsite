@@ -27,9 +27,9 @@
                         <div class="user-unique-id" (click)="$event.stopPropagation()">{{ item.uniqueId }}</div>
                     </div>        
                 </div>
-                <div class='user-blog-content' [innerHTML]="item.contents | anchor" (click)="redirectLink($event)">
-                    <!-- {{ item.contents | anchor }} -->
-                </div>
+
+                <div class='user-blog-content' [innerHTML]="item.contents | anchor" (click)="redirectLink($event)"></div>
+                
                 <video class="video-fluid z-depth-1 home-videos" controls muted *ngIf="item.video">
                     <source [src]="item?.video" type="video/mp4" />
                 </video>

@@ -3,19 +3,14 @@
 /* @import 'semantic-ui-css/semantic.css'; */
 /* @import 'bulma/css/bulma.css'; */
 
-@import '~@ctrl/ngx-emoji-mart/picker';
-
+@import "~@ctrl/ngx-emoji-mart/picker";
 
 :root {
-    --prime-color: #198f35;
-    /* --prime-color: #ff1a1a; */
-    --secondary-color: #c9efe5;
-    --third-color: #ec5209;
-    --icon-color: #04043c;
-}
-
-a:hover {
-    text-decoration: underline;
+  --prime-color: #198f35;
+  /* --prime-color: #ff1a1a; */
+  --secondary-color: #c9efe5;
+  --third-color: #ec5209;
+  --icon-color: #04043c;
 }
 
 body, html {
@@ -23,43 +18,47 @@ body, html {
     font-size: 1em;
 }
 
+/* a:hover {
+  text-decoration: underline;
+} */
+
 .dot {
-    width: 2px;
-    height: 2px;
-    border-radius: 50%;
-    background: #828282;
-    margin: 0 10px;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: #828282;
+  margin: 0 10px;
 }
 
 .comment-user-id {
-    line-height: 13px;
-    margin-bottom: 10px;
-    font-size: 13px;
-    text-transform: capitalize;
-    color: #333;
+  line-height: 13px;
+  margin-bottom: 10px;
+  font-size: 13px;
+  text-transform: capitalize;
+  color: #333;
 }
 
 .comment-post-time {
-    font-size: 12px;
-    text-transform: capitalize;
-    color: #4a4a4a;
+  font-size: 12px;
+  text-transform: capitalize;
+  color: #4a4a4a;
 }
 
 .comment-text {
-    color: #000;
+  color: #000;
 }
 
 .comment-button {
-    background: var(--prime-color);
-    border: 0;
-    color: #fff;
-    padding: 12px 17px;
-    border-radius: 20px;
-    font-weight: bold;
-    outline: none;
-    cursor: pointer;
+  background: var(--prime-color);
+  border: 0;
+  color: #fff;
+  padding: 12px 17px;
+  border-radius: 20px;
+  font-weight: bold;
+  outline: none;
+  cursor: pointer;
 }
 
 .text-center {
-    text-align: center;
+  text-align: center;
 }

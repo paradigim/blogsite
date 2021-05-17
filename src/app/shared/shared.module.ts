@@ -15,9 +15,7 @@ import { BlogAllCommentsComponent } from './blog-all-comments/blog-all-comments.
 import { BlogCommentInputComponent } from './blog-comment-input/blog-comment-input.component';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
-import { AngularFireStorageModule } from '@angular/fire/storage'
-import { PipesModule } from '../pipes/pipes.module';
-
+import { AngularFireStorageModule } from '@angular/fire/storage';
 
 @NgModule({
   declarations: [
@@ -28,7 +26,7 @@ import { PipesModule } from '../pipes/pipes.module';
     BlogActivityMoreComponent,
     CommonModalComponent,
     BlogAllCommentsComponent,
-    BlogCommentInputComponent
+    BlogCommentInputComponent,
   ],
   imports: [
     CommonModule,
@@ -39,7 +37,6 @@ import { PipesModule } from '../pipes/pipes.module';
     PickerModule,
     EmojiModule,
     AngularFireStorageModule,
-    PipesModule
   ],
   exports: [
     BlogModalComponent,
@@ -49,9 +46,8 @@ import { PipesModule } from '../pipes/pipes.module';
     BlogActivityMoreComponent,
     CommonModalComponent,
     BlogAllCommentsComponent,
-    BlogCommentInputComponent
   ],
-  schemas: [ NO_ERRORS_SCHEMA ],
-  entryComponents: [BlogModalComponent]
+  schemas: [NO_ERRORS_SCHEMA],
+  entryComponents: [BlogModalComponent],
 })
-export class SharedModule { }
+export class SharedModule {}

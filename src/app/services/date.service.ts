@@ -2,11 +2,10 @@ import { Injectable } from '@angular/core';
 import { format } from 'date-fns';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DateService {
-
-  constructor() { }
+  constructor() {}
 
   getTime(date) {
     return date.getSeconds();
@@ -14,5 +13,9 @@ export class DateService {
 
   postDateFormat(date: number): string {
     return format(new Date(date), 'dd MMM, yyyy');
+  }
+
+  formatByPattern(date: Date | number, formatPattern: string) {
+    return format(date, formatPattern);
   }
 }

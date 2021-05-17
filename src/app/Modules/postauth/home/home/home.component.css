@@ -69,6 +69,10 @@
     display: inline-block;
 }
 
+.user-blog-content a:hover {
+    text-decoration: underline !important;
+}
+
 .video-fluid {
     width: 100%;
     height: auto;
