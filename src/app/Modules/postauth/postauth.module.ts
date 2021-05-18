@@ -7,7 +7,7 @@ import { SideMenuComponent } from 'src/app/Components/side-menu/side-menu.compon
 import { SideMenuItemComponent } from 'src/app/Components/side-menu-item/side-menu-item.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { AutosizeModule } from 'ngx-autosize';
-import { PipesModule } from 'src/app/pipes/pipes.module';
+import { SuiModule } from 'ng2-semantic-ui';
 
 
 
@@ -21,7 +21,8 @@ import { PipesModule } from 'src/app/pipes/pipes.module';
     CommonModule,
     PostauthRoutingModule,
     SharedModule,
-    AutosizeModule
+    AutosizeModule,
+    SuiModule
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
 })

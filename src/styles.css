@@ -11,6 +11,9 @@
   --secondary-color: #c9efe5;
   --third-color: #ec5209;
   --icon-color: #04043c;
+  --prime-error: #ff0000;
+  --prime-btn-hover: #178230;
+  --input-border-color: #c2c2c2 
 }
 
 body, html {

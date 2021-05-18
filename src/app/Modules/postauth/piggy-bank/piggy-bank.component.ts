@@ -18,8 +18,8 @@ export class PiggyBankComponent implements OnInit, OnDestroy {
   currentStepContent = '';
   termsList = TermsListFactory.createTerms();
   monthAndYear = new FormControl('');
-
   ngUnsubscribe = new Subject();
+  incomeStatus = true;
 
   constructor(private dateService: DateService) {}
 

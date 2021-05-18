@@ -4,14 +4,17 @@ import { PiggyBankComponent } from './piggy-bank.component';
 import { PiggyBankRoutingModule } from './piggy-bank-routing.module';
 import { SuiModule } from 'ng2-semantic-ui';
 import { ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { ChartComponent } from 'src/app/Components/chart/chart.component';
 
 @NgModule({
-  declarations: [PiggyBankComponent],
+  declarations: [PiggyBankComponent, ChartComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     SuiModule,
     PiggyBankRoutingModule,
+    SharedModule
   ],
 })
 export class PiggyBankModule {}

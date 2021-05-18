@@ -8,11 +8,104 @@
   padding: 0.8rem;
 }
 
-.flex {
+.balance-box {
   display: flex;
+  justify-content: flex-end;
+  background: #fff;
 }
 
-.centered {
-  justify-content: space-between;
+.user-earnings {
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px #ddd;
+  width: 45%;
+}
+
+.earning-title {
+  display: flex;
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: #626161;
+  justify-content: center;
+}
+
+.earning-title i {
+  margin-right: 5px;
+  color: var(--prime-color);
+}
+
+.site-color {
+  color: var(--prime-color);
+  font-weight: bold;
+}
+
+.earning-amnt {
+  display: flex;
+  justify-content: center;
   align-items: center;
+  font-weight: bold;
+  font-size: 25px;
+  margin-bottom: 15px;
+}
+
+.earning-amnt i {
+  font-size: 20px;
+  margin: 0;
+  margin-top: 5px;
+}
+
+.earning-variation {
+  font-size: 12px;
+  color: #626161;
+  text-align: center;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.percentage-up {
+  color: var(--prime-color);
+  font-weight: bold;
+}
+
+.percentage-down {
+  color: var(--prime-error);
+  font-weight: bold;
+}
+
+button.withdraw-btn {
+  font-size: 15px;
+  margin-top: 25px;
+  border-radius: 4px;
+  background: var(--prime-color);
+  color: #fff;
+  width: 100%;
+  border: none;
+  padding: 12px 0;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button.withdraw-btn:hover {
+  background: var(--prime-btn-hover);
+}
+
+.filters-box {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.filters-box input {
+  border-radius: 20px;
+  border: 1px solid var(--input-border-color);
+  transition: 0.2s;
+  padding: 8px 10px;
+}
+
+.filters-box input:focus {
+  outline: none;
+}
+
+.filters-box input:hover {
+  box-shadow: 0 0 10px #ddd;
 }

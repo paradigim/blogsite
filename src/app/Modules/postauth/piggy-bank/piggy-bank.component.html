@@ -1,34 +1,61 @@
 <div>
   <div class="cont">
-    <div class="">
-      <input
+    <div class="ui toggle checkbox">
+      <input 
         type="checkbox"
+        name="a"
         (change)="togglePayment()"
         [checked]="isPaymentModeOn"
-      />
-      <label class="ml-2 has-text-success" *ngIf="isPaymentModeOn"
-        >Payment mode is active.
-      </label>
-      <label class="ml-2 has-text-info" *ngIf="!isPaymentModeOn"
-        >Turn on payment mode.</label
       >
+      <label class="ml-2 has-text-success" *ngIf="isPaymentModeOn">Payment mode is active</label>
+      <label class="ml-2 has-text-info" *ngIf="!isPaymentModeOn">Turn on payment mode.</label>
     </div>
 
     <div class="ui hidden divider"></div>
 
-    <!-- Balance And Filter Row #start -->
-    <div class="balance-and-filter-row flex centered">
-      <div class="balance-box">
-        <h4 class="has-text-weight-bold">
-          <span>{{ "1500" | currency: "INR" }}</span>
-          <span><i class="fas fa-rupee-sign"></i></span>
-        </h4>
-      </div>
-      <div class="filters-box">
-        <input type="month" [formControl]="monthAndYear" />
+    <!-- Balance Row #start -->
+    <div class="balance-box">
+      <!-- <app-chart></app-chart> -->
+      <div class="user-earnings">
+        <!-- Earning title #start -->
+        <div class="earning-title">
+          <i class="money bill alternate outline icon"></i>
+          <div>Your total <span class="site-color">earnings</span></div>
+        </div>
+        <!-- Earning title #end -->
+
+        <!-- Earning ammount #start -->
+        <div class="earning-amnt">
+          <i class="rupee sign icon"></i>
+          <div>1,90,500</div>
+        </div>
+        <!-- Earning ammount #end -->
+
+        <!-- Earning percentage variation #start -->
+        <div class="earning-variation" *ngIf="incomeStatus">
+          You have earned <span class="percentage-up">12%</span> more than the previous month
+        </div>
+
+        <div class="earning-variation" *ngIf="!incomeStatus">
+          You have earned <span class="percentage-down">30%</span> less than the previous month
+        </div>
+        <!-- Earning percentage variation #end -->
+
+        <!-- Widtraw money button #start -->
+        <button class="withdraw-btn">Withdraw Money</button>
+        <!-- Widtraw money button #end -->
       </div>
     </div>
-    <!-- Balance And Filter Row #row -->
+    <!-- Balance Row #row -->
+
+    <div class="ui divider"></div>
+
+    <!-- filter #start-->
+    <div class="filters-box">
+      <input type="month" [formControl]="monthAndYear" />
+    </div>
+    <!-- filter #end -->
+
 
     <div class="ui hidden divider"></div>
 
