@@ -1,5 +1,5 @@
 <div class="bookmarks-container">
-    <ngContainer *ngIf="bookmarkData.length > 0">
+    <ngContainer *ngIf="bookmarkData?.length > 0">
         <div 
             class='ec-blog-post' 
             *ngFor="let bookmark of bookmarkData; index as i;"
@@ -12,7 +12,7 @@
                     <div class='user-blog-info'>
                         <div class='user-blog-name'>{{ bookmark.userName }}</div>
                         <div class='dot'></div>
-                        <div class='user-blog-post-time'>{{ date.postDateFormat(bookmark.postDate) }}</div>
+                        <div class='user-blog-post-time'>{{ date?.postDateFormat(bookmark.postDate) }}</div>
                     </div>
                 </div>
                 <div class="user-unique-id">{{ bookmark.uniqueId }}</div>

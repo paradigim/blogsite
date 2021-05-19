@@ -15,7 +15,7 @@
         (changeMenuStatus)="setStatus($event)"
     ></app-side-menu>
 
-    <div class='main-container'>
+    <div class="main-container" [class.no-margin]="ifPageIsPiggyBank">
         <router-outlet></router-outlet>
     </div>
 </div>

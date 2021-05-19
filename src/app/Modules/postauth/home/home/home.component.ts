@@ -51,6 +51,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.message = this.pushNotificationService.currentMessage;
     //fcm
 
+    this.data.setPageStatus(false);
+
     this.data.isLoad$
     .pipe(filter(val => val === true))
     .subscribe(isStatus => {

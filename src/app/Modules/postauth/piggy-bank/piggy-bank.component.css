@@ -1,4 +1,5 @@
-@import url("../../../../../node_modules/bulma/css//bulma.min.css");
+
+@import 'semantic-ui-css/semantic.css';
 
 .sm-input {
   padding: 0.4rem;
@@ -10,15 +11,20 @@
 
 .balance-box {
   display: flex;
-  justify-content: flex-end;
   background: #fff;
+  align-items: flex-start;
+}
+
+.chart-desg {
+  flex: 1;
+  margin-left: 15px;
 }
 
 .user-earnings {
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 2px 10px #ddd;
-  width: 45%;
+  width: 35%;
 }
 
 .earning-title {
@@ -74,7 +80,7 @@
 
 button.withdraw-btn {
   font-size: 15px;
-  margin-top: 25px;
+  margin-top: 35px;
   border-radius: 4px;
   background: var(--prime-color);
   color: #fff;
@@ -108,4 +114,28 @@ button.withdraw-btn:hover {
 
 .filters-box input:hover {
   box-shadow: 0 0 10px #ddd;
+}
+
+.flex {
+  display: flex;
+}
+
+.space-between {
+  justify-content: space-between;
+}
+
+.align-item-center {
+  align-items: center;
+}
+
+.stat-title {
+  font-weight: bold;
+  font-size: 25px;
+  margin-bottom: 0px;
+}
+
+.date-time {
+  color: #99cc00;
+  font-size: 11px;
+  font-weight: bold;
 }

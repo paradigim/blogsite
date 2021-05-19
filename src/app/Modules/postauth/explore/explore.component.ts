@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { subscribeOn } from 'rxjs/operators';
+import { DataExchangeService } from 'src/app/services/data-exchange.service';
 import { InteractionService } from 'src/app/services/interaction.service';
 
 @Component({
@@ -16,10 +17,12 @@ export class ExploreComponent implements OnInit {
 
   constructor(
     private interaction: InteractionService,
-    private router: Router
+    private router: Router,
+    private data: DataExchangeService
   ) { }
 
   ngOnInit(): void {
+    this.data.setPageStatus(false);
     this.getAllUser();
   }
 

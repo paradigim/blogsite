@@ -48,14 +48,6 @@
     color: #000;
 }
 
-.dot {
-    width: 2px;
-    height: 2px;
-    border-radius: 50%;
-    background: #828282;
-    margin: 0 10px;
-}
-
 .user-blog-post-time {
     color: #747474;
     font-size: 13px;

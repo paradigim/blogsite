@@ -11,6 +11,10 @@
     margin-right: 300px;
 }
 
+.no-margin.main-container {
+    margin-right: 0;
+}
+
 .topbar-cont {
     padding: 10px 0;
     background: #fff;

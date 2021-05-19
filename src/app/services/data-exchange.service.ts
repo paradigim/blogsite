@@ -27,7 +27,18 @@ export class DataExchangeService {
   private isLoad = new BehaviorSubject(false);
   public isLoad$ = this.isLoad.asObservable();
 
+  private pageStatus = new BehaviorSubject(false);
+  public pageStatus$ = this.pageStatus.asObservable();
+
   constructor() { }
+
+  setPageStatus(status) {
+    this.pageStatus.next(status);
+  }
+
+  getPageStatus() {
+    return this.pageStatus.value;
+  }
 
   loadAfterNewPost(status) {
     this.isLoad.next(status);

@@ -1,16 +1,47 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { DataExchangeService } from 'src/app/services/data-exchange.service';
 import { DateService } from 'src/app/services/date.service';
 import { TermsListFactory } from '../../../__mocks__/TermsListFactory';
 
+import {
+  ChartComponent,
+  ApexAxisChartSeries,
+  ApexChart,
+  ApexXAxis,
+  ApexDataLabels,
+  ApexStroke,
+  ApexMarkers,
+  ApexYAxis,
+  ApexGrid,
+  ApexTitleSubtitle,
+  ApexLegend
+} from "ng-apexcharts";
+
+export type ChartOptions = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  xaxis: ApexXAxis;
+  stroke: ApexStroke;
+  dataLabels: ApexDataLabels;
+  markers: ApexMarkers;
+  colors: string[];
+  yaxis: ApexYAxis;
+  grid: ApexGrid;
+  legend: ApexLegend;
+  title: ApexTitleSubtitle;
+};
 @Component({
   selector: 'app-piggy-bank',
   templateUrl: './piggy-bank.component.html',
   styleUrls: ['./piggy-bank.component.css'],
 })
 export class PiggyBankComponent implements OnInit, OnDestroy {
+  @ViewChild('earning') earning: ElementRef;
+  @ViewChild('chartBlock') chartBlock: ElementRef;
+
   readonly FINAL_STEP_NO = 3;
   isPaymentModeOn = false;
   isPaymentTermsModalOpen = false;
@@ -20,24 +51,99 @@ export class PiggyBankComponent implements OnInit, OnDestroy {
   monthAndYear = new FormControl('');
   ngUnsubscribe = new Subject();
   incomeStatus = true;
+  earningBlockHeight = 0;
+  chartBlockWidth = 0;
 
-  constructor(private dateService: DateService) {}
+  public chartOptions: Partial<ChartOptions> = {
+    markers: {
+      size: 6,
+      hover: {
+        size: 10
+      }
+    }
+  };
+
+  constructor(
+    private dateService: DateService,
+    private data: DataExchangeService,
+    private cdref: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
+    this.data.setPageStatus(true);
     this.setTermContent(0);
     this.listenFiltersChange();
     this.setDefaultFilterValues();
+  }
+
+  initChart() {
+    this.chartOptions = {
+      series: [
+        {
+          name: "Earnings",
+          data: [0, 10, 20, 40, 60, 80, 100]
+        }
+      ],
+      chart: {
+        width: this.chartBlockWidth,
+        height: this.earningBlockHeight,
+        type: "line",
+        zoom: {
+          enabled: false
+        },
+        toolbar: {
+          show: false,
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        curve: "straight"
+      },
+      title: {
+        text: "Your earning statistics",
+        align: "center"
+      },
+      grid: {
+        row: {
+          colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
+          opacity: 0.5
+        }
+      },
+      xaxis: {
+        categories: [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep"
+        ]
+      },
+      yaxis: {
+        title: {
+          text: "Earnings per month"
+        },
+      },
+    };
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.earningBlockHeight = this.earning.nativeElement.offsetHeight;
+      this.chartBlockWidth = this.chartBlock.nativeElement.offsetWidth;
+      this.initChart()
+    }, 0);
   }
 
   setDefaultFilterValues() {
     this.monthAndYear.setValue(
       this.dateService.formatByPattern(new Date(), 'yyyy-MM')
     );
-  }
-
-  ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
   }
 
   setTermContent(termIndex) {
@@ -77,5 +183,10 @@ export class PiggyBankComponent implements OnInit, OnDestroy {
       .subscribe((value) => {
         console.log(`[monthAndYear] -> `, value);
       });
+  }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

@@ -1,6 +1,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { DataExchangeService } from 'src/app/services/data-exchange.service';
 import { DateService } from 'src/app/services/date.service';
 import { InteractionService } from 'src/app/services/interaction.service';
 
@@ -15,12 +16,14 @@ export class BookmarksComponent implements OnInit {
 
   constructor(
     private interaction: InteractionService,
-    private date: DateService,
-    private router: Router
+    private router: Router,
+    private data: DataExchangeService,
+    private date: DateService
   ) { }
 
   ngOnInit(): void {
     this.getBookmarks();
+    this.data.setPageStatus(false);
   }
 
   getBookmarks() {

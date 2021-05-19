@@ -1,22 +1,31 @@
 <div>
   <div class="cont">
-    <div class="ui toggle checkbox">
-      <input 
-        type="checkbox"
-        name="a"
-        (change)="togglePayment()"
-        [checked]="isPaymentModeOn"
-      >
-      <label class="ml-2 has-text-success" *ngIf="isPaymentModeOn">Payment mode is active</label>
-      <label class="ml-2 has-text-info" *ngIf="!isPaymentModeOn">Turn on payment mode.</label>
+    <div class="top-section space-between flex align-item-center">
+      <div class="title-left">
+        <h4 class="stat-title">Statistics</h4>
+        <div class="date-time flex align-item-center">
+          <div class="cur-time">01:30 pm</div>
+          <div class="dot"></div>
+          <div class="cur-date">20 May 2021</div>
+        </div>
+      </div>
+      <div class="ui toggle checkbox">
+        <input 
+          type="checkbox"
+          name="a"
+          (change)="togglePayment()"
+          [checked]="isPaymentModeOn"
+        >
+        <label class="ml-2 has-text-success" *ngIf="isPaymentModeOn">Payment mode is active</label>
+        <label class="ml-2 has-text-info" *ngIf="!isPaymentModeOn">Turn on payment mode.</label>
+      </div>
     </div>
 
     <div class="ui hidden divider"></div>
 
     <!-- Balance Row #start -->
     <div class="balance-box">
-      <!-- <app-chart></app-chart> -->
-      <div class="user-earnings">
+      <div class="user-earnings" #earning>
         <!-- Earning title #start -->
         <div class="earning-title">
           <i class="money bill alternate outline icon"></i>
@@ -45,6 +54,21 @@
         <button class="withdraw-btn">Withdraw Money</button>
         <!-- Widtraw money button #end -->
       </div>
+
+      <!-- showing earning chart #start-->
+      <div id="chart" class="chart-desg" #chartBlock>
+        <apx-chart
+          [series]="chartOptions.series"
+          [chart]="chartOptions.chart"
+          [xaxis]="chartOptions.xaxis"
+          [dataLabels]="chartOptions.dataLabels"
+          [grid]="chartOptions.grid"
+          [stroke]="chartOptions.stroke"
+          [title]="chartOptions.title"
+          [yaxis]="chartOptions.yaxis"
+        ></apx-chart>
+      </div>
+      <!-- showing earning chart #end-->
     </div>
     <!-- Balance Row #row -->
 
@@ -60,25 +84,32 @@
     <div class="ui hidden divider"></div>
 
     <!-- Filtered Results #start -->
-    <table class="ui celled padded table">
+    <table class="ui green four small striped center aligned table">
       <thead>
         <tr>
-          <th>Id</th>
-          <th>Name</th>
-          <th><abbr title="View Ratio">Ratio</abbr></th>
+          <th>Month</th>
+          <th>Total Upload</th>
+          <th>Views</th>
           <th>Earning</th>
-          <th>Posted On</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td class="is-size-6">1</td>
-          <td class="is-size-6">Best PC Covers</td>
-          <td class="is-size-6">78%</td>
+          <td class="is-size-6">January</td>
+          <td class="is-size-6">5</td>
+          <td class="is-size-6">100K</td>
           <td class="is-size-6">
             {{ "1500" | currency: "INR" }}
           </td>
-          <td class="is-size-6">27th May, 2021</td>
+        </tr>
+
+        <tr>
+          <td class="is-size-6">February</td>
+          <td class="is-size-6">3</td>
+          <td class="is-size-6">70,567</td>
+          <td class="is-size-6">
+            {{ "900" | currency: "INR" }}
+          </td>
         </tr>
       </tbody>
     </table>

@@ -53,6 +53,7 @@ export class ProfileComponent implements OnInit {
     });
     
     this.checkIsUpdated();
+    this.dataExchange.setPageStatus(false);
   }
 
   checkIsUpdated() {

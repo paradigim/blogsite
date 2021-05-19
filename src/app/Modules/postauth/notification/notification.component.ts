@@ -32,8 +32,8 @@ export class NotificationComponent implements OnInit {
   constructor(
     private afAuth: AngularFireAuth,
     private interaction: InteractionService,
-    private date: DateService,
-    private router: Router
+    private router: Router,
+    private data: DataExchangeService
   ) {
   }
 
@@ -44,6 +44,7 @@ export class NotificationComponent implements OnInit {
         this.getNotification();
       }
     });
+    this.data.setPageStatus(false);
   }
 
   checkRead(readData) {
