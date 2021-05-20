@@ -68,7 +68,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   redirectLink(e) {
     e.stopPropagation();
-    console.log('LINK E: ', e);
   }
 
   setCommentsLength(e, postId) {

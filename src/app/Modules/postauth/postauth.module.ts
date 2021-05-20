@@ -24,6 +24,6 @@ import { SuiModule } from 'ng2-semantic-ui';
     AutosizeModule,
     SuiModule
   ],
-  schemas: [ NO_ERRORS_SCHEMA ],
+  schemas: [ NO_ERRORS_SCHEMA ]
 })
 export class PostauthModule { }

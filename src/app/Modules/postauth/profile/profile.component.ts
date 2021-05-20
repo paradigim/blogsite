@@ -56,6 +56,10 @@ export class ProfileComponent implements OnInit {
     this.dataExchange.setPageStatus(false);
   }
 
+  redirectLink(e) {
+    e.stopPropagation();
+  }
+
   checkIsUpdated() {
     this.dataExchange.isUpdated$
       .pipe(takeUntil(this.ngUnsubscribe))

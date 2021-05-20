@@ -105,14 +105,24 @@ export class BlogModalComponent implements OnInit, OnChanges {
 
   postBlog(e): void {
     e.preventDefault();
+    // console.log('IMG URL: ', this.imageURL);
     this.isBlogPost = true;
     const content = this.postForm.get('content').value;
-    const image = this.postForm.get('imageUrl').value;
-    const video = this.postForm.get('videoUrl').value;
+    // const image = this.postForm.get('imageUrl').value;
+    // const video = this.postForm.get('videoUrl').value;
+    const image = '';
+    const video = '';
     const postDate = new Date().getTime();
 
-    if (this.editPost) {
-      this.interaction.updatePost(this.editPostData.id, content, image, video, postDate).then(res => {
+    if (this.editPost) { //pritam
+      this.interaction.updatePost(this.editPostData.id, content, image, video, postDate).then(async res => {
+        if (this.fileType === 'video') {
+          const snap = await this.afs.upload(`/videos/${new Date().getTime()}_${this.selectedFile.name}`, this.selectedFile);
+          this.saveFile(snap, this.editPostData.id);
+        } else if(this.fileType === 'image') {
+          const snap = await this.afs.upload(`/images/${new Date().getTime()}_${this.selectedFile.name}`, this.selectedFile);
+          this.saveFile(snap, this.editPostData.id);
+        }
         this.modal.approve();
         this.modalStatus.emit();
         this.isBlogPost = false;

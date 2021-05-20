@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ProfileRoutingModule } from './profile-routing.module';
@@ -8,6 +8,7 @@ import { EditProfileComponent } from 'src/app/Components/edit-profile/edit-profi
 import { SuiModule } from 'ng2-semantic-ui';
 import { EditProfileModalComponent } from 'src/app/Components/edit-profile-modal/edit-profile-modal.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { PipesModule } from 'src/app/pipes/pipes.module';
 
 
 @NgModule({
@@ -21,7 +22,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     ProfileRoutingModule,
     SharedModule,
     SuiModule,
-    ReactiveFormsModule
-  ]
+    ReactiveFormsModule,
+    PipesModule
+  ],
+  schemas: [ NO_ERRORS_SCHEMA ],
 })
 export class ProfileModule { }

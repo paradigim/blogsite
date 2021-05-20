@@ -127,11 +127,6 @@
     display: none;
 }
 
-.home-videos {
-    width: 100%;
-    max-height: 300px;
-}
-
 .user-data-cont {
     flex: 1;
 }

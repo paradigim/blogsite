@@ -50,8 +50,7 @@ import { PipesModule } from './pipes/pipes.module';
     }),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     HttpClientModule,
-    PipesModule,
-    
+    PipesModule
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
   providers: [PushNotification, AsyncPipe],

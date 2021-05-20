@@ -57,12 +57,15 @@
                 <!-- <button class="follow">Follow</button> -->
             </div>
             <div class="user-unique-id" (click)="stopDefaultBrowserBehaviour($event)">{{ post.uniqueId }}</div>
-            <div class='user-blog-content'>
-                {{ post.contents }}
-            </div>
+            <div class='user-blog-content' [innerHTML]="post.contents | anchor" (click)="redirectLink($event)"></div>
+            
+            <video class="video-fluid z-depth-1 home-videos" controls muted *ngIf="post.video">
+                <source [src]="post?.video" type="video/mp4" />
+            </video>
             <div class="user-blog-post-image">
                 <img [src]="post.image">
             </div>
+
             <div class='blog-activities'>
                 <app-blog-like [postId]="post.id" [likedUserIds]="post.likedUserId"></app-blog-like>
                 <app-blog-comment [commentCount]="post.comments.length"></app-blog-comment>

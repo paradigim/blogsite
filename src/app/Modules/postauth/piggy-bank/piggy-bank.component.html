@@ -2,7 +2,7 @@
   <div class="cont">
     <div class="top-section space-between flex align-item-center">
       <div class="title-left">
-        <h4 class="stat-title">Statistics</h4>
+        <h4 class="stat-title">Hi Partner</h4>
         <div class="date-time flex align-item-center">
           <div class="cur-time">01:30 pm</div>
           <div class="dot"></div>
@@ -16,8 +16,8 @@
           (change)="togglePayment()"
           [checked]="isPaymentModeOn"
         >
-        <label class="ml-2 has-text-success" *ngIf="isPaymentModeOn">Payment mode is active</label>
-        <label class="ml-2 has-text-info" *ngIf="!isPaymentModeOn">Turn on payment mode.</label>
+        <label class="ml-2 has-text-success" *ngIf="isPaymentModeOn">Eligible for earnings</label>
+        <label class="ml-2 has-text-info" *ngIf="!isPaymentModeOn">Start Earnings</label>
       </div>
     </div>
 
@@ -125,7 +125,7 @@
   *ngIf="isPaymentTermsModalOpen"
 >
   <div class="content">
-    <h1>{{ isPaymentModeOn }}</h1>
+    <h1>Terms & Conditions</h1>
     <div class="ui steps fluid">
       <div
         [class.completed]="term.isAccepted"

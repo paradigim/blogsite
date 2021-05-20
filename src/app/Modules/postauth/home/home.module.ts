@@ -22,5 +22,6 @@ import { PipesModule } from 'src/app/pipes/pipes.module';
     SuiModule,
     PipesModule
   ],
+  schemas: [ NO_ERRORS_SCHEMA ]
 })
 export class HomeModule { }
