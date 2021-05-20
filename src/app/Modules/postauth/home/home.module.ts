@@ -20,8 +20,8 @@ import { PipesModule } from 'src/app/pipes/pipes.module';
     AutosizeModule,
     SharedModule,
     SuiModule,
-    PipesModule
+    PipesModule,
   ],
-  schemas: [ NO_ERRORS_SCHEMA ]
+  
 })
 export class HomeModule { }

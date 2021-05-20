@@ -26,7 +26,7 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
     BlogActivityMoreComponent,
     CommonModalComponent,
     BlogAllCommentsComponent,
-    BlogCommentInputComponent,
+    BlogCommentInputComponent
   ],
   imports: [
     CommonModule,
@@ -46,6 +46,7 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
     BlogActivityMoreComponent,
     CommonModalComponent,
     BlogAllCommentsComponent,
+    BlogCommentInputComponent
   ],
   schemas: [NO_ERRORS_SCHEMA],
   entryComponents: [BlogModalComponent],
