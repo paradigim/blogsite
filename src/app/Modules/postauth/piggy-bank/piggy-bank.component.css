@@ -139,3 +139,11 @@ button.withdraw-btn:hover {
   font-size: 11px;
   font-weight: bold;
 }
+
+.table-header-row {
+  font-size: 12px;
+}
+
+.table-data-row {
+  font-size: 12px;;
+}
