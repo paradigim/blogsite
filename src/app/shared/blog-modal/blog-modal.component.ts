@@ -72,19 +72,23 @@ export class BlogModalComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(): void {
-    if (this.editPostData) {
-      this.editPost = true;
-      this.postForm.patchValue({
-        content: this.editPostData.contents,
-        imageUrl: this.editPostData.image,
-        videoUrl: this.editPostData.video
-      });
-      this.postButton = false;
-      this.userImage = this.editPostData.userImage;
-      this.imageURL = this.editPostData.image;
-      if (this.postForm.value.content) {
-        this.statusPlaceholder();
-      }
+    if (this.editPostData && !this.editPost) {
+      this.setPostData();
+    }
+  }
+
+  setPostData() {
+    this.editPost = true;
+    this.postForm.patchValue({
+      content: this.editPostData.contents,
+      imageUrl: this.editPostData.image,
+      videoUrl: this.editPostData.video
+    });
+    this.postButton = false;
+    this.userImage = this.editPostData.userImage;
+    this.imageURL = this.editPostData.image;
+    if (this.postForm.value.content) {
+      this.statusPlaceholder();
     }
   }
 
@@ -105,23 +109,21 @@ export class BlogModalComponent implements OnInit, OnChanges {
 
   postBlog(e): void {
     e.preventDefault();
-    // console.log('IMG URL: ', this.imageURL);
     this.isBlogPost = true;
     const content = this.postForm.get('content').value;
-    // const image = this.postForm.get('imageUrl').value;
-    // const video = this.postForm.get('videoUrl').value;
-    const image = '';
-    const video = '';
     const postDate = new Date().getTime();
 
-    if (this.editPost) { //pritam
-      this.interaction.updatePost(this.editPostData.id, content, image, video, postDate).then(async res => {
+    if (this.editPost) {
+      this.interaction.updateEditedPost(this.editPostData.id, content, postDate).then(async res => {
         if (this.fileType === 'video') {
           const snap = await this.afs.upload(`/videos/${new Date().getTime()}_${this.selectedFile.name}`, this.selectedFile);
           this.saveFile(snap, this.editPostData.id);
         } else if(this.fileType === 'image') {
           const snap = await this.afs.upload(`/images/${new Date().getTime()}_${this.selectedFile.name}`, this.selectedFile);
           this.saveFile(snap, this.editPostData.id);
+        }
+        if (!this.fileType) {
+          this.dataService.loadAfterNewPost(true);
         }
         this.modal.approve();
         this.modalStatus.emit();
@@ -175,6 +177,9 @@ export class BlogModalComponent implements OnInit, OnChanges {
   saveFile(snap, postId) {
     snap.ref.getDownloadURL().then(url => {
       this.interaction.updateVideoImage(postId, this.fileType, url).then(res => {
+        if (this.editPost) {
+          this.setPostData();
+        }
         this.dataService.loadAfterNewPost(true);
       });
     });
@@ -192,14 +197,12 @@ export class BlogModalComponent implements OnInit, OnChanges {
         this.postForm.get('imageUrl').setValue('');
         this.postForm.get('videoUrl').setValue(this.videoURL);
         this.fileRef = this.afs.ref(`/videos/${new Date().getTime()}_${this.selectedFile.name}`);
-        // this.task = this.afs.upload(`/videos/${new Date().getTime()}_${this.selectedFile.name}`, this.selectedFile);
       } else {
         this.videoURL = '';
         this.imageURL = reader.result as string;
         this.postForm.get('videoUrl').setValue('');
         this.postForm.get('imageUrl').setValue(this.imageURL);
         this.fileRef = this.afs.ref(`/images/${new Date().getTime()}_${this.selectedFile.name}`);
-        // this.task = this.afs.upload(`/images/${new Date().getTime()}_${this.selectedFile.name}`, this.selectedFile);
       }
       // this.percentageUpload = this.task.percentageChanges();
       // this.percentageUpload.subscribe(data => {
@@ -219,9 +222,6 @@ export class BlogModalComponent implements OnInit, OnChanges {
 
   activeCommentBTN(e?: any): void {
     this.comment = e.target.value;
-
-    console.log('E: ', e)
-
     // activate comment button if there is value in textarea
     if (e.target.value) {
       this.postButton = false;

@@ -90,12 +90,22 @@ export class InteractionService implements OnDestroy {
       };
 
       return this.afs.collection('posts').doc(postId).set(postData).then(res => {
-        return this.updatePost(postId, postData.contents, postData.image, postData.video, postData.postDate).then(res => {
+        return this.updateNewPost(postId, postData.contents, postData.image, postData.video, postData.postDate).then(res => {
           return res;
         });
       })
     }));
    }
+
+   updateNewPost(postId?: string, contents?: string, image?: string, video?: string, lastUpdateDate?: number | string): Promise<any> {
+    return this.afs.collection('posts').doc(postId).update({
+      id: postId,
+      image,
+      video,
+      contents,
+      lastUpdateDate
+    });
+  }
 
   updateVideoImage(postId, fileType, url) {
     return this.afs.collection('posts').doc(postId).update({
@@ -105,11 +115,9 @@ export class InteractionService implements OnDestroy {
   }
 
     // update post
-  updatePost(postId?: string, contents?: string, image?: string, video?: string, lastUpdateDate?: number | string): Promise<any> {
+    updateEditedPost(postId?: string, contents?: string, lastUpdateDate?: number | string): Promise<any> {
     return this.afs.collection('posts').doc(postId).update({
       id: postId,
-      image,
-      video,
       contents,
       lastUpdateDate
     });
