@@ -434,9 +434,10 @@ export class InteractionService implements OnDestroy {
     });
   }
 
-  deleteFileFromStaorage(url) {
+  deleteFileFromStaorage(url): Promise<any> {
     const urlToDelete = this.afStorage.storage.refFromURL(url);
     urlToDelete.delete();
+    return;
   }
 
   // on destroy of the component

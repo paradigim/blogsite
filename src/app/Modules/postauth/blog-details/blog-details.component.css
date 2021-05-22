@@ -74,6 +74,8 @@
     margin-top: 10px;
     margin-bottom: 15px;
     color: #4b4b4b;
+    word-break: break-all;
+    display: inline-block;
 }
 
 .video-fluid {
@@ -126,7 +128,19 @@
     display: none;
 }
 
+.detail-video {
+    max-height: 300px;
+}
+
+.user-data-cont {
+    flex: 1;
+}
+
 @media screen and (max-width: 768px) {
+    .r-cont .user-blog-post {
+        display: block;
+    }
+
     .r-hide {
         display: none;
     }

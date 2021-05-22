@@ -20,7 +20,7 @@ import { PipesModule } from 'src/app/pipes/pipes.module';
     AutosizeModule,
     SharedModule,
     SuiModule,
-    PipesModule,
+    PipesModule
   ],
   
 })

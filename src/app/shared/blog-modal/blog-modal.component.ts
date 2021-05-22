@@ -72,6 +72,7 @@ export class BlogModalComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(): void {
+    console.log('ED P D: ', this.editPostData);
     if (this.editPostData && !this.editPost) {
       this.setPostData();
     }
@@ -112,15 +113,29 @@ export class BlogModalComponent implements OnInit, OnChanges {
     this.isBlogPost = true;
     const content = this.postForm.get('content').value;
     const postDate = new Date().getTime();
+    let urlToDelete = '';
 
     if (this.editPost) {
+      if (this.editPostData.video) {
+        urlToDelete = this.editPostData.video;
+      } else if(this.editPostData.image) {
+        urlToDelete = this.editPostData.image;
+      }
       this.interaction.updateEditedPost(this.editPostData.id, content, postDate).then(async res => {
         if (this.fileType === 'video') {
+          if (urlToDelete) {
+            await this.interaction.deleteFileFromStaorage(urlToDelete);
+          }
           const snap = await this.afs.upload(`/videos/${new Date().getTime()}_${this.selectedFile.name}`, this.selectedFile);
           this.saveFile(snap, this.editPostData.id);
+          urlToDelete = '';
         } else if(this.fileType === 'image') {
+          if (urlToDelete) {
+            await this.interaction.deleteFileFromStaorage(urlToDelete);
+          }
           const snap = await this.afs.upload(`/images/${new Date().getTime()}_${this.selectedFile.name}`, this.selectedFile);
           this.saveFile(snap, this.editPostData.id);
+          urlToDelete = '';
         }
         if (!this.fileType) {
           this.dataService.loadAfterNewPost(true);

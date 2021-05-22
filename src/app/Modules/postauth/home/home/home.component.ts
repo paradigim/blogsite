@@ -1,13 +1,12 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { InteractionService } from 'src/app/services/interaction.service';
 import { Router } from '@angular/router';
-import { delay, filter, map, mapTo, skipWhile, switchMap, take, takeUntil } from 'rxjs/operators';
+import { filter, skipWhile, switchMap, take, takeUntil } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { combineLatest, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { DateService } from 'src/app/services/date.service';
 import { PushNotification } from 'src/app/services/push-notification.service';
 import { DataExchangeService } from 'src/app/services/data-exchange.service';
-// import { PushNotification } from 'src/app/services/push-notification.service';
 
 @Component({
   selector: 'app-home',

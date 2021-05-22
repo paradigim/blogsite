@@ -23,10 +23,8 @@
                         <div class="user-unique-id">{{ postData.uniqueId }}</div>
                     </div>
                 </div>
-                <div class='user-blog-content'>
-                    {{ postData.contents }}
-                </div>
-                <video class="video-fluid z-depth-1" autoplay loop controls muted *ngIf="postData.video">
+                <div class='user-blog-content' [innerHTML]="postData.contents | anchor"></div>
+                <video class="video-fluid z-depth-1 detail-video" autoplay loop controls muted *ngIf="postData.video">
                     <source [src]="postData.video" type="video/mp4" />
                 </video>
                 <div class="user-blog-post-image" *ngIf="postData.image">
