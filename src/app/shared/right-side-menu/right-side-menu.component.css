@@ -1,4 +1,6 @@
 
+@import url(../../../../node_modules/bootstrap/dist/css/bootstrap.min.css);
+
 .right-menu-container {
     width: 300px;
     /* background: #f1f1f1; */
@@ -14,4 +16,12 @@
     .right-menu-container {
         display: none;
     }
+}
+
+.media img {
+    height: 50px;
+}
+
+.media .media-body {
+    font-size: .85rem;
 }
