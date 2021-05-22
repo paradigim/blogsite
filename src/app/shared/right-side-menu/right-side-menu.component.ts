@@ -7,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RightSideMenuComponent implements OnInit {
 
+  totalPosts = Array.from({ length: 3 }).map(() => ({}));
+  totalPosts2 = Array.from({ length: 3 }).map(() => ({}));
+
   constructor() { }
 
   ngOnInit(): void {
