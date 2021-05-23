@@ -1,10 +1,14 @@
 
-<div class='home-container' *ngIf="!isDataLoaded">
-    <div class='home-wrapper'>
+<div class='home-container' *ngIf="!isDataLoaded && postData.length > 0 && screenHeight > 0">
+    <cdk-virtual-scroll-viewport 
+        [itemSize]="screenHeight" 
+        class='home-wrapper'
+        
+    >
 
         <div 
             class='ec-blog-post' 
-            *ngFor="let item of postData; index as i;"
+            *cdkVirtualFor="let item of postData; index as i;"
             (click)="routeToBlogDetail($event, item.id, item.followStatus)" 
         >
             <div class='user-blog-post r-hide'>
@@ -64,7 +68,7 @@
                 ></app-blog-comment-input>
             </div>
         </div>
-    </div>
+    </cdk-virtual-scroll-viewport>
 
 
     <app-right-side-menu></app-right-side-menu>

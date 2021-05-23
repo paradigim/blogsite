@@ -8,6 +8,7 @@ import { AutosizeModule } from 'ngx-autosize';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { SuiModule } from 'ng2-semantic-ui';
 import { PipesModule } from 'src/app/pipes/pipes.module';
+import {ScrollingModule} from '@angular/cdk/scrolling';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { PipesModule } from 'src/app/pipes/pipes.module';
     AutosizeModule,
     SharedModule,
     SuiModule,
-    PipesModule
+    PipesModule,
+    ScrollingModule
   ],
   
 })

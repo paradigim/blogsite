@@ -14,7 +14,6 @@ import { DataExchangeService } from 'src/app/services/data-exchange.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit, OnDestroy {
-
   likeCount: number;
   postData: any;
   userId: string;
@@ -26,6 +25,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   userFCMToken = [];
   totalComment = 0;
   updateCountToPostId = '';
+  screenHeight: number;
 
   constructor(
     private interaction: InteractionService,
