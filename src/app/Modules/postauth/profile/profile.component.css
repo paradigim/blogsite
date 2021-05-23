@@ -193,8 +193,8 @@
 .follow {
     border: 1px solid #666;
     background: none;
-    border-radius: 4px;
-    padding: 6px 15px;
+    border-radius: 20px;
+    padding: 10px 15px;
     color: #666;
     font-size: 13px;
     outline: none;

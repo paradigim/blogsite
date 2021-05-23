@@ -2,20 +2,14 @@
 @import url(../../../../node_modules/bootstrap/dist/css/bootstrap.min.css);
 
 .right-menu-container {
-    width: 300px;
-    /* background: #f1f1f1; */
+    width: 350px;
     position: fixed;
     right: 10%;
     top: 0;
     overflow-y: auto;
     bottom: 0;
     border-left: 1px solid #ddd;
-}
-
-@media screen and (max-width: 768px) {
-    .right-menu-container {
-        display: none;
-    }
+    padding: 15px 0 15px 15px;
 }
 
 .media img {
@@ -24,4 +18,138 @@
 
 .media .media-body {
     font-size: .85rem;
+}
+
+.popular-post-block {
+    display: flex;
+    padding: 15px 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.popular-post-block:last-child {
+    border-bottom: none;
+}
+
+.popular-media {
+    width: 90px;
+    height: 70px;
+    border-radius: 7px;
+    overflow: hidden;
+    margin-right: 10px;
+}
+
+.popular-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.popular-user-flw {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 10px;
+}
+
+.popular-user-flw img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.popular-post-body {
+    flex: 1;
+}
+
+.user-detail {
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    color: #666;
+    text-transform: capitalize;
+}
+
+.post-desc {
+    font-weight: bold;
+    font-size: 14px;
+    word-break: break-all;
+}
+
+.video-des {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.post-wrapper {
+    background: rgb(137 137 137 / 10%);
+    border-radius: 5px;
+}
+
+.rs-title {
+    font-size: 18px;
+    text-transform: capitalize;
+    font-weight: bold;
+    text-transform: capitalize;
+    color: #c0c0c0;
+    margin-bottom: 15px;
+}
+
+.popular-post-cont:not(:last-child) {
+    margin-bottom: 30px
+}
+
+.follower-post-body {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.unique-id {
+    color: #666;
+    font-size: 12px;
+    cursor: text;
+    line-height: 15px;
+}
+
+.user-name-flw {
+    font-weight: bold;
+    color: #000
+}
+
+.total-followers {
+    margin-top: 4px;
+    font-size: 12px;
+}
+
+.follow-user {
+    border: 1px solid var(--prime-color);
+    background: none;
+    font-size: 14px;
+    color: var(--prime-color);
+    border-radius: 20px;
+    padding: 3px 15px;
+    text-transform: capitalize;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.right-menu-container::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.right-menu-container {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+
+@media screen and (max-width: 768px) {
+    .right-menu-container {
+        display: none;
+    }
 }

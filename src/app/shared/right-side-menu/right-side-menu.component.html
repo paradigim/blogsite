@@ -1,126 +1,62 @@
-<div class="right-menu-container p-3">
-  <h5 class="font-weight-bold">Popular Posts</h5>
-  <hr />
-  <ul class="list-unstyled">
-    <li class="media mb-3" *ngFor="let post of totalPosts">
-      <img
-        src="https://ui-avatars.com/api/?background=0D8ABC&color=fff"
-        class="mr-3"
-      />
+<div class="right-menu-container">
 
-      <div class="media-body">
-        <h6 class="mt-0 mb-1 text-truncate">What do you want to kn..</h6>
-        <div class="flex justify-content-between w-100">
-          <span class="mr-2">
-            <i class="icon eye"></i>
-            <span>100m</span>
-          </span>
-          <span class="mx-2">
-            <i class="icon heart"></i>
-            <span>9k</span>
-          </span>
-          <span class="ml-2">
-            <i class="icon comment"></i>
-            <span>5k</span>
-          </span>
+  <div class="popular-post-cont">
+    <h5 class="rs-title">Popular Posts</h5>
+    <!-- <hr /> -->
+
+    <div class="post-wrapper">
+      <div class="popular-post-block" *ngFor="let post of totalPosts; let i = index">
+        <div class="popular-media">
+          <img *ngIf="i !== 1" [src]="'assets/images/img-'+(i+1)+'.jpg'" />
+          <video class="video-fluid z-depth-1 video-des" muted *ngIf="i === 1">
+            <source [src]="'assets/videos/vid-'+(i+1)+'.mp4'"  />
+          </video>
         </div>
-      </div>
-    </li>
-  </ul>
 
-  <h5 class="font-weight-bold">Recent Posts</h5>
-  <hr />
-
-  <ul class="list-unstyled">
-    <li *ngFor="let post of totalPosts2" class="media mb-3">
-      <img
-        src="https://ui-avatars.com/api/?background=0D8ABC&color=fff"
-        class="mr-3 h-100"
-      />
-
-      <div class="media-body">
-        <span class="badge badge-danger">Breach</span>
-        <h6 class="mt-0 mb-1 text-truncate">What do you want to kn..</h6>
-        <div class="d-flex">
-          <div class="flex justify-content-between w-100">
-            <span class="mr-2">
-              <i class="icon eye"></i>
-              <span>100m</span>
-            </span>
-            <span class="mx-2">
-              <i class="icon heart"></i>
-              <span>9k</span>
-            </span>
-            <span class="ml-2">
-              <i class="icon comment"></i>
-              <span>5k</span>
-            </span>
+        <div class="popular-post-body">
+          <div class="user-detail">
+            <div class="user-name">Alex Malcova</div>
+            <div class="dot"></div>
+            <div class="time-of-post">22 May, 2021</div>
           </div>
+          <div class="post-desc">Lorem ipsum dolor sit amet, consectetuer</div>
         </div>
-      </div>
-    </li>
-  </ul>
-</div>
-<div class="right-menu-container p-3">
-  <h5 class="font-weight-bold">Popular Posts</h5>
-  <hr />
-  <ul class="list-unstyled">
-    <li class="media mb-3" *ngFor="let post of totalPosts">
-      <img
-        src="https://ui-avatars.com/api/?background=0D8ABC&color=fff"
-        class="mr-3"
-      />
 
-      <div class="media-body">
-        <h6 class="mt-0 mb-1 text-truncate">What do you want to kn..</h6>
-        <div class="flex justify-content-between w-100">
-          <span class="mr-2">
-            <i class="icon eye"></i>
-            <span>100m</span>
-          </span>
-          <span class="mx-2">
-            <i class="icon heart"></i>
-            <span>9k</span>
-          </span>
-          <span class="ml-2">
-            <i class="icon comment"></i>
-            <span>5k</span>
-          </span>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="popular-post-cont">
+    <h5 class="rs-title">You may follow</h5>
+    <!-- <hr /> -->
+
+    <div class="post-wrapper">
+      <div class="popular-post-block" *ngFor="let post of totalPosts; let i = index">
+        <div class="popular-user-flw">
+          <img [src]="'assets/images/img-'+(i+1)+'.jpg'" />
         </div>
-      </div>
-    </li>
-  </ul>
 
-  <h5 class="font-weight-bold">Recent Posts</h5>
-  <hr />
-
-  <ul class="list-unstyled">
-    <li *ngFor="let post of totalPosts2" class="media mb-3">
-      <img
-        src="https://ui-avatars.com/api/?background=0D8ABC&color=fff"
-        class="mr-3 h-100"
-      />
-
-      <div class="media-body">
-        <span class="badge badge-danger">Breach</span>
-        <h6 class="mt-0 mb-1 text-truncate">What do you want to kn..</h6>
-        <div class="d-flex">
-          <div class="flex justify-content-between w-100">
-            <span class="mr-2">
-              <i class="icon eye"></i>
-              <span>100m</span>
-            </span>
-            <span class="mx-2">
-              <i class="icon heart"></i>
-              <span>9k</span>
-            </span>
-            <span class="ml-2">
-              <i class="icon comment"></i>
-              <span>5k</span>
-            </span>
+        <div class="follower-post-body">
+          <div class="follower-det">
+            <div class="user-detail">
+              <div class="user-name-flw">Alex Malcova</div>
+            </div>
+            <div class="unique-id">@bigban3298%</div>
+            <div class="total-followers">100m followers</div>
           </div>
+
+          <button class="follow-user">follow</button>
         </div>
+
       </div>
-    </li>
-  </ul>
+    </div>
+  </div>
+
 </div>
+
+
+
+
+  
