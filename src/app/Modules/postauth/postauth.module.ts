@@ -16,7 +16,7 @@ import { PipesModule } from 'src/app/pipes/pipes.module';
   declarations: [
     PostauthComponent,
     SideMenuComponent,
-    SideMenuItemComponent
+    SideMenuItemComponent,
   ],
   imports: [
     CommonModule,

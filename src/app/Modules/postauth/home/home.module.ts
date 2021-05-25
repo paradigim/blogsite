@@ -2,7 +2,7 @@ import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { HomeRoutingModule } from './home-routing.module';
-import { HomeComponent } from './home/home.component';
+import { HomeComponent } from './home.component';
 import { FormsModule } from '@angular/forms';
 import { AutosizeModule } from 'ngx-autosize';
 import { SharedModule } from 'src/app/shared/shared.module';
@@ -12,7 +12,7 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
 
 @NgModule({
   declarations: [
-    HomeComponent,
+    HomeComponent
   ],
   imports: [
     CommonModule,
@@ -22,8 +22,8 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
     SharedModule,
     SuiModule,
     PipesModule,
-    ScrollingModule
+    ScrollingModule,
   ],
-  
+  schemas: [ NO_ERRORS_SCHEMA ]
 })
 export class HomeModule { }

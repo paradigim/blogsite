@@ -1,14 +1,11 @@
 
-<div class='home-container' *ngIf="!isDataLoaded && postData.length > 0 && screenHeight > 0">
-    <cdk-virtual-scroll-viewport 
-        [itemSize]="screenHeight" 
-        class='home-wrapper'
-        
-    >
+<!-- <div class='home-container' *ngIf="!isDataLoaded && postData.length > 0 && screenHeight > 0"> -->
+<div class='home-container' *ngIf="!isDataLoaded && postData.length > 0">
+    <div>
 
         <div 
             class='ec-blog-post' 
-            *cdkVirtualFor="let item of postData; index as i;"
+            *ngFor="let item of postData; index as i;"
             (click)="routeToBlogDetail($event, item.id, item.followStatus)" 
         >
             <div class='user-blog-post r-hide'>
@@ -68,15 +65,26 @@
                 ></app-blog-comment-input>
             </div>
         </div>
-    </cdk-virtual-scroll-viewport>
+    </div>
 
 
     <app-right-side-menu></app-right-side-menu>
+
+    <!-- <app-snackbarmodal *ngIf="showSnackbarStatus"></app-snackbarmodal> -->
+    
 </div>
+
+<app-snackbarmodal 
+    *ngIf="true"
+></app-snackbarmodal>
 
 <div *ngIf="isDataLoaded" class="data-loader">
     <div class="ui active centered inline loader"></div>
 </div>
+
+
+
+
 
 
 <!-- [ifUserLiked]="checkUserIsLiked(item)" -->

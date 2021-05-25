@@ -11,6 +11,7 @@ import { post } from 'jquery';
 import { PushNotification } from 'src/app/services/push-notification.service';
 import { DataExchangeService } from 'src/app/services/data-exchange.service';
 
+
 @Component({
   selector: 'app-notification',
   templateUrl: './notification.component.html',

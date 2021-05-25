@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
@@ -24,14 +25,16 @@ import { AsyncPipe } from '../../node_modules/@angular/common';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { HttpClientModule } from '@angular/common/http';
 import { PipesModule } from './pipes/pipes.module';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
+    BrowserAnimationsModule,
     BrowserModule,
     AppRoutingModule,
     MDBBootstrapModule.forRoot(),
@@ -51,6 +54,7 @@ import { PipesModule } from './pipes/pipes.module';
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     HttpClientModule,
     PipesModule,
+    MatSnackBarModule
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
   providers: [PushNotification, AsyncPipe],

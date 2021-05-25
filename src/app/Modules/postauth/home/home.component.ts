@@ -3,15 +3,35 @@ import { InteractionService } from 'src/app/services/interaction.service';
 import { Router } from '@angular/router';
 import { filter, skipWhile, switchMap, take, takeUntil } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { DateService } from 'src/app/services/date.service';
 import { PushNotification } from 'src/app/services/push-notification.service';
 import { DataExchangeService } from 'src/app/services/data-exchange.service';
+import { CdkVirtualScrollViewport, FixedSizeVirtualScrollStrategy, VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
+
+
+export interface VirtualScrollStrategy {
+  scrolledIndexChange: Observable<number>;
+  attach(viewport: CdkVirtualScrollViewport): void;
+  detach(): void;
+  onContentScrolled(): void;
+  onDataLengthChanged(): void;
+  onContentRendered(): void;
+  onRenderedOffsetChanged(): void;
+  scrollToIndex(index: number, behavior: ScrollBehavior): void;
+}
+
+export class CustomVirtualScrollStrategy extends FixedSizeVirtualScrollStrategy {
+  constructor() {
+    super(50, 250, 500);
+  }
+}
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
+  providers: [{provide: VIRTUAL_SCROLL_STRATEGY, useClass: CustomVirtualScrollStrategy}]
 })
 export class HomeComponent implements OnInit, OnDestroy {
   likeCount: number;
@@ -26,6 +46,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   totalComment = 0;
   updateCountToPostId = '';
   screenHeight: number;
+  showSnackbarStatus = false;
 
   constructor(
     private interaction: InteractionService,
@@ -34,7 +55,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     private date: DateService,
     private pushNotificationService: PushNotification,
     private data: DataExchangeService,
-    private cdref: ChangeDetectorRef
   ) {
     this.afAuth.authState.subscribe(user => {
       if (user){
@@ -55,6 +75,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.data.isLoad$
     .pipe(filter(val => val === true))
     .subscribe(isStatus => {
+      this.showSnackbarStatus = isStatus;
       if (isStatus) {
         this.allPosts();
         this.showNotificationToUser();

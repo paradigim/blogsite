@@ -1,9 +1,9 @@
 
 @import 'semantic-ui-css/semantic.css';
 
-.home-wrapper {
+/* .home-wrapper {
     height: 100vh;
-}
+} */
 /* each blog details */
 .ec-blog-post {
     display: flex;

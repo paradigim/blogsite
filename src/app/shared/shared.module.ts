@@ -16,6 +16,8 @@ import { BlogCommentInputComponent } from './blog-comment-input/blog-comment-inp
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import { AngularFireStorageModule } from '@angular/fire/storage';
+import { SnackbarmodalComponent } from './snackbarmodal/snackbarmodal.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,8 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
     BlogActivityMoreComponent,
     CommonModalComponent,
     BlogAllCommentsComponent,
-    BlogCommentInputComponent
+    BlogCommentInputComponent,
+    SnackbarmodalComponent
   ],
   imports: [
     CommonModule,
@@ -37,6 +40,7 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
     PickerModule,
     EmojiModule,
     AngularFireStorageModule,
+    MatSnackBarModule,
   ],
   exports: [
     BlogModalComponent,
@@ -46,7 +50,8 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
     BlogActivityMoreComponent,
     CommonModalComponent,
     BlogAllCommentsComponent,
-    BlogCommentInputComponent
+    BlogCommentInputComponent,
+    SnackbarmodalComponent
   ],
   schemas: [NO_ERRORS_SCHEMA],
   entryComponents: [BlogModalComponent],
