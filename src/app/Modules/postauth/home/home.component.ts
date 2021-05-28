@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { InteractionService } from 'src/app/services/interaction.service';
 import { Router } from '@angular/router';
 import { filter, skipWhile, switchMap, take, takeUntil } from 'rxjs/operators';
@@ -8,6 +8,7 @@ import { DateService } from 'src/app/services/date.service';
 import { PushNotification } from 'src/app/services/push-notification.service';
 import { DataExchangeService } from 'src/app/services/data-exchange.service';
 import { CdkVirtualScrollViewport, FixedSizeVirtualScrollStrategy, VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 export interface VirtualScrollStrategy {
@@ -47,6 +48,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   updateCountToPostId = '';
   screenHeight: number;
   showSnackbarStatus = false;
+  snackBarText = '';
 
   constructor(
     private interaction: InteractionService,
@@ -54,7 +56,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     private afAuth: AngularFireAuth,
     private date: DateService,
     private pushNotificationService: PushNotification,
-    private data: DataExchangeService,
+    private data: DataExchangeService
   ) {
     this.afAuth.authState.subscribe(user => {
       if (user){
@@ -75,11 +77,16 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.data.isLoad$
     .pipe(filter(val => val === true))
     .subscribe(isStatus => {
-      this.showSnackbarStatus = isStatus;
       if (isStatus) {
-        this.allPosts();
+        console.log('SUC POST 2');
+        this.showSnackbarStatus = isStatus;
+        this.snackBarText = 'Posted';
+        // this.allPosts();
         this.showNotificationToUser();
         this.data.loadAfterNewPost(false);
+      } else {
+        this.showSnackbarStatus = false;
+        this.snackBarText = '';
       }
     });
     this.isDataLoaded = true;
@@ -113,12 +120,12 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.interaction.getUser(userid)
       // .pipe(take(1))
       .subscribe(data => {
-        if (data.fcmToken.length > 0) {
+        if (data.fcmToken?.length > 0) {
           data?.fcmToken.forEach(item => {
             this.userFCMToken.push(item)
           });
         }
-        if (i === followers.length - 1) {
+        if (i === followers?.length - 1) {
           this.pushNotificationService.addPushSubscriber(this.userFCMToken, 'Heyllo.com', 'You have got a notification')
           .pipe(takeUntil(this.unSubscribe))
           .subscribe(res => {
@@ -157,9 +164,13 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   deletePostFromList(e, i) {
+    console.log('E I', e, i);
     if (e) {
+      this.postData.splice(i, 1);
       this.allPosts();
     }
+    this.showSnackbarStatus = true;
+    this.snackBarText = 'Deleted';
   }
 
   getLikeCounts(event: number): void {

@@ -25,7 +25,6 @@ import { AsyncPipe } from '../../node_modules/@angular/common';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { HttpClientModule } from '@angular/common/http';
 import { PipesModule } from './pipes/pipes.module';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 
@@ -34,8 +33,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     AppComponent,
   ],
   imports: [
-    BrowserAnimationsModule,
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     MDBBootstrapModule.forRoot(),
     FormsModule,
@@ -53,8 +52,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     }),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     HttpClientModule,
-    PipesModule,
-    MatSnackBarModule
+    PipesModule
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
   providers: [PushNotification, AsyncPipe],

@@ -1,6 +1,6 @@
 
 <!-- <div class='home-container' *ngIf="!isDataLoaded && postData.length > 0 && screenHeight > 0"> -->
-<div class='home-container' *ngIf="!isDataLoaded && postData.length > 0">
+<div class='home-container' *ngIf="!isDataLoaded && postData?.length > 0">
     <div>
 
         <div 
@@ -75,7 +75,8 @@
 </div>
 
 <app-snackbarmodal 
-    *ngIf="true"
+    *ngIf="showSnackbarStatus"
+    [text]="snackBarText"
 ></app-snackbarmodal>
 
 <div *ngIf="isDataLoaded" class="data-loader">

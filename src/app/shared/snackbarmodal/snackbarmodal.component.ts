@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+//import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-snackbarmodal',
@@ -7,7 +8,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./snackbarmodal.component.css']
 })
 export class SnackbarmodalComponent implements OnInit {
-
+  @Input() text = '';
   constructor(
     private snackbar: MatSnackBar
   ) { }
@@ -17,7 +18,9 @@ export class SnackbarmodalComponent implements OnInit {
   }
 
   openSnackBar() {
-    this.snackbar.open('posted', '');
+    this.snackbar.open(this.text, 'Ok', {
+      duration: 2000
+    });
   }
 
 }

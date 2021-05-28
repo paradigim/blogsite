@@ -60,7 +60,7 @@ export class BlogActivityMoreComponent implements OnInit {
     this.getPostData()
       .subscribe((res: any) => {
         this.bookmarkStatus = res?.bookmark;
-        if (res.bookmark) {
+        if (res?.bookmark) {
           this.bookmarkText = 'Remove Bookmark';
         } else {
           this.bookmarkText = 'Bookmark';

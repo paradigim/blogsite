@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Subject } from 'rxjs';
-import { delay, take, takeUntil } from 'rxjs/operators';
+import { delay, skipWhile, take, takeUntil } from 'rxjs/operators';
 import { DataExchangeService } from 'src/app/services/data-exchange.service';
 import { DateService } from 'src/app/services/date.service';
 import { InteractionService } from 'src/app/services/interaction.service';
@@ -37,6 +37,7 @@ export class BlogAllCommentsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.interaction.getBlogComments(this.postId)
+    .pipe(skipWhile(val => val === !val))
     .pipe(takeUntil(this.ngUnsubscribe))
     .subscribe((val: any) => {
       this.interaction.getAllUser()
