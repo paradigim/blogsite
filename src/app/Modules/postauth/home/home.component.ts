@@ -58,12 +58,17 @@ export class HomeComponent implements OnInit, OnDestroy {
     private pushNotificationService: PushNotification,
     private data: DataExchangeService
   ) {
+    this.isDataLoaded = true;
     this.afAuth.authState.subscribe(user => {
       if (user){
         this.userId = user.uid;
         this.pushNotificationService.requestPermission();
       }
     });
+    if (this.postData?.length <= 0 || !this.postData) {
+      this.allPosts();
+    }
+    
   }
 
   ngOnInit(): void {
@@ -76,6 +81,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     this.data.isLoad$
     .pipe(filter(val => val === true))
+    .pipe(take(1))
     .subscribe(isStatus => {
       if (isStatus) {
         console.log('SUC POST 2');
@@ -89,8 +95,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.snackBarText = '';
       }
     });
-    this.isDataLoaded = true;
-    this.allPosts();
   }
 
   redirectLink(e) {
@@ -118,14 +122,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   fetchUserTosendNotification(followers: string[]) {
     followers.forEach((userid, i) => {
       this.interaction.getUser(userid)
-      // .pipe(take(1))
+      .pipe(take(1))
       .subscribe(data => {
-        if (data.fcmToken?.length > 0) {
+        if (data?.fcmToken.length > 0) {
           data?.fcmToken.forEach(item => {
             this.userFCMToken.push(item)
           });
         }
-        if (i === followers?.length - 1) {
+        if (i === followers.length - 1) {
           this.pushNotificationService.addPushSubscriber(this.userFCMToken, 'Heyllo.com', 'You have got a notification')
           .pipe(takeUntil(this.unSubscribe))
           .subscribe(res => {
@@ -141,7 +145,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   // set following status on init
   allPosts(): void {
-    const users = this.interaction.getAllUser().pipe(takeUntil(this.unSubscribe));
+    const users = this.interaction.getAllUser().pipe(take(1),takeUntil(this.unSubscribe));
     this.interaction.getAllPosts()
       .pipe(take(1))
       .pipe(takeUntil(this.unSubscribe))
@@ -167,7 +171,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     console.log('E I', e, i);
     if (e) {
       this.postData.splice(i, 1);
-      this.allPosts();
+      // this.allPosts();
     }
     this.showSnackbarStatus = true;
     this.snackBarText = 'Deleted';

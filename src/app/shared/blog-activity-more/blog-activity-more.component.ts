@@ -2,7 +2,7 @@ import { Component, OnInit, ElementRef, Input, Output, EventEmitter } from '@ang
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { skipWhile, take, takeUntil } from 'rxjs/operators';
 import { InteractionService } from 'src/app/services/interaction.service';
 // import * as $ from 'jquery';
 declare var $: any;
@@ -123,6 +123,8 @@ export class BlogActivityMoreComponent implements OnInit {
     this.interaction.deletePost(this.postId)
       .then(() => {
         this.interaction.getAllNotification()
+          .pipe(skipWhile(val => !val))
+          .pipe(take(1))
           .subscribe(data => {
             if (data.length > 0) {
               this.isPostDelete.emit(true);

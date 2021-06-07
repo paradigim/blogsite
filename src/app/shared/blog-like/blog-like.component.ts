@@ -31,7 +31,7 @@ export class BlogLikeComponent implements OnInit {
 
   setData(postId): void {
     this.interaction.getPostWithId(postId).subscribe(data => {
-      this.likeCount = data?.likedUserId.length;
+      this.likeCount = data?.likedUserId?.length;
       const checkIdExist = data.likedUserId.filter(item => {
         return item === this.userId;
       });

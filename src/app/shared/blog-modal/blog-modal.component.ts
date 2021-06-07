@@ -150,6 +150,8 @@ export class BlogModalComponent implements OnInit, OnChanges {
     } else {
       const id = this.interaction.createId();
       this.interaction.postNew(content, postDate, id)
+      .pipe(take(1))
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(async res => {
         console.log('SUC POST');
         console.log('FILTE TYPE: ', this.fileType);
@@ -166,7 +168,7 @@ export class BlogModalComponent implements OnInit, OnChanges {
         
         if (this.userFollowers.length > 0) {
           console.log('check - 3');
-          // this.dataService.setNewPostStatus(true);
+          this.dataService.setNewPostStatus(true);
           this.interaction.setNotification(id, this.userFollowers).then(() => {
             console.log('check - 5');
             this.dataService.saveUsersForNotificationAlert(this.userFollowers);
