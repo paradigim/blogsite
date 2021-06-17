@@ -23,9 +23,11 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { PushNotification } from './services/push-notification.service';
 import { AsyncPipe } from '../../node_modules/@angular/common';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { PipesModule } from './pipes/pipes.module';
-
+import { AuthInterceptor } from './interceptor/auth-interceptor';
+import { AuthGuard } from './Guard/auth.guard';
+import { AccessAuthGuard } from './Guard/access-auth.guard';
 
 
 @NgModule({
@@ -55,7 +57,13 @@ import { PipesModule } from './pipes/pipes.module';
     PipesModule
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
-  providers: [PushNotification, AsyncPipe],
+  providers: [
+    PushNotification, 
+    AsyncPipe,
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
+    AuthGuard,
+    AccessAuthGuard
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

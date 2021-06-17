@@ -9,6 +9,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { AutosizeModule } from 'ngx-autosize';
 import { SuiModule } from 'ng2-semantic-ui';
 import { PipesModule } from 'src/app/pipes/pipes.module';
+import { AuthGuard } from 'src/app/Guard/auth.guard';
 
 
 
@@ -26,6 +27,7 @@ import { PipesModule } from 'src/app/pipes/pipes.module';
     SuiModule,
     PipesModule
   ],
-  schemas: [ NO_ERRORS_SCHEMA ]
+  schemas: [ NO_ERRORS_SCHEMA ],
+  providers: [AuthGuard]
 })
 export class PostauthModule { }

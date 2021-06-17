@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DataExchangeService } from 'src/app/services/data-exchange.service';
@@ -17,7 +18,7 @@ export class EditProfileComponent implements OnInit {
 
   constructor(
     private interaction: InteractionService,
-    private dataExchange: DataExchangeService
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -32,7 +33,13 @@ export class EditProfileComponent implements OnInit {
   }
 
   logout(): void {
-    this.interaction.signOutUser();
+    const getJwtFromStorage = localStorage.getItem('jwt');
+    if (getJwtFromStorage) {
+      this.interaction.removeFromLocalStorage('jwt');
+      this.router.navigate(['auth/login']);
+    } else {
+      return;
+    }
   }
 
   ngOnDestroy(): void {

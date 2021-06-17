@@ -1,7 +1,7 @@
 
-<!-- <div class='home-container' *ngIf="!isDataLoaded && postData.length > 0 && screenHeight > 0"> -->
+
 <div class='home-container' *ngIf="!isDataLoaded && postData.length > 0">
-    <div>
+    <!-- <div>
 
         <div 
             class='ec-blog-post' 
@@ -65,23 +65,21 @@
                 ></app-blog-comment-input>
             </div>
         </div>
-    </div>
+    </div> -->
 
 
     <app-right-side-menu></app-right-side-menu>
-
-    <!-- <app-snackbarmodal *ngIf="showSnackbarStatus"></app-snackbarmodal> -->
     
 </div>
 
-<app-snackbarmodal 
+<!-- <app-snackbarmodal 
     *ngIf="showSnackbarStatus"
     [text]="snackBarText"
 ></app-snackbarmodal>
 
 <div *ngIf="isDataLoaded" class="data-loader">
     <div class="ui active centered inline loader"></div>
-</div>
+</div> -->
 
 
 

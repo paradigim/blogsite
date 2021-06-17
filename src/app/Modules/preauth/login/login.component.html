@@ -1,35 +1,47 @@
 
 <div class="auth-container">
-    <div class="site-logo">
+    <div class="auth-site-logo">
         LOGO
     </div>
 
     <div class="form-container">
         <div class="login-to">Login</div>
-        <div class='social-login gogl' (click)="interaction.googleAuthentication()">
+        <!-- <div class='social-login gogl'>
             <i class="google icon"></i>
             <div>Login with Google</div>
-        </div>
+        </div> -->
 
         <!-- <div class="or-u-can">
             <p class="or-text">OR</p>
-        </div>
+        </div> -->
 
         <form class="ui form" [formGroup]="loginForm">
-            <div class="field">
+            <div class="field" [class.error]="isErrorEmail">
                 <label>Email</label>
-                <input type="text" name="email" formControlName="email" placeholder="abc@gmail.com">
+                <input 
+                    type="text" 
+                    name="email" 
+                    formControlName="email" 
+                    placeholder="abc@gmail.com"
+                    (input)="handleChange($event, 'email')"
+                >
             </div>
-            <div class="field">
+            <div class="field" [class.error]="isErrorPassword">
                 <label>Password</label>
-                <input type="password" name="password" formControlName="password" placeholder="password">
+                <input 
+                    type="password" 
+                    name="password" 
+                    formControlName="password" 
+                    placeholder="password"
+                    (input)="handleChange($event, 'password')"
+                >
             </div>
-            <button class="comment-button login-btn" (click)="submit()" type="button">Login</button>
+            <button class="comment-button auth-btn" (click)="submit()" type="button">Sign In</button>
         </form>
     </div>
 
     <div class="signup-forgot">
-        <div class="forgot-pwd" [routerLink]="['/auth/forgetpassword']">Forgot Password?</div>
-        <div class="siginup" [routerLink]="['/auth/signup']">Sign up</div>
-    </div> -->
+        <div class="forgot-pwd" routerLink="/auth/forgetpassword">Forgot Password?</div>
+        <div class="siginup" routerLink="/auth/signup">Sign up</div>
+    </div>
 </div>

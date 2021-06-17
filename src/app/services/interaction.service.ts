@@ -9,6 +9,7 @@ import { DataExchangeService } from './data-exchange.service';
 import { data } from 'jquery';
 import { AngularFireStorage } from '@angular/fire/storage';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -19,7 +20,7 @@ export class InteractionService implements OnDestroy {
   uniqueUserName = '';
   userName = '';
   unSubscribe = new Subject();
-  symbols = ['#', '!', '*', '%', '$', '=', '?'];
+  // symbols = ['#', '!', '*', '%', '$', '?'];
 
   constructor(
     public afAuth: AngularFireAuth,
@@ -42,28 +43,46 @@ export class InteractionService implements OnDestroy {
     });
   }
 
-  async login(data: any) {
-    const result = await this.afAuth.signInWithEmailAndPassword(data.email, data.password);
-    return result;
+
+  // new code for mysql database #start
+
+  storeJwtInLocalStorage(res) {
+    localStorage.setItem('jwt', res);
   }
 
-  async register(data: any) {
-    return new Promise<any>((resolve, reject) => {
-      this.afAuth.createUserWithEmailAndPassword(data.email, data.password)
-        .then((result) => {
-          const userData: any = {
-            id: result.user.uid,
-            email: data.email,
-            dob: data.dob,
-            gender: data.gender
-          };
-          this.afs.collection('users').doc(result.user.uid).set(userData);
-          resolve(result);
-        }).catch((error) => {
-          reject(error.message);
-        });
-    });
+  getJwtFromLocalStorage() {
+    return localStorage.getItem('jwt');
   }
+
+  removeFromLocalStorage(key) {
+    localStorage.removeItem(key);
+  }
+  // new code for mysql database #end
+
+
+
+  // async login(data: any) {
+  //   const result = await this.afAuth.signInWithEmailAndPassword(data.email, data.password);
+  //   return result;
+  // }
+
+  // async register(data: any) {
+  //   return new Promise<any>((resolve, reject) => {
+  //     this.afAuth.createUserWithEmailAndPassword(data.email, data.password)
+  //       .then((result) => {
+  //         const userData: any = {
+  //           id: result.user.uid,
+  //           email: data.email,
+  //           dob: data.dob,
+  //           gender: data.gender
+  //         };
+  //         this.afs.collection('users').doc(result.user.uid).set(userData);
+  //         resolve(result);
+  //       }).catch((error) => {
+  //         reject(error.message);
+  //       });
+  //   });
+  // }
 
   createId() {
     return this.afs.createId();
@@ -270,52 +289,53 @@ export class InteractionService implements OnDestroy {
     return this.afs.collection('users').doc(uId).valueChanges();
   }
 
-  async googleAuthentication(): Promise<void> {
-    const provider = new auth.GoogleAuthProvider();
-    const credentials = await this.afAuth.signInWithPopup(provider);
+  // Hault google authentication as we change database from firebase to mysql - Pritam
+  // async googleAuthentication(): Promise<void> { 
+  //   const provider = new auth.GoogleAuthProvider();
+  //   const credentials = await this.afAuth.signInWithPopup(provider);
 
-    this.afs.collection('users').doc(credentials.user.uid).snapshotChanges().subscribe((data: any) => {
-      if (data.payload.exists === false) {
-        this.createUniqueUserName(credentials.user.displayName).subscribe((uniqueId: any) => {
-          this.uniqueUserName = uniqueId;
-          this.createUserByGoogle(credentials.user.uid, credentials.user, this.uniqueUserName)
-          .then(res => {
-            this.router.navigate(['/home']);
-          });
-        });
-      }
-      else {
-        this.router.navigate(['/home']);
-      }
-    });
-  }
+  //   this.afs.collection('users').doc(credentials.user.uid).snapshotChanges().subscribe((data: any) => {
+  //     if (data.payload.exists === false) {
+  //       this.createUniqueUserName(credentials.user.displayName).subscribe((uniqueId: any) => {
+  //         this.uniqueUserName = uniqueId;
+  //         this.createUserByGoogle(credentials.user.uid, credentials.user, this.uniqueUserName)
+  //         .then(res => {
+  //           this.router.navigate(['/home']);
+  //         });
+  //       });
+  //     }
+  //     else {
+  //       this.router.navigate(['/home']);
+  //     }
+  //   });
+  // }
 
   // create unique user name
-  createUniqueUserName(username: string): any {
-    const name = username.split(' ').join('');
-    const randomNo = this.getUniqueId();
-    const randomIndex = this.getSymbolIndex();
-    const randomUniqueId = `@${name}${randomNo}${this.symbols[randomIndex]}`;
+  // createUniqueUserName(username: string): any {
+  //   const name = username.split(' ').join('');
+  //   const randomNo = this.getUniqueId();
+  //   const randomIndex = this.getSymbolIndex();
+  //   const randomUniqueId = `@${name}${randomNo}${this.symbols[randomIndex]}`;
 
-    return this.afs.collection('users').valueChanges()
-      .pipe(map((x: any) => {
-        const matchedUniqueId = x.filter(item => {
-          return item.uniqueId === randomUniqueId;
-        });
-        if (matchedUniqueId.length > 0) {
-          this.createUniqueUserName(username);
-        } else {
-          return randomUniqueId;
-        }
-      }));
-  }
+  //   return this.afs.collection('users').valueChanges()
+  //     .pipe(map((x: any) => {
+  //       const matchedUniqueId = x.filter(item => {
+  //         return item.uniqueId === randomUniqueId;
+  //       });
+  //       if (matchedUniqueId.length > 0) {
+  //         this.createUniqueUserName(username);
+  //       } else {
+  //         return randomUniqueId;
+  //       }
+  //     }));
+  // }
 
   getUniqueId(): number {
     return Math.floor(Math.random() * 5000);
   }
 
   getSymbolIndex(): number {
-    return Math.floor(Math.random() * 7);
+    return Math.floor(Math.random() * 6);
   }
 
   async createUserByGoogle(userId, userData, uniqueUserName) {

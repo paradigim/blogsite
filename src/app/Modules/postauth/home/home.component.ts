@@ -59,42 +59,41 @@ export class HomeComponent implements OnInit, OnDestroy {
     private data: DataExchangeService
   ) {
     this.isDataLoaded = true;
-    this.afAuth.authState.subscribe(user => {
-      if (user){
-        this.userId = user.uid;
-        this.pushNotificationService.requestPermission();
-      }
-    });
-    if (this.postData?.length <= 0 || !this.postData) {
-      this.allPosts();
-    }
+    // this.afAuth.authState.subscribe(user => {
+    //   if (user){
+    //     this.userId = user.uid;
+    //     this.pushNotificationService.requestPermission();
+    //   }
+    // });
+    // if (this.postData?.length <= 0 || !this.postData) {
+    //   this.allPosts();
+    // }
     
   }
 
   ngOnInit(): void {
     //fcm
-    this.pushNotificationService.receiveMessage();
-    this.message = this.pushNotificationService.currentMessage;
+    // this.pushNotificationService.receiveMessage();
+    // this.message = this.pushNotificationService.currentMessage;
     //fcm
 
     this.data.setPageStatus(false);
 
-    this.data.isLoad$
-    .pipe(filter(val => val === true))
-    .pipe(take(1))
-    .subscribe(isStatus => {
-      if (isStatus) {
-        console.log('SUC POST 2');
-        this.showSnackbarStatus = isStatus;
-        this.snackBarText = 'Posted';
-        // this.allPosts();
-        this.showNotificationToUser();
-        this.data.loadAfterNewPost(false);
-      } else {
-        this.showSnackbarStatus = false;
-        this.snackBarText = '';
-      }
-    });
+    // this.data.isLoad$
+    // .pipe(filter(val => val === true))
+    // .pipe(take(1))
+    // .subscribe(isStatus => {
+    //   if (isStatus) {
+    //     console.log('SUC POST 2');
+    //     this.showSnackbarStatus = isStatus;
+    //     this.snackBarText = 'Posted';
+    //     this.showNotificationToUser();
+    //     this.data.loadAfterNewPost(false);
+    //   } else {
+    //     this.showSnackbarStatus = false;
+    //     this.snackBarText = '';
+    //   }
+    // });
   }
 
   redirectLink(e) {

@@ -3,19 +3,24 @@ import { Routes, RouterModule } from '@angular/router';
 import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
 import { ForgetpasswordComponent } from './forgetpassword/forgetpassword.component';
+import { AuthGuard } from 'src/app/Guard/auth.guard';
+import { AccessAuthGuard } from 'src/app/Guard/access-auth.guard';
 
 const routes: Routes = [
   {
     path: 'login',
-    component : LoginComponent
+    component : LoginComponent,
+    canActivate: [AccessAuthGuard]
   },
   {
     path: 'signup',
-    component : RegisterComponent
+    component : RegisterComponent,
+    canActivate: [AccessAuthGuard]
   },
   {
     path: 'forgetpassword',
-    component : ForgetpasswordComponent
+    component : ForgetpasswordComponent,
+    canActivate: [AccessAuthGuard]
   }
 ];
 

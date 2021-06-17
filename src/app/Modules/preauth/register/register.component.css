@@ -1,3 +1,17 @@
 .validations{
-    color:red;
+    color: var(--prime-error);
+    font-size: 12px;
+}
+
+label.gender-selection {
+    font-weight: normal !important;
+    display: inline-block !important;
+}
+
+label.gender-selection:not(:last-child) {
+    margin-right: 10px;
+}
+
+label.gender-selection input {
+    vertical-align: middle;
 }

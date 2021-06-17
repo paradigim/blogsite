@@ -46,14 +46,14 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.isDataLoaded = true;
-    this.route.queryParamMap.subscribe(queryParams => {
-      this.otherUserId = queryParams.get('userId');
-      this.getUserData(this.otherUserId);
-    });
+    // this.isDataLoaded = true;
+    // this.route.queryParamMap.subscribe(queryParams => {
+    //   this.otherUserId = queryParams.get('userId');
+    //   this.getUserData(this.otherUserId);
+    // });
     
-    this.checkIsUpdated();
-    this.dataExchange.setPageStatus(false);
+    // this.checkIsUpdated();
+    // this.dataExchange.setPageStatus(false);
   }
 
   redirectLink(e) {
