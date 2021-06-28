@@ -4,6 +4,9 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { DataExchangeService } from 'src/app/services/data-exchange.service';
 import { InteractionService } from 'src/app/services/interaction.service';
+import { StoreService } from 'src/app/services/store.service';
+import { UserService } from 'src/app/state/user/user.service';
+import { UserStore } from 'src/app/state/user/user.store';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +23,10 @@ export class LoginComponent implements OnInit {
     private fb:FormBuilder, 
     public interaction : InteractionService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private storeService: StoreService,
+    private userStore: UserStore,
+    private userService: UserService
   ) { }
 
   ngOnInit(): void {
@@ -44,10 +50,11 @@ export class LoginComponent implements OnInit {
         if (res.authenticated) {
           if (res.jwtToken) {
             this.interaction.storeJwtInLocalStorage(res.jwtToken);
-            const localStorageData = this.interaction.getJwtFromLocalStorage();
+            // const localStorageData = this.interaction.getJwtFromLocalStorage();
           }
           this.authService.getUser()
             .subscribe(user => {
+              this.userService.saveUserDataInStore(user); //pritam
               this.router.navigate(['home']);
             }); 
         }

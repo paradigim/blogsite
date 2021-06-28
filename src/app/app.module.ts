@@ -28,7 +28,11 @@ import { PipesModule } from './pipes/pipes.module';
 import { AuthInterceptor } from './interceptor/auth-interceptor';
 import { AuthGuard } from './Guard/auth.guard';
 import { AccessAuthGuard } from './Guard/access-auth.guard';
-
+import { NG_ENTITY_SERVICE_CONFIG } from '@datorama/akita-ng-entity-service';
+import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
+import { AkitaNgRouterStoreModule } from '@datorama/akita-ng-router-store';
+import {MatIconModule} from '@angular/material/icon'
+import { NgxImageCompressService } from 'ngx-image-compress';
 
 @NgModule({
   declarations: [
@@ -54,7 +58,10 @@ import { AccessAuthGuard } from './Guard/access-auth.guard';
     }),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     HttpClientModule,
-    PipesModule
+    PipesModule,
+    environment.production ? [] : AkitaNgDevtools.forRoot(),
+    AkitaNgRouterStoreModule,
+    MatIconModule
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
   providers: [
@@ -62,7 +69,9 @@ import { AccessAuthGuard } from './Guard/access-auth.guard';
     AsyncPipe,
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
     AuthGuard,
-    AccessAuthGuard
+    AccessAuthGuard,
+    { provide: NG_ENTITY_SERVICE_CONFIG, useValue: { baseUrl: 'https://jsonplaceholder.typicode.com' }},
+    NgxImageCompressService
   ],
   bootstrap: [AppComponent]
 })

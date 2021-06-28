@@ -14,33 +14,31 @@ export class AuthService {
   environment = environment;
 
   constructor(
-    private interaction: InteractionService,
     private apiService: ApiService
   ) { }
 
   // sign-up a new user with provided credentials
   signUp(data: RegisterUser, uniqueUserId): Observable<any> {
-    const url = this.environment.api.userAuth.signUp;
+    const url = `${this.environment.api.baseUrl}${this.environment.api.userAuth.signUp}`;
     data['uniqueUserId'] = uniqueUserId;
     
     return this.apiService.fetchPostUrl(url, data);
   }
 
   login(data): Observable<any> {
-    const url = this.environment.api.userAuth.login;
+    const url = `${this.environment.api.baseUrl}${this.environment.api.userAuth.login}`;
     return this.apiService.fetchPostUrl(url, data);
   }
 
   getUser(): Observable<any> {
-    const url = this.environment.api.userAuth.getUser;
+    const url = `${this.environment.api.baseUrl}${this.environment.api.userAuth.getUser}`;
     return this.apiService.fetchGetUrl(url);
   }
 
   logoutUser(): Observable<any> {
-    const url = this.environment.api.userAuth.logout;
+    const url = `${this.environment.api.baseUrl}${this.environment.api.userAuth.logout}`;
     return this.apiService.fetchPostUrl(url, null)
   }
-
 
 
   createUniqueUserName(username: string): any {

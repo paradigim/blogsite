@@ -60,30 +60,6 @@ export class InteractionService implements OnDestroy {
   // new code for mysql database #end
 
 
-
-  // async login(data: any) {
-  //   const result = await this.afAuth.signInWithEmailAndPassword(data.email, data.password);
-  //   return result;
-  // }
-
-  // async register(data: any) {
-  //   return new Promise<any>((resolve, reject) => {
-  //     this.afAuth.createUserWithEmailAndPassword(data.email, data.password)
-  //       .then((result) => {
-  //         const userData: any = {
-  //           id: result.user.uid,
-  //           email: data.email,
-  //           dob: data.dob,
-  //           gender: data.gender
-  //         };
-  //         this.afs.collection('users').doc(result.user.uid).set(userData);
-  //         resolve(result);
-  //       }).catch((error) => {
-  //         reject(error.message);
-  //       });
-  //   });
-  // }
-
   createId() {
     return this.afs.createId();
   }

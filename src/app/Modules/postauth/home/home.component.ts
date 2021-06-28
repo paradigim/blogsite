@@ -58,7 +58,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     private pushNotificationService: PushNotification,
     private data: DataExchangeService
   ) {
-    this.isDataLoaded = true;
+    // this.isDataLoaded = true;
     // this.afAuth.authState.subscribe(user => {
     //   if (user){
     //     this.userId = user.uid;
@@ -143,28 +143,28 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   // set following status on init
-  allPosts(): void {
-    const users = this.interaction.getAllUser().pipe(take(1),takeUntil(this.unSubscribe));
-    this.interaction.getAllPosts()
-      .pipe(take(1))
-      .pipe(takeUntil(this.unSubscribe))
-      .subscribe((data: any) => {
-        this.postData = data;
-        users.subscribe(users => {
-          users.map(user => {
-            if (user.follower.includes(this.userId)) {
-              this.postData.forEach((post, i) => {
-                if (post.userid === user.id) {
-                  this.postData[i]['followStatus'] = true;
-                } 
-              });
-            }
-          })
-          this.data.loadAfterNewPost(false);
-          this.isDataLoaded = false;
-        })
-      });
-  }
+  // allPosts(): void {
+  //   const users = this.interaction.getAllUser().pipe(take(1),takeUntil(this.unSubscribe));
+  //   this.interaction.getAllPosts()
+  //     .pipe(take(1))
+  //     .pipe(takeUntil(this.unSubscribe))
+  //     .subscribe((data: any) => {
+  //       this.postData = data;
+  //       users.subscribe(users => {
+  //         users.map(user => {
+  //           if (user.follower.includes(this.userId)) {
+  //             this.postData.forEach((post, i) => {
+  //               if (post.userid === user.id) {
+  //                 this.postData[i]['followStatus'] = true;
+  //               } 
+  //             });
+  //           }
+  //         })
+  //         this.data.loadAfterNewPost(false);
+  //         this.isDataLoaded = false;
+  //       })
+  //     });
+  // }
 
   deletePostFromList(e, i) {
     console.log('E I', e, i);

@@ -10,6 +10,7 @@ import { AutosizeModule } from 'ngx-autosize';
 import { SuiModule } from 'ng2-semantic-ui';
 import { PipesModule } from 'src/app/pipes/pipes.module';
 import { AuthGuard } from 'src/app/Guard/auth.guard';
+import { CommonMaterialModule } from 'src/app/common/common-material/common-material.module';
 
 
 
@@ -25,7 +26,8 @@ import { AuthGuard } from 'src/app/Guard/auth.guard';
     SharedModule,
     AutosizeModule,
     SuiModule,
-    PipesModule
+    PipesModule,
+    CommonMaterialModule
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
   providers: [AuthGuard]

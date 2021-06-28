@@ -9,7 +9,8 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { EditProfileModalComponent } from 'src/app/Components/edit-profile-modal/edit-profile-modal.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PipesModule } from 'src/app/pipes/pipes.module';
-
+import { NgxImageCompressService } from 'ngx-image-compress';
+import { CommonMaterialModule } from 'src/app/common/common-material/common-material.module';
 
 @NgModule({
   declarations: [
@@ -23,8 +24,10 @@ import { PipesModule } from 'src/app/pipes/pipes.module';
     SharedModule,
     SuiModule,
     ReactiveFormsModule,
-    PipesModule
+    PipesModule,
+    CommonMaterialModule
   ],
+  providers: [NgxImageCompressService],
   schemas: [ NO_ERRORS_SCHEMA ],
 })
 export class ProfileModule { }

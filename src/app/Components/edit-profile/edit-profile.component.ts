@@ -1,9 +1,10 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DataExchangeService } from 'src/app/services/data-exchange.service';
 import { InteractionService } from 'src/app/services/interaction.service';
+import { UserService } from 'src/app/state/user/user.service'
 
 @Component({
   selector: 'app-edit-profile',
@@ -18,7 +19,8 @@ export class EditProfileComponent implements OnInit {
 
   constructor(
     private interaction: InteractionService,
-    private router: Router
+    private router: Router,
+    private userService: UserService
   ) { }
 
   ngOnInit(): void {
@@ -36,6 +38,7 @@ export class EditProfileComponent implements OnInit {
     const getJwtFromStorage = localStorage.getItem('jwt');
     if (getJwtFromStorage) {
       this.interaction.removeFromLocalStorage('jwt');
+      this.userService.updateStatusOnLogout()
       this.router.navigate(['auth/login']);
     } else {
       return;

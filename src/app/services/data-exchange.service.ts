@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { UserData } from '../Models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +31,14 @@ export class DataExchangeService {
   private pageStatus = new BehaviorSubject(false);
   public pageStatus$ = this.pageStatus.asObservable();
 
+  private updatedUser = new BehaviorSubject(null);
+  public updatedUser$ = this.updatedUser.asObservable();
+
   constructor() { }
+
+  saveUpdatedUser(data: UserData) {
+    this.updatedUser.next(data);
+  }
 
   setPageStatus(status) {
     this.pageStatus.next(status);

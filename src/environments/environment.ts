@@ -16,12 +16,18 @@ export const environment = {
   },
   serverKey: "AAAAFrEam7w:APA91bGfgaguGwRvtnRLc2YnsO5UqhktjrLmTSK_1awInWz-uGWBNr97LpHqanSA3LIvSR3l-lnsTMkJh6mgKwh7BgX_EUOjpo2peNTLf4PsSzruY7MflNiHCc72OXfAU4Ox9nTdKg-5",
   api: {
+    baseUrl: "http://localhost:3000/api/",
     userAuth: {
-      signUp: "http://localhost:3000/api/auth/sign-up",
-      login: "http://localhost:3000/api/auth/login",
-      getUser: "http://localhost:3000/api/auth/user",
-      logout: "http://localhost:3000/api/auth/logout"
-    }
+      signUp: "auth/sign-up",
+      login: "auth/login",
+      getUser: "auth/user",
+      logout: "auth/logout",
+    },
+    update: {
+      uploadProfileImage: "upload/profileimage",
+      deleteImage: "upload/deleteprofileimage"
+    },
+    getProfileInage: "upload/profileimage"
   }
 };
 

@@ -1,10 +1,27 @@
-<div class="profile-cont" *ngIf="!isDataLoaded">
+<div class="profile-cont" *ngIf="!isDataLoaded && userData">
 
-    <!-- <div class="user-info">
-        <div class="user-image">
-            <img [src]="userData?.imageURL">
-        </div>
-        <div class="user-name text-center">{{ userData.name }}</div>
+    <div class="user-info">
+        <label class="profile-img-container">
+            <div class="user-image">
+                <img [src]="userData.imageUrl ? userData.imageUrl : defaultProfileImage">
+            </div>
+            <i class="camera icon upload-image" *ngIf="!isImageUploading"></i>
+            <input 
+                type="file"
+                name="profileImage"
+                (change)="loadImage($event)"
+            >
+            <div class="progress-spinner" *ngIf="isImageUploading">
+                <mat-progress-spinner 
+                    mode="determinate" 
+                    [diameter]="diameter" 
+                    [value]="value"
+                    strokeWidth="10"
+                ></mat-progress-spinner>
+            </div>
+        </label>
+        <!-- <mat-progress-spinner mode="determinate" value="50"></mat-progress-spinner> -->
+        <div class="user-name text-center" (click)="getImage(userData.imageUrl)">{{ userData.name }}</div>
         <div class="user-unique-name text-center">{{ userData.uniqueId }}</div>
         <button 
             class="follow" 
@@ -32,7 +49,7 @@
                 </a>
             </div>
         </div>
-    </div> -->
+    </div>
 
     <!-- edit profile -->
     <div class="edit-icon">

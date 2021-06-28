@@ -145,6 +145,7 @@
   },
   "defaultProject": "Blog",
   "cli": {
-    "analytics": "58954e44-ad60-48e1-8530-1036cb9a29f7"
+    "analytics": "58954e44-ad60-48e1-8530-1036cb9a29f7",
+    "defaultCollection": "@datorama/akita"
   }
 }
