@@ -20,7 +20,6 @@
                 ></mat-progress-spinner>
             </div>
         </label>
-        <!-- <mat-progress-spinner mode="determinate" value="50"></mat-progress-spinner> -->
         <div class="user-name text-center" (click)="getImage(userData.imageUrl)">{{ userData.name }}</div>
         <div class="user-unique-name text-center">{{ userData.uniqueId }}</div>
         <button 
@@ -53,7 +52,7 @@
 
     <!-- edit profile -->
     <div class="edit-icon">
-        <app-edit-profile [userStatus]="otherUserStatus"></app-edit-profile>
+        <app-edit-profile [UserData]="userData" [userStatus]="otherUserStatus"></app-edit-profile>
     </div>
 
     <div 

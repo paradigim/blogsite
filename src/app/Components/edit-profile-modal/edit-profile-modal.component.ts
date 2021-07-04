@@ -1,9 +1,20 @@
-import { Component, OnInit, Output, EventEmitter, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, Output, EventEmitter, ViewChild, ChangeDetectorRef, Inject } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { skipWhile, take, takeUntil } from 'rxjs/operators';
+import { UserData } from 'src/app/Models/user';
 import { DataExchangeService } from 'src/app/services/data-exchange.service';
 import { InteractionService } from 'src/app/services/interaction.service';
+import {ErrorStateMatcher} from '@angular/material/core';
+import { UpdateService } from 'src/app/services/update.service';
+
+// export class MyErrorStateMatcher implements ErrorStateMatcher {
+//   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+//     const isSubmitted = form && form.submitted;
+//     return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
+//   }
+// }
 
 @Component({
   selector: 'app-edit-profile-modal',
@@ -16,39 +27,65 @@ export class EditProfileModalComponent implements OnInit {
   uData: any;
   isDataLoaded = null;
   unSubscribe = new Subject();
-  userData: any;
   imageUrl = '';
   editForm: FormGroup;
+  userData: UserData;
+
+  showSnackbarStatus = false;
+  snackbarText = '';
 
   constructor(
     private dataExchange: DataExchangeService,
     private interaction: InteractionService,
     private fb: FormBuilder,
-    private cdref: ChangeDetectorRef
+    private cdref: ChangeDetectorRef,
+    @Inject(MAT_DIALOG_DATA) public data: {user: UserData},
+    private updateService: UpdateService
   ) { }
 
   ngOnInit(): void {
-    this.getUserData();
+    this.userData = this.data.user;
+    console.log('DATA: ', this.userData);
 
     this.editForm = this.fb.group({
-      imageUrl: [''],
-      uname: ['']
+      name: ['', Validators.required],
+      phone: [null],
+      gender: ['']
     });
+
+    if (this.userData) {
+      this.initialFormWithData();
+    }
   }
 
-  getUserData() {
-    this.dataExchange.userId$
-    .pipe(takeUntil(this.unSubscribe))
-    .subscribe(uid => {
-      this.interaction.getUser()
-      .pipe(takeUntil(this.unSubscribe))
-      .subscribe(uData => {
-        this.userData = uData;
-        this.editForm.get('imageUrl').setValue(this.userData.imageURL);
-        this.editForm.get('uname').setValue(this.userData.name);
-        this.isDataLoaded = true;
-      });
+  initialFormWithData() {
+    this.editForm.patchValue({
+      name: this.userData.name,
+      phone: !this.userData.phone ? '' : this.userData.phone,
+      gender: this.userData.gender
     })
+  }
+
+  updateProfile() {
+    const dataToUpdate = {
+      name: this.editForm.get('name').value,
+      phone: this.editForm.get('phone').value,
+      gender: this.editForm.get('gender').value
+    }
+
+    this.updateService.updateProfileData(dataToUpdate)
+      .pipe(
+        skipWhile(res => !res),
+        take(1)
+      )
+      .subscribe(res => {
+        console.log('RES: ', res);
+        this.showSnackbarStatus = true;
+        this.snackbarText = res.status;
+      }, err => {
+        console.log('ERROR: ', err);
+        // this.updateErrorText = err.error.message; TODO: need to show error popup
+      });
   }
 
   saveProfile() {
@@ -66,16 +103,6 @@ export class EditProfileModalComponent implements OnInit {
 
   closeModal(e = null) {
     this.modalClose.emit(false);
-  }
-
-  loadFile(e) {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.imageUrl = reader.result as string;
-      this.editForm.get('imageUrl').setValue(this.imageUrl);
-    };
-    reader.readAsDataURL(file);
   }
 
   ngOnDestroy(): void {

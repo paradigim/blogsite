@@ -14,6 +14,15 @@ export class UpdateService {
     private apiService: ApiService
   ) { }
 
+  /**
+   * Update user data
+   * @param userData user's data to update
+   */
+  updateProfileData(userData) {
+    const url = `${this.environment.api.baseUrl}${this.environment.api.update.updateProfile}`;
+    return this.apiService.fetchPostUrl(url, userData);
+  }
+
   uploadImage(formData, imageUpload) {
     const url = `${this.environment.api.baseUrl}${this.environment.api.update.uploadProfileImage}`;
     return this.apiService.fetchPostUrl(url, formData, imageUpload);

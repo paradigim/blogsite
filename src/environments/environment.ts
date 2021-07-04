@@ -25,7 +25,8 @@ export const environment = {
     },
     update: {
       uploadProfileImage: "upload/profileimage",
-      deleteImage: "upload/deleteprofileimage"
+      deleteImage: "upload/deleteprofileimage",
+      updateProfile: "update/profile"
     },
     getProfileInage: "upload/profileimage"
   }

@@ -33,6 +33,7 @@ import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { AkitaNgRouterStoreModule } from '@datorama/akita-ng-router-store';
 import {MatIconModule} from '@angular/material/icon'
 import { NgxImageCompressService } from 'ngx-image-compress';
+import { CommonMaterialModule } from './common/common-material/common-material.module';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { NgxImageCompressService } from 'ngx-image-compress';
     PipesModule,
     environment.production ? [] : AkitaNgDevtools.forRoot(),
     AkitaNgRouterStoreModule,
-    MatIconModule
+    MatIconModule,
+    CommonMaterialModule
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
   providers: [
