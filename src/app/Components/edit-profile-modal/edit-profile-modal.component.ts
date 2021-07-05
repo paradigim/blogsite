@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, ViewChild, ChangeDetectorRef, Inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { skipWhile, take, takeUntil } from 'rxjs/operators';
 import { UserData } from 'src/app/Models/user';
@@ -8,6 +8,8 @@ import { DataExchangeService } from 'src/app/services/data-exchange.service';
 import { InteractionService } from 'src/app/services/interaction.service';
 import {ErrorStateMatcher} from '@angular/material/core';
 import { UpdateService } from 'src/app/services/update.service';
+import { CommonErrorDialogComponent } from '../common-error-dialog/common-error-dialog.component';
+import { UserService } from 'src/app/state/user/user.service';
 
 // export class MyErrorStateMatcher implements ErrorStateMatcher {
 //   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -40,12 +42,13 @@ export class EditProfileModalComponent implements OnInit {
     private fb: FormBuilder,
     private cdref: ChangeDetectorRef,
     @Inject(MAT_DIALOG_DATA) public data: {user: UserData},
-    private updateService: UpdateService
+    private updateService: UpdateService,
+    private matDialog: MatDialog,
+    private userService: UserService
   ) { }
 
   ngOnInit(): void {
     this.userData = this.data.user;
-    console.log('DATA: ', this.userData);
 
     this.editForm = this.fb.group({
       name: ['', Validators.required],
@@ -67,6 +70,7 @@ export class EditProfileModalComponent implements OnInit {
   }
 
   updateProfile() {
+    this.dataExchange.setUpdateUserStart(true);
     const dataToUpdate = {
       name: this.editForm.get('name').value,
       phone: this.editForm.get('phone').value,
@@ -79,12 +83,21 @@ export class EditProfileModalComponent implements OnInit {
         take(1)
       )
       .subscribe(res => {
-        console.log('RES: ', res);
-        this.showSnackbarStatus = true;
-        this.snackbarText = res.status;
+        this.userService.updateUserLoadingStatus()
+          .subscribe(() => {
+            this.dataExchange.setUserUpdateStatus(true);
+            this.dataExchange.saveUpdatedUser(res.user);
+            this.showSnackbarStatus = true;
+            this.snackbarText = res.status;
+          })
       }, err => {
-        console.log('ERROR: ', err);
-        // this.updateErrorText = err.error.message; TODO: need to show error popup
+        this.matDialog.open(CommonErrorDialogComponent, {
+          data: {
+            message: err.error.message
+          },
+          width: '300px',
+          autoFocus: false
+        });
       });
   }
 

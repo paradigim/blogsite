@@ -34,10 +34,12 @@ import { AkitaNgRouterStoreModule } from '@datorama/akita-ng-router-store';
 import {MatIconModule} from '@angular/material/icon'
 import { NgxImageCompressService } from 'ngx-image-compress';
 import { CommonMaterialModule } from './common/common-material/common-material.module';
+import { CommonErrorDialogComponent } from './Components/common-error-dialog/common-error-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    CommonErrorDialogComponent,
   ],
   imports: [
     BrowserModule,

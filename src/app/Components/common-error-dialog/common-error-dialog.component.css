@@ -1,0 +1,14 @@
+
+.mat-button.mat-primary, .mat-icon-button.mat-primary, .mat-stroked-button.mat-primary {
+    color: var(--prime-color);
+}
+
+::ng-deep .mat-button.mat-primary .mat-button-focus-overlay, 
+::ng-deep .mat-icon-button.mat-primary .mat-button-focus-overlay, 
+::ng-deep .mat-stroked-button.mat-primary .mat-button-focus-overlay {
+    background-color: var(--prime-color);
+}
+
+.error-btn {
+    margin-top: 10px;
+}

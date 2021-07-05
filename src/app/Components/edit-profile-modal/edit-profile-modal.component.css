@@ -60,3 +60,7 @@
 ::ng-deep .mat-stroked-button.mat-primary .mat-button-focus-overlay {
     background-color: var(--prime-color);
 }
+
+.userName {
+    text-transform: capitalize;
+}

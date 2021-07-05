@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -16,6 +16,7 @@ import { EditProfileModalComponent } from '../edit-profile-modal/edit-profile-mo
 })
 export class EditProfileComponent implements OnInit {
   @Input() userStatus = false;
+
   unSubscribe = new Subject();
   showModal = false;
   userData: any;
@@ -45,7 +46,8 @@ export class EditProfileComponent implements OnInit {
       data: {
         user: this.userData
       },
-      width: '500px'
+      width: '500px',
+      autoFocus: false
     });
   }
 

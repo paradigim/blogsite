@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { map, skipWhile, switchMap, take, takeUntil } from 'rxjs/operators';
+import { filter, map, skipWhile, switchMap, take, takeUntil } from 'rxjs/operators';
 import { DataExchangeService } from 'src/app/services/data-exchange.service';
 import { DateService } from 'src/app/services/date.service';
 import { InteractionService } from 'src/app/services/interaction.service';
@@ -63,7 +63,24 @@ export class ProfileComponent implements OnInit {
 
     // this.checkIsUpdated();
     this.getUserData();
-    // this.dataExchange.setPageStatus(false);
+
+
+    this.dataExchange.userUpdateStart$
+      .subscribe(res => {
+        if (res) {
+          this.dataExchange.setUpdateUserStart(false);
+          this.isDataLoaded = true;
+        }
+      })
+    
+
+    this.dataExchange.userUpdateStatus$
+      .subscribe((res) => {
+        if (res) {
+          this.dataExchange.setUserUpdateStatus(false);
+          this.fetchUpdatedUser();
+        }
+      })
   }
 
   /**
@@ -165,6 +182,7 @@ export class ProfileComponent implements OnInit {
       )
       .subscribe(user => {
         this.userData = user;
+        this.isDataLoaded = false;
         this.dataExchange.saveUpdatedUser(this.userData);
         if (this.value === 100) {
           setTimeout(() => {

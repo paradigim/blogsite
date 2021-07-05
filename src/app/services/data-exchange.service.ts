@@ -34,10 +34,24 @@ export class DataExchangeService {
   private updatedUser = new BehaviorSubject(null);
   public updatedUser$ = this.updatedUser.asObservable();
 
+  private userUpdateStatus = new BehaviorSubject(false);
+  public userUpdateStatus$ = this.userUpdateStatus.asObservable();
+
+  private userUpdateStart = new BehaviorSubject(false);
+  public userUpdateStart$ = this.userUpdateStart.asObservable();
+
   constructor() { }
 
-  saveUpdatedUser(data: UserData) {
-    this.updatedUser.next(data);
+  setUpdateUserStart(status: boolean) {
+    this.userUpdateStart.next(status);
+  }
+
+  setUserUpdateStatus(status: boolean) {
+    this.userUpdateStatus.next(status);
+  }
+
+  saveUpdatedUser(user: UserData) {
+    this.updatedUser.next(user);
   }
 
   setPageStatus(status) {

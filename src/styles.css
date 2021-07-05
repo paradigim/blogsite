@@ -104,3 +104,11 @@ body, html {
 .w-100 {
   width: 100%;
 }
+
+.center {
+  text-align: center;
+}
+
+.bold {
+  font-weight: bold;
+}
