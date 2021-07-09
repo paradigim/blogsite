@@ -1,20 +1,40 @@
 
 
 <div class='home-container' *ngIf="!isDataLoaded">
-    <!-- <div>
+    <div>
+        <!-- showing loader before pots will successfuly added and fetched from the databsae -->
+        <div class="loader-for-post" *ngIf="isNewPost">
+            <div class="ui fluid placeholder">
+                <div class="image header">
+                <div class="line"></div>
+                <div class="line"></div>
+                </div>
+                <div class="paragraph">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+                </div>
+            </div>
+        </div>
 
         <div 
+            @fadeHeight 
             class='ec-blog-post' 
             *ngFor="let item of postData; index as i;"
-            (click)="routeToBlogDetail($event, item.id, item.followStatus)" 
+            (click)="routeToBlogDetail($event, item.id, item.followStatus)"
         >
             <div class='user-blog-post r-hide'>
-                <img [src]="item.userImage">
+                <img [src]="item.userImage | image: 'profile-image'">
             </div>
             <div class='user-blog-wrapper'>
                 <div class="r-cont">
                     <div class='user-blog-post'>
-                        <img [src]="item.userImage">
+                        <img [src]="item.userImage | image: 'profile-image'">
                     </div>
                     <div class="user-data-cont">
                         <div class="user-intro-follow">
@@ -29,13 +49,13 @@
                     </div>        
                 </div>
 
-                <div class='user-blog-content' [innerHTML]="item.contents | anchor" (click)="redirectLink($event)"></div>
+                <div class='user-blog-content' [innerHTML]="item.content | anchor" target="_blank" (click)="redirectLink($event)"></div>
                 
                 <video class="video-fluid z-depth-1 home-videos" controls muted *ngIf="item.video">
                     <source [src]="item?.video" type="video/mp4" />
                 </video>
                 <div class="user-blog-post-image" *ngIf="item.image">
-                    <img [src]="item?.image">
+                    <img [src]="item?.image | image: 'post-image'">
                 </div>
                 <div class='blog-activities'>
                     <app-blog-like [postId]="item.id" [likedUserIds]="item.likedUserId"></app-blog-like>
@@ -45,10 +65,10 @@
                         [elemId]="i" 
                         (click)="stopDefaultBehaviour($event)"
                         [postId]="item.id"
-                        [postUserId]="item.userid"
+                        [postUserId]="item.userId"
+                        [userId]="userId"
                         [videoUrl]="item.video"
                         [imageUrl]="item.image"
-                        (isPostDelete)="deletePostFromList($event, i)"
                     ></app-blog-activity-more>
                 </div>
                 <app-blog-all-comments 
@@ -65,21 +85,22 @@
                 ></app-blog-comment-input>
             </div>
         </div>
-    </div> -->
+    </div>
 
 
     <app-right-side-menu></app-right-side-menu>
     
 </div>
 
-<!-- <app-snackbarmodal 
+<app-snackbarmodal 
     *ngIf="showSnackbarStatus"
     [text]="snackBarText"
+    (snackbarClose)="handleSnackbarClose($event)"
 ></app-snackbarmodal>
 
 <div *ngIf="isDataLoaded" class="data-loader">
     <div class="ui active centered inline loader"></div>
-</div> -->
+</div>
 
 
 

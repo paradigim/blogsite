@@ -2,7 +2,7 @@
 <div class="ui icon top right pointing dropdown" suiDropdown>
     <i class="ellipsis vertical icon"></i>
     <div class="menu menu-list" suiDropdownMenu>
-      <div class="item" (click)="bookmark()">
+      <div class="item">
         <i class="bookmark outline icon" [class.bookmarked]="bookmarkStatus"></i>
         {{ bookmarkText }}
       </div>
@@ -23,9 +23,9 @@
 
 
 <!-- post edit modal -->
-<app-blog-modal 
+<!-- <app-blog-modal 
   *ngIf="modalShow"
   [editPostData]="editPostData"
   (modalStatus)="changeModalStatus()">
-</app-blog-modal>
+</app-blog-modal> -->
 

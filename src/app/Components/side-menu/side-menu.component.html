@@ -34,11 +34,11 @@
 
 
 
-  <button class="blog-post-button" (click)="changeModalStatus()">
+  <button class="blog-post-button" (click)="openDialog()">
     Post
   </button>
-  <app-blog-modal *ngIf="modalShow" (modalStatus)="changeModalStatus()" [userImage]="photoUrl" [userId]="userData.id">
-  </app-blog-modal>
+  <!-- <app-blog-modal *ngIf="modalShow" (modalStatus)="changeModalStatus()" [userImage]="photoUrl" [userId]="userData.id">
+  </app-blog-modal> -->
 
 
 

@@ -11,7 +11,7 @@ export class DateService {
     return date.getSeconds();
   }
 
-  postDateFormat(date: number): string {
+  postDateFormat(date: number) {
     return format(new Date(date), 'dd MMM, yyyy');
   }
 

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { PostData } from '../Models/post';
 import { UserData } from '../Models/user';
 
 @Injectable({
@@ -40,7 +41,21 @@ export class DataExchangeService {
   private userUpdateStart = new BehaviorSubject(false);
   public userUpdateStart$ = this.userUpdateStart.asObservable();
 
+  private newPostData = new BehaviorSubject(null);
+  public newPostData$ = this.newPostData.asObservable();
+
+  private deletedPostId = new BehaviorSubject(null);
+  public deletedPostId$ = this.deletedPostId.asObservable();
+
   constructor() { }
+
+  saveDeletedPostId(postId) {
+    this.deletedPostId.next(postId);
+  }
+
+  saveNewPostData(data) {
+    this.newPostData.next(data);
+  }
 
   setUpdateUserStart(status: boolean) {
     this.userUpdateStart.next(status);

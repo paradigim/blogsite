@@ -10,6 +10,7 @@ import {ErrorStateMatcher} from '@angular/material/core';
 import { UpdateService } from 'src/app/services/update.service';
 import { CommonErrorDialogComponent } from '../common-error-dialog/common-error-dialog.component';
 import { UserService } from 'src/app/state/user/user.service';
+import { Overlay } from '@angular/cdk/overlay';
 
 // export class MyErrorStateMatcher implements ErrorStateMatcher {
 //   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -44,7 +45,8 @@ export class EditProfileModalComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: {user: UserData},
     private updateService: UpdateService,
     private matDialog: MatDialog,
-    private userService: UserService
+    private userService: UserService,
+    private overlay: Overlay
   ) { }
 
   ngOnInit(): void {
@@ -96,7 +98,8 @@ export class EditProfileModalComponent implements OnInit {
             message: err.error.message
           },
           width: '300px',
-          autoFocus: false
+          autoFocus: false,
+          scrollStrategy: this.overlay.scrollStrategies.noop()
         });
       });
   }

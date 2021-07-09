@@ -12,7 +12,7 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
 
 @NgModule({
   declarations: [
-    HomeComponent
+    HomeComponent,
   ],
   imports: [
     CommonModule,

@@ -36,4 +36,9 @@ export class UpdateService {
   getProfileImage(imageName) {
     return `${this.environment.api.baseUrl}${this.environment.api.getProfileInage}/${imageName}`;
   }
+
+  deletePost(postId: number) {
+    const url = `${this.environment.api.baseUrl}${this.environment.api.post.delete}/${postId}`;
+    return this.apiService.fetchDelete(url);
+  }
 }

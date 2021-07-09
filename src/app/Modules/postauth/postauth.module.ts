@@ -6,11 +6,11 @@ import { PostauthComponent } from './postauth.component';
 import { SideMenuComponent } from 'src/app/Components/side-menu/side-menu.component';
 import { SideMenuItemComponent } from 'src/app/Components/side-menu-item/side-menu-item.component';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { AutosizeModule } from 'ngx-autosize';
 import { SuiModule } from 'ng2-semantic-ui';
 import { PipesModule } from 'src/app/pipes/pipes.module';
 import { AuthGuard } from 'src/app/Guard/auth.guard';
 import { CommonMaterialModule } from 'src/app/common/common-material/common-material.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 
@@ -24,7 +24,6 @@ import { CommonMaterialModule } from 'src/app/common/common-material/common-mate
     CommonModule,
     PostauthRoutingModule,
     SharedModule,
-    AutosizeModule,
     SuiModule,
     PipesModule,
     CommonMaterialModule

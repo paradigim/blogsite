@@ -35,11 +35,13 @@ import {MatIconModule} from '@angular/material/icon'
 import { NgxImageCompressService } from 'ngx-image-compress';
 import { CommonMaterialModule } from './common/common-material/common-material.module';
 import { CommonErrorDialogComponent } from './Components/common-error-dialog/common-error-dialog.component';
-
+import { PostDialogComponent } from './Components/post-dialog/post-dialog.component';
+import { AutosizeModule } from 'ngx-autosize';
 @NgModule({
   declarations: [
     AppComponent,
     CommonErrorDialogComponent,
+    PostDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -65,7 +67,8 @@ import { CommonErrorDialogComponent } from './Components/common-error-dialog/com
     environment.production ? [] : AkitaNgDevtools.forRoot(),
     AkitaNgRouterStoreModule,
     MatIconModule,
-    CommonMaterialModule
+    CommonMaterialModule,
+    AutosizeModule
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
   providers: [

@@ -7,6 +7,14 @@
 ::ng-deep .mat-icon-button.mat-primary .mat-button-focus-overlay, 
 ::ng-deep .mat-stroked-button.mat-primary .mat-button-focus-overlay {
     background-color: var(--prime-color);
+    opacity: 0.08;
+}
+
+::ng-deep .mat-button:hover:not(.mat-button-disabled) 
+::ng-deep .mat-button-focus-overlay, 
+::ng-deep .mat-stroked-button:hover:not(.mat-button-disabled) 
+::ng-deep .mat-button-focus-overlay {
+    opacity: 0.10 !important;
 }
 
 .error-btn {

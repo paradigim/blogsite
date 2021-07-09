@@ -28,7 +28,14 @@ export const environment = {
       deleteImage: "upload/deleteprofileimage",
       updateProfile: "update/profile"
     },
-    getProfileInage: "upload/profileimage"
+    getProfileInage: "upload/profileimage",
+    post: {
+      createPost: "post/create",
+      getAll: "post/all-posts",
+      getPostImage: "post/postimage",
+      getNewPost: "post/new-post",
+      delete: "post/delete"
+    }
   }
 };
 

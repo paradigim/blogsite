@@ -2,7 +2,6 @@ import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { SuiModule } from 'ng2-semantic-ui';
-import { AutosizeModule } from 'ngx-autosize';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { BlogModalComponent } from './blog-modal/blog-modal.component';
@@ -34,7 +33,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
   imports: [
     CommonModule,
     SuiModule,
-    AutosizeModule,
     FormsModule,
     ReactiveFormsModule,
     PickerModule,

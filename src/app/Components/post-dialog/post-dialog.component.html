@@ -1,0 +1,60 @@
+
+
+<ng-container *ngIf="userData">
+
+    <mat-dialog-content class="post-write-section">
+        <div class="user-image">
+            <img [src]="userData.imageUrl">
+        </div>
+
+        <form class="ui form post-form" [formGroup]="postForm">
+            <div class="textarea-field field">
+                <textarea
+                    placeholder="Hey...What's up?"
+                    formControlName="content"
+                    minRows="1"
+                    class="post-box"
+                    autosize
+                ></textarea>
+            </div>
+
+            <ng-container class="upld-img-container">
+                <div class="uploaded-img" *ngIf="uploadImageUrl">
+                    <img [src]="uploadImageUrl">
+                    <div class="cross-icon" (click)="removeFile()"></div>
+                </div>
+            </ng-container>
+
+            <div class="upload-section">
+                <label class='upload-box'>
+                    <i class="image outline icon"></i>
+                    image
+                    <input 
+                      (change)="loadFile($event, 'image')" 
+                      type="file"
+                      accept="image/*"
+                      #imageUpload>
+                </label>
+
+                <label class='upload-box'>
+                    <i class="video icon"></i>
+                    video
+                    <input 
+                      (change)="loadFile($event, 'video')"
+                      type='file'
+                      value=""
+                      accept="video/*"
+                      #videoUpload>
+                </label>
+            </div>
+        </form>
+    </mat-dialog-content>
+
+    <div>
+        <mat-dialog-actions align="end">
+            <button mat-button mat-dialog-close>Cancel</button>
+            <button mat-button mat-dialog-close color="primary" (click)="newPost()">Post</button>
+        </mat-dialog-actions>
+    </div>
+
+</ng-container>

@@ -1,7 +1,9 @@
 @import 'semantic-ui-css/semantic.css';
 
-textarea.comment-box {
+.ui.form textarea.comment-box {
     resize: none !important;
+    min-height: 0;
+    height: 100px;
 }
 
 .comment-parts {

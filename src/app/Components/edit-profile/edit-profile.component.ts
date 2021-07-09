@@ -1,3 +1,4 @@
+import { Overlay } from '@angular/cdk/overlay';
 import { Component, EventEmitter, Inject, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -25,7 +26,8 @@ export class EditProfileComponent implements OnInit {
     private interaction: InteractionService,
     private router: Router,
     private userService: UserService,
-    private matDialog: MatDialog
+    private matDialog: MatDialog,
+    private overlay: Overlay
   ) { }
 
   ngOnInit(): void {
@@ -47,7 +49,8 @@ export class EditProfileComponent implements OnInit {
         user: this.userData
       },
       width: '500px',
-      autoFocus: false
+      autoFocus: false,
+      scrollStrategy: this.overlay.scrollStrategies.noop()
     });
   }
 

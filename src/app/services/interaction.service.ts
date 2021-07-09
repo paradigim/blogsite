@@ -367,9 +367,9 @@ export class InteractionService implements OnDestroy {
   }
 
   // delete post
-  deletePost(postId: string): Promise<any> {
-    return this.afs.collection('posts').doc(postId).delete();
-  }
+  // deletePost(postId: string): Promise<any> {
+  //   return this.afs.collection('posts').doc(postId).delete();
+  // }
 
   updateFollower(follower, userId): void {
     this.afs.collection('users').doc(userId).update({

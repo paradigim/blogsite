@@ -1,6 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-//import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-snackbarmodal',
@@ -9,6 +8,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class SnackbarmodalComponent implements OnInit {
   @Input() text = '';
+  @Output() snackbarClose = new EventEmitter<boolean>();
+
+  snackbarRef: any;
+
   constructor(
     private snackbar: MatSnackBar
   ) { }
@@ -18,8 +21,13 @@ export class SnackbarmodalComponent implements OnInit {
   }
 
   openSnackBar() {
-    this.snackbar.open(this.text, 'Ok', {
+    this.snackbarRef = this.snackbar.open(this.text, 'Ok', {
       duration: 2000
+    });
+
+    this.snackbarRef.afterDismissed()
+    .subscribe(() => {
+      this.snackbarClose.emit(true);
     });
   }
 

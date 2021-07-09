@@ -3,12 +3,22 @@ import { InteractionService } from 'src/app/services/interaction.service';
 import { Router } from '@angular/router';
 import { filter, skipWhile, switchMap, take, takeUntil } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { Observable, Subject } from 'rxjs';
+import { Observable, pipe, Subject } from 'rxjs';
 import { DateService } from 'src/app/services/date.service';
 import { PushNotification } from 'src/app/services/push-notification.service';
 import { DataExchangeService } from 'src/app/services/data-exchange.service';
 import { CdkVirtualScrollViewport, FixedSizeVirtualScrollStrategy, VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { PostService } from 'src/app/services/post.service';
+import { PostData } from 'src/app/Models/post';
+import * as _ from 'lodash';
+import { MatDialog } from '@angular/material/dialog';
+import { CommonErrorDialogComponent } from 'src/app/Components/common-error-dialog/common-error-dialog.component';
+import { Overlay } from '@angular/cdk/overlay';
+import { UserService } from 'src/app/state/user/user.service';
+import { UserQuery } from 'src/app/state/user/user.query';
+import { UserData } from 'src/app/Models/user';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 
 export interface VirtualScrollStrategy {
@@ -32,12 +42,19 @@ export class CustomVirtualScrollStrategy extends FixedSizeVirtualScrollStrategy 
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  providers: [{provide: VIRTUAL_SCROLL_STRATEGY, useClass: CustomVirtualScrollStrategy}]
+  // providers: [{provide: VIRTUAL_SCROLL_STRATEGY, useClass: CustomVirtualScrollStrategy}],
+  animations: [
+    trigger('fadeHeight', [
+      transition('* => void', [
+        animate(200, style({ height: 0, padding: 0, display: 'none' }))
+      ])
+    ])
+  ]
 })
 export class HomeComponent implements OnInit, OnDestroy {
   likeCount: number;
   postData: any;
-  userId: string;
+  userId: number;
   checkFollow = false;
   isDataLoaded = false;
   unSubscribe = new Subject();
@@ -49,6 +66,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   screenHeight: number;
   showSnackbarStatus = false;
   snackBarText = '';
+  isNewPost = false;
 
   constructor(
     private interaction: InteractionService,
@@ -56,19 +74,21 @@ export class HomeComponent implements OnInit, OnDestroy {
     private afAuth: AngularFireAuth,
     private date: DateService,
     private pushNotificationService: PushNotification,
-    private data: DataExchangeService
+    private data: DataExchangeService,
+    private postService: PostService,
+    private matDialog: MatDialog,
+    private overlay: Overlay,
+    private userService: UserService,
+    private userQuery: UserQuery
   ) {
-    // this.isDataLoaded = true;
-    // this.afAuth.authState.subscribe(user => {
-    //   if (user){
-    //     this.userId = user.uid;
-    //     this.pushNotificationService.requestPermission();
-    //   }
-    // });
-    // if (this.postData?.length <= 0 || !this.postData) {
-    //   this.allPosts();
-    // }
-    
+    this.userQuery.getLoggedInUser()
+      .pipe(
+        skipWhile(res => !res),
+        take(1)
+      )
+      .subscribe((user: UserData) => {
+        this.userId = user.id;
+      });
   }
 
   ngOnInit(): void {
@@ -79,22 +99,91 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     this.data.setPageStatus(false);
 
-    // this.data.isLoad$
-    // .pipe(filter(val => val === true))
-    // .pipe(take(1))
-    // .subscribe(isStatus => {
-    //   if (isStatus) {
-    //     console.log('SUC POST 2');
-    //     this.showSnackbarStatus = isStatus;
-    //     this.snackBarText = 'Posted';
-    //     this.showNotificationToUser();
-    //     this.data.loadAfterNewPost(false);
-    //   } else {
-    //     this.showSnackbarStatus = false;
-    //     this.snackBarText = '';
-    //   }
-    // });
+    this.isDataLoaded = true;
+    this.getAllPosts();
+
+    this.data.newPostData$
+      .pipe(
+        skipWhile(res => !res)
+      )
+      .subscribe(post => {
+        if (post) {
+          this.showSnackbarStatus = false;
+          this.isNewPost = true;
+          this.getNewlyAddedPostFromDatabase(post);
+        }
+      })
+
+    this.data.deletedPostId$
+      .pipe(
+        skipWhile(res => !res)
+      )
+      .subscribe(postId => {
+        if (postId) {
+          this.data.saveDeletedPostId(null);
+          this.postData = this.postData.filter(item => item.id !== postId);
+          this.showSnackbarStatus = true;
+          this.snackBarText = 'Post Deleted';
+        }
+      })
   }
+
+  handleSnackbarClose(e) {
+    if (e) {
+      this.showSnackbarStatus = false;
+      this.snackBarText = '';
+    }
+  }
+
+  getNewlyAddedPostFromDatabase(post) {
+    this.postService.getNewPost(post.id)
+    .pipe(
+      skipWhile(res => !res),
+      take(1)
+    )
+    .subscribe(post => {
+      setTimeout(() => {
+        this.isNewPost = false;
+        this.showSnackbarStatus = true;
+        this.data.saveNewPostData(null);
+        this.snackBarText = 'Posted';
+        this.postData.unshift(post);
+      }, 2000)
+    }, err => {
+      this.matDialog.open(CommonErrorDialogComponent, {
+        data: {
+          message: err.error.message
+        },
+        width: '300px',
+        autoFocus: false,
+        scrollStrategy: this.overlay.scrollStrategies.noop()
+      });
+    });
+  }
+
+  // new database code #start
+  getAllPosts() {
+    this.postService.getAllPosts()
+    .pipe(
+      skipWhile(res => !res),
+      take(1)
+    )
+    .subscribe((posts: PostData) => {
+      console.log('POSTS: ', posts);
+      this.postData = _.orderBy(posts, ['id'], ['desc']);
+      this.isDataLoaded = false;
+    }, err => {
+      this.matDialog.open(CommonErrorDialogComponent, {
+        data: {
+          message: err.error.message
+        },
+        width: '300px',
+        autoFocus: false,
+        scrollStrategy: this.overlay.scrollStrategies.noop()
+      });
+    });  
+  }
+  // new database code #end
 
   redirectLink(e) {
     e.stopPropagation();

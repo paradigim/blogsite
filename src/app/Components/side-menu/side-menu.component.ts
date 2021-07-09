@@ -6,6 +6,9 @@ import { UserData } from 'src/app/Models/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/state/user/user.service';
 import { DataExchangeService } from 'src/app/services/data-exchange.service';
+import { MatDialog } from '@angular/material/dialog';
+import { PostDialogComponent } from '../post-dialog/post-dialog.component';
+import { Overlay } from '@angular/cdk/overlay';
 
 @Component({
   selector: 'app-side-menu',
@@ -18,7 +21,6 @@ import { DataExchangeService } from 'src/app/services/data-exchange.service';
 export class SideMenuComponent implements OnInit {
   userName = 'Anisya olga';
   defaultImageUrl = './assets/images/default-1.jpg';
-  modalShow = false;
   uniqueUserId = '';
   userNotificationAlert = [];
   loading = false;
@@ -30,7 +32,9 @@ export class SideMenuComponent implements OnInit {
   constructor(
     private userQuery: UserQuery,
     private userService: UserService,
-    private dataService: DataExchangeService
+    private dataService: DataExchangeService,
+    private matDialog: MatDialog,
+    public overlay: Overlay
   ) { }
 
   ngOnInit(): void {
@@ -66,8 +70,14 @@ export class SideMenuComponent implements OnInit {
     }
   }
 
-  changeModalStatus(): void {
-    this.modalShow = !this.modalShow;
+  openDialog(): void {
+    this.matDialog.open(PostDialogComponent, {
+      width: '500px',
+      data: {
+        user: this.userData
+      },
+      scrollStrategy: this.overlay.scrollStrategies.noop()
+    })
   }
 
 }
