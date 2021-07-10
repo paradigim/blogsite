@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { BookmarksRoutingModule } from './bookmarks-routing.module';
 import { BookmarksComponent } from './bookmarks.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { PipesModule } from 'src/app/pipes/pipes.module';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
   imports: [
     CommonModule,
     BookmarksRoutingModule,
-    SharedModule
+    SharedModule,
+    PipesModule
   ]
 })
 export class BookmarksModule { }

@@ -34,7 +34,10 @@ export const environment = {
       getAll: "post/all-posts",
       getPostImage: "post/postimage",
       getNewPost: "post/new-post",
-      delete: "post/delete"
+      delete: "post/delete",
+      update: "post/update",
+      updateLike: "post/update-like",
+      updateBookmark: "post/update-bookmark"
     }
   }
 };

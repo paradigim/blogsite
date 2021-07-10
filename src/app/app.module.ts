@@ -37,11 +37,13 @@ import { CommonMaterialModule } from './common/common-material/common-material.m
 import { CommonErrorDialogComponent } from './Components/common-error-dialog/common-error-dialog.component';
 import { PostDialogComponent } from './Components/post-dialog/post-dialog.component';
 import { AutosizeModule } from 'ngx-autosize';
+import { ConfirmationComponent } from './Components/confirmation/confirmation.component';
 @NgModule({
   declarations: [
     AppComponent,
     CommonErrorDialogComponent,
     PostDialogComponent,
+    ConfirmationComponent,
   ],
   imports: [
     BrowserModule,
@@ -78,7 +80,7 @@ import { AutosizeModule } from 'ngx-autosize';
     AuthGuard,
     AccessAuthGuard,
     { provide: NG_ENTITY_SERVICE_CONFIG, useValue: { baseUrl: 'https://jsonplaceholder.typicode.com' }},
-    NgxImageCompressService
+    NgxImageCompressService,
   ],
   bootstrap: [AppComponent]
 })

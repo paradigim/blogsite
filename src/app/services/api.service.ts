@@ -37,4 +37,11 @@ export class ApiService {
     return this.http.delete(url);
   }
 
+  fetchPutUrl(
+    url,
+    data = null
+  ): Observable<any> {
+    return this.http.put(url, data);
+  }
+
 }

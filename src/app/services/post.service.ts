@@ -31,4 +31,19 @@ export class PostService {
     const url = `${this.environment.api.baseUrl}${this.environment.api.post.getNewPost}/${postId}`;
     return this.apiService.fetchGetUrl(url);
   }
+
+  updatePost(data, postId) {
+    const url = `${this.environment.api.baseUrl}${this.environment.api.post.update}/${postId}`;
+    return this.apiService.fetchPutUrl(url, data);
+  }
+
+  updateLikeData(likeList, postId) {
+    const url = `${this.environment.api.baseUrl}${this.environment.api.post.updateLike}/${postId}`;
+    return this.apiService.fetchPutUrl(url, likeList);
+  }
+
+  updateBookmarkData(bookmarkList, postId) {
+    const url = `${this.environment.api.baseUrl}${this.environment.api.post.updateBookmark}/${postId}`;
+    return this.apiService.fetchPutUrl(url, bookmarkList);
+  }
 }

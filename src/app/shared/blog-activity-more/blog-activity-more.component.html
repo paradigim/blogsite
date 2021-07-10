@@ -2,19 +2,19 @@
 <div class="ui icon top right pointing dropdown" suiDropdown>
     <i class="ellipsis vertical icon"></i>
     <div class="menu menu-list" suiDropdownMenu>
-      <div class="item">
+      <div class="item" (click)="bookmark()">
         <i class="bookmark outline icon" [class.bookmarked]="bookmarkStatus"></i>
         {{ bookmarkText }}
       </div>
       <div class="item" 
-        *ngIf="userId === postUserId"
+        *ngIf="user.id === postUserId"
         (click)="editPost()">
         <i class="edit outline icon"></i>
         Edit
       </div>
       <div class="item" 
-        *ngIf="userId === postUserId"
-        (click)="deletePost()">
+        *ngIf="user.id === postUserId"
+        (click)="askForDeletePostConfirmation()">
         <i class="trash alternate outline icon"></i>
         Delete
       </div>

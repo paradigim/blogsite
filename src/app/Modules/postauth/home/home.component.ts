@@ -18,7 +18,7 @@ import { Overlay } from '@angular/cdk/overlay';
 import { UserService } from 'src/app/state/user/user.service';
 import { UserQuery } from 'src/app/state/user/user.query';
 import { UserData } from 'src/app/Models/user';
-import { animate, style, transition, trigger } from '@angular/animations';
+import { fadeHeight } from 'src/app/animation/fade-height';
 
 
 export interface VirtualScrollStrategy {
@@ -42,13 +42,9 @@ export class CustomVirtualScrollStrategy extends FixedSizeVirtualScrollStrategy 
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  // providers: [{provide: VIRTUAL_SCROLL_STRATEGY, useClass: CustomVirtualScrollStrategy}],
+  providers: [{provide: VIRTUAL_SCROLL_STRATEGY, useClass: CustomVirtualScrollStrategy}],
   animations: [
-    trigger('fadeHeight', [
-      transition('* => void', [
-        animate(200, style({ height: 0, padding: 0, display: 'none' }))
-      ])
-    ])
+    fadeHeight
   ]
 })
 export class HomeComponent implements OnInit, OnDestroy {
@@ -67,18 +63,17 @@ export class HomeComponent implements OnInit, OnDestroy {
   showSnackbarStatus = false;
   snackBarText = '';
   isNewPost = false;
+  user: UserData;
 
   constructor(
     private interaction: InteractionService,
     private router: Router,
-    private afAuth: AngularFireAuth,
     private date: DateService,
     private pushNotificationService: PushNotification,
     private data: DataExchangeService,
     private postService: PostService,
     private matDialog: MatDialog,
     private overlay: Overlay,
-    private userService: UserService,
     private userQuery: UserQuery
   ) {
     this.userQuery.getLoggedInUser()
@@ -87,7 +82,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         take(1)
       )
       .subscribe((user: UserData) => {
-        this.userId = user.id;
+        this.user = user;
       });
   }
 
@@ -108,6 +103,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       )
       .subscribe(post => {
         if (post) {
+          this.postData = this.postData.filter(item => item.id !== post.id);
           this.showSnackbarStatus = false;
           this.isNewPost = true;
           this.getNewlyAddedPostFromDatabase(post);
@@ -126,6 +122,11 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.snackBarText = 'Post Deleted';
         }
       })
+  }
+
+  handleSnackbarStatus(e) {
+    this.showSnackbarStatus = true;
+    this.snackBarText = e === 'added' ? 'Bookmark added' : 'Bookmark removed';
   }
 
   handleSnackbarClose(e) {
@@ -168,8 +169,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       skipWhile(res => !res),
       take(1)
     )
-    .subscribe((posts: PostData) => {
-      console.log('POSTS: ', posts);
+    .subscribe((posts: PostData[]) => {
       this.postData = _.orderBy(posts, ['id'], ['desc']);
       this.isDataLoaded = false;
     }, err => {
@@ -278,7 +278,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.router.navigate(['/detail'], {
       queryParams: {
         id: postid,
-        userId: this.userId,
+        userId: this.user.id,
         followStatus: followStatus
       }
     });

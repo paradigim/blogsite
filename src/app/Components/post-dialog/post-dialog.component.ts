@@ -23,9 +23,11 @@ export class PostDialogComponent implements OnInit {
   uploadImageUrl = '';
   formData: any;
   postData: PostData;
+  editPostImage = '';
+  postPrevImage = '';
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) private data: { user: UserData },
+    @Inject(MAT_DIALOG_DATA) private data: { user: UserData, post?: PostData, edit?: boolean },
     private fb: FormBuilder,
     private imageCompress: NgxImageCompressService,
     private postService: PostService,
@@ -35,14 +37,17 @@ export class PostDialogComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.userData = this.data.user;
+    this.userData = this.data?.user;
+    this.postData = this.data?.post;
+    this.postPrevImage = this.postData?.image;
     this.formData = new FormData();
 
     this.postForm = this.fb.group({
-      content: [''],
-      imageUrl: [''],
+      content: [this.postData?.content ? this.postData?.content : ''],
+      imageUrl: [this.postPrevImage ? this.postPrevImage : ''],
       videoUrl: ['']
     });
+
   }
 
 
@@ -51,6 +56,8 @@ export class PostDialogComponent implements OnInit {
    * @param e file upload event
    */
    loadFile(e, fileType) {
+    this.uploadImageUrl = '';
+    this.postPrevImage = '';
     const file = e.target.files[0];
 
     if (file) {
@@ -103,14 +110,14 @@ export class PostDialogComponent implements OnInit {
     );
   }
 
-  newPost() {
+  // create new post
+  createPost() {
     const postDate = new Date().getTime();
     this.formData.append('content', this.postForm.get('content').value);
     this.formData.append('postDate', postDate);
 
     this.postService.createNewPost(this.formData)
       .subscribe((post: PostData) => {
-        console.log('POST: ', post);
         this.dataService.saveNewPostData(post);
       }, err => {
         this.matDialog.open(CommonErrorDialogComponent, {
@@ -124,8 +131,39 @@ export class PostDialogComponent implements OnInit {
       });
   }
 
+  // edit a post
+  editPost() {
+    const postDate = new Date().getTime();
+    this.formData.append('content', this.postForm.get('content').value);
+    this.formData.append('postDate', postDate);
+    this.formData.append('prevImage', this.postData.image);
+
+    this.postService.updatePost(this.formData, this.postData.id)
+      .subscribe((post: PostData) => {
+        this.dataService.saveNewPostData(post);
+      }, err => {
+        this.matDialog.open(CommonErrorDialogComponent, {
+          data: {
+            message: err.error.message
+          },
+          width: '300px',
+          autoFocus: false,
+          scrollStrategy: this.overlay.scrollStrategies.noop()
+        });
+      });
+  }
+
+  postHandler() {
+    if (this.data.edit) {
+      this.editPost();
+    } else {
+      this.createPost();
+    } 
+  }
+
   removeFile() {
     this.uploadImageUrl = '';
+    this.postPrevImage = '';
     this.postForm.get('imageUrl').setValue('');
     this.imageUpload.nativeElement.value = '';
   }

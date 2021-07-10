@@ -1,10 +1,17 @@
+import { Overlay } from '@angular/cdk/overlay';
 import { Component, OnInit, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFireStorage } from '@angular/fire/storage';
+import { MatDialog } from '@angular/material/dialog';
 import { Observable, Subject } from 'rxjs';
-import { skipWhile, take, takeUntil } from 'rxjs/operators';
+import { filter, skipWhile, take, takeUntil } from 'rxjs/operators';
+import { ConfirmationComponent } from 'src/app/Components/confirmation/confirmation.component';
+import { PostDialogComponent } from 'src/app/Components/post-dialog/post-dialog.component';
+import { PostData } from 'src/app/Models/post';
+import { UserData } from 'src/app/Models/user';
 import { DataExchangeService } from 'src/app/services/data-exchange.service';
 import { InteractionService } from 'src/app/services/interaction.service';
+import { PostService } from 'src/app/services/post.service';
 import { UpdateService } from 'src/app/services/update.service';
 import { UserService } from 'src/app/state/user/user.service';
 // import * as $ from 'jquery';
@@ -19,13 +26,16 @@ export class BlogActivityMoreComponent implements OnInit {
 
   @Output() chngStatus = new EventEmitter<boolean>();
   @Output() isPostDelete = new EventEmitter<boolean>();
+  @Output() snackbarBookmarkStatus = new EventEmitter<string>();
+  @Output() removeFromArray = new EventEmitter<number>();
+
   @Input() elemId = '';
   @Input() index: number;
-  @Input() postId = 0;
+  @Input() postData: PostData;
   @Input() postUserId: number;
   @Input() videoUrl = '';
   @Input() imageUrl = '';
-  @Input() userId = 0;
+  @Input() user: UserData;
 
   bookmarkStatus: boolean;
   bookmarkText = 'Bookmark';
@@ -40,7 +50,10 @@ export class BlogActivityMoreComponent implements OnInit {
     private afStorage: AngularFireStorage,
     private userService: UserService,
     private updateService: UpdateService,
-    private dataExchange: DataExchangeService
+    private dataExchange: DataExchangeService,
+    private matDialog: MatDialog,
+    private overlay: Overlay,
+    private postService: PostService
   ) {}
 
   ngOnInit(): void {
@@ -58,15 +71,43 @@ export class BlogActivityMoreComponent implements OnInit {
       this.closeDropDown(dropdownEl);
     });
 
-    // this.getPostData()
-    //   .subscribe((res: any) => {
-    //     this.bookmarkStatus = res?.bookmark;
-    //     if (res?.bookmark) {
-    //       this.bookmarkText = 'Remove Bookmark';
-    //     } else {
-    //       this.bookmarkText = 'Bookmark';
-    //     }
-    //   });
+    this.initialBookmarkCheck();
+  }
+
+  initialBookmarkCheck(bookmarkStatusAfterAction = false) {
+    const ifBookmarked = this.postData.bookmarks.filter(item => item === String(this.user.id));
+
+    if (ifBookmarked.length > 0) {
+      this.bookmarkStatus = true;
+      this.bookmarkText = 'Remove Bookmark';
+
+      if (bookmarkStatusAfterAction) {
+        this.snackbarBookmarkStatus.emit('added');
+      }
+    } else {
+      this.bookmarkText = 'Bookmark';
+      if (bookmarkStatusAfterAction) {
+        this.snackbarBookmarkStatus.emit('removed');
+        this.removeFromArray.emit(this.postData.id);
+      }
+    }
+  }
+
+  bookmark() {
+    let newBookmarkList = this.postData.bookmarks;
+    const bookmarkUserIndex = this.postData.bookmarks.findIndex(userId => userId === String(this.user.id));
+
+    if (bookmarkUserIndex < 0) {
+      newBookmarkList = [...newBookmarkList, String(this.user.id)];
+    } else {
+      newBookmarkList.splice(bookmarkUserIndex, 1);
+    }
+
+    this.postService.updateBookmarkData(newBookmarkList, this.postData.id)
+      .subscribe((post: PostData) => {
+          this.postData = post;
+          this.initialBookmarkCheck(true);
+      });
   }
 
 
@@ -83,38 +124,28 @@ export class BlogActivityMoreComponent implements OnInit {
     }
   }
 
-  // bookmark
-  // bookmark(): void {
-  //   this.bookmarkStatus = !this.bookmarkStatus;
-  //   this.interaction.changeBookMark(this.postId, this.bookmarkStatus);
-  //   if (this.bookmarkStatus) {
-  //     this.bookmarkText = 'Remove Bookmark';
-  //   } else {
-  //     this.bookmarkText = 'Bookmark';
-  //   }
-  // }
-
-  // get post data
-  // getPostData(): Observable<any> {
-  //   return this.interaction.getPostWithId(this.postId);
-  // }
-
   // edit the post
-  // editPost(): void {
-  //   this.getPostData()
-  //     .pipe(takeUntil(this.ngUnsubscribe))
-  //     .subscribe(res => {
-  //       this.editPostData = res;
-  //     });
-  //   this.modalShow = !this.modalShow;
-  // }
+  editPost(): void {
+    console.log('POST DATA: ', this.postData);
+
+    this.matDialog.open(PostDialogComponent, {
+      data: {
+        user: this.user,
+        post: this.postData,
+        edit: true
+      },
+      width: '500px',
+      autoFocus: false,
+      scrollStrategy: this.overlay.scrollStrategies.noop()
+    });
+  }
 
   changeModalStatus(): void {
     this.modalShow = !this.modalShow;
   }
 
-  // delete the post
-  deletePost(): void {
+  // permanently delete the post
+  doDeletePermanently() {
     let url = '';
     if (this.videoUrl) {
       url = this.videoUrl;
@@ -122,11 +153,34 @@ export class BlogActivityMoreComponent implements OnInit {
       url = this.imageUrl;
     }
 
-    this.updateService.deletePost(this.postId)
+    this.updateService.deletePost(this.postData.id)
       .subscribe(() => {
-        console.log('DLT POST ID: ', this.postId);
-        this.dataExchange.saveDeletedPostId(this.postId);
+        this.dataExchange.saveDeletedPostId(this.postData.id);
       });
+  }
+
+  // delete the post
+  askForDeletePostConfirmation(): void {
+    const matDialogRef = this.matDialog.open(ConfirmationComponent, {
+      data: {
+        message: 'Are you sure ?'
+      },
+      width: '300px',
+      autoFocus: false,
+      scrollStrategy: this.overlay.scrollStrategies.noop()
+    });
+
+    
+    matDialogRef.afterClosed()
+      .pipe(
+        filter(res => res)
+      )
+      .subscribe(result => {
+        this.doDeletePermanently();
+      })
+
+
+    
     // this.interaction.deletePost(this.postId)
     //   .then(() => {
     //     this.interaction.getAllNotification()

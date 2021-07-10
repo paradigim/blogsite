@@ -54,21 +54,26 @@
                 <video class="video-fluid z-depth-1 home-videos" controls muted *ngIf="item.video">
                     <source [src]="item?.video" type="video/mp4" />
                 </video>
-                <div class="user-blog-post-image" *ngIf="item.image">
+                <div class="user-blog-post-image" *ngIf="item?.image">
                     <img [src]="item?.image | image: 'post-image'">
                 </div>
                 <div class='blog-activities'>
-                    <app-blog-like [postId]="item.id" [likedUserIds]="item.likedUserId"></app-blog-like>
+                    <app-blog-like 
+                        [postData]="item" 
+                        [user]="user"
+                        [likedUserIds]="item.likedUserId"
+                    ></app-blog-like>
                     <app-blog-comment [totalComment]="updateCountToPostId === item.id && totalComment" [commentCount]="item.comments?.length"></app-blog-comment>
                     <app-blog-activity-more 
                         [index]="i" 
                         [elemId]="i" 
                         (click)="stopDefaultBehaviour($event)"
-                        [postId]="item.id"
+                        [postData]="item"
                         [postUserId]="item.userId"
-                        [userId]="userId"
+                        [user]="user"
                         [videoUrl]="item.video"
                         [imageUrl]="item.image"
+                        (snackbarBookmarkStatus)="handleSnackbarStatus($event)"
                     ></app-blog-activity-more>
                 </div>
                 <app-blog-all-comments 

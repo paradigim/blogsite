@@ -1,11 +1,12 @@
 <div class="bookmarks-container">
-    <ngContainer *ngIf="bookmarkData?.length > 0">
+    <ng-container *ngIf="bookmarkData?.length > 0">
         <div 
+            @fadeHeight
             class='ec-blog-post' 
             *ngFor="let bookmark of bookmarkData; index as i;"
             (click)="routeToBlogDetail($event, bookmark.id)">
             <div class='user-blog-post'>
-                <img [src]="bookmark.userImage">
+                <img [src]="bookmark.userImage | image: 'profile-image'">
             </div>
             <div class='user-blog-wrapper'>
                 <div class="user-intro-follow">
@@ -16,26 +17,41 @@
                     </div>
                 </div>
                 <div class="user-unique-id">{{ bookmark.uniqueId }}</div>
-                <div class='user-blog-content'>
-                    {{ bookmark.contents }}
+                <div class='user-blog-content' *ngIf="bookmark?.content">
+                    {{ bookmark.content }}
                 </div>
-                <div class="user-blog-post-image">
-                    <img [src]="bookmark.image">
+                <div class="user-blog-post-image" *ngIf="bookmark?.image">
+                    <img [src]="bookmark?.image | image: 'post-image'">
                 </div>
                 <div class='blog-activities'>
-                    <app-blog-like [postId]="bookmark.id" [likedUserIds]="bookmark.likedUserId"></app-blog-like>
+                    <app-blog-like 
+                        [postData]="bookmark" 
+                        [user]="user"
+                        [likedUserIds]="bookmark.likedUserId"
+                    ></app-blog-like>
                     <app-blog-comment [commentCount]="bookmark.comments.length"></app-blog-comment>
                     <app-blog-activity-more
                         [index]="i" 
-                        [elemId]="i"
-                        [postId]="bookmark.id"
-                        [postUserId]="bookmark.userid"
-                        (click)="stopDefaultBehaviour($event)">
+                        [elemId]="i" 
+                        [postData]="bookmark"
+                        [postUserId]="bookmark.userId"
+                        [user]="user"
+                        [videoUrl]="bookmark.video"
+                        [imageUrl]="bookmark.image"
+                        (click)="stopDefaultBehaviour($event)"
+                        (snackbarBookmarkStatus)="handleSnackbarStatus($event)"
+                        (removeFromArray)="handleBookmarkRemove($event)">
                     </app-blog-activity-more>
                 </div>
             </div>
         </div>
-    </ngContainer>
+    </ng-container>
 
     <app-right-side-menu></app-right-side-menu>
 </div>
+
+<app-snackbarmodal 
+    *ngIf="showSnackbarStatus"
+    [text]="snackBarText"
+    (snackbarClose)="handleSnackbarClose($event)"
+></app-snackbarmodal>

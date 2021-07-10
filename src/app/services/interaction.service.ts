@@ -129,13 +129,6 @@ export class InteractionService implements OnDestroy {
     });
   }
 
-  // bookmark
-  changeBookMark(postId: string, bookmarkStatus: boolean): void {
-    this.afs.collection('posts').doc(postId).update({
-      bookmark: bookmarkStatus
-    });
-  }
-
   // add comment to post
   addCommentToPost(comment, postId, postDate) {
     this.getPostWithId(postId)
@@ -163,26 +156,6 @@ export class InteractionService implements OnDestroy {
   // get all comments
   getBlogComments(postId): Observable<any> {
     return this.getPostWithId(postId);
-  }
-
-  // set liked data
-  setLikeData(likeCount: number, postId: string) {
-    this.getPostWithId(postId)
-    .pipe(take(1))
-    .subscribe((val: any) => {
-      let getData = Object.values(val.likedUserId);
-      const index = getData.findIndex(item => {
-        return item === this.userId;
-      });
-      if (index < 0) {
-        getData = [...getData , this.userId];
-      }
-      else {
-        getData.splice(index, 1);
-      }
-      // call the function to save liked user's id in database
-      this.updateLike(getData, postId);
-    });
   }
 
   // update post's like data
