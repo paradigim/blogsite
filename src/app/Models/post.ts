@@ -1,10 +1,9 @@
 
-
 export interface PostData {
     id?: number;
     content?: string;
-    postDate?: number;
-    lastUpdateDate?: number;
+    postDate?: string;
+    lastUpdateDate?: string;
     likeCount?: number;
     uniqueId?: string;
     userImage?: string;

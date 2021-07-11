@@ -17,6 +17,7 @@
     text-decoration: none;
     transition: 0.3s;
     cursor: pointer;
+    overflow: hidden;
 }
 
 .ec-blog-post:not(:last-child) {

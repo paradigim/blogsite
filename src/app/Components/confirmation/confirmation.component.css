@@ -6,7 +6,7 @@
 ::ng-deep .mat-button.mat-primary .mat-button-focus-overlay, 
 ::ng-deep .mat-icon-button.mat-primary .mat-button-focus-overlay, 
 ::ng-deep .mat-stroked-button.mat-primary .mat-button-focus-overlay {
-    background-color: var(--prime-error);
+    background-color: var(--prime-error) !important;
     opacity: 0.08;
 }
 

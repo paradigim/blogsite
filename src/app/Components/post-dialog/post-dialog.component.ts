@@ -112,9 +112,8 @@ export class PostDialogComponent implements OnInit {
 
   // create new post
   createPost() {
-    const postDate = new Date().getTime();
     this.formData.append('content', this.postForm.get('content').value);
-    this.formData.append('postDate', postDate);
+    this.formData.append('postDate', new Date().getTime());
 
     this.postService.createNewPost(this.formData)
       .subscribe((post: PostData) => {

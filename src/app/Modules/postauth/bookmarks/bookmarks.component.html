@@ -13,7 +13,7 @@
                     <div class='user-blog-info'>
                         <div class='user-blog-name'>{{ bookmark.userName }}</div>
                         <div class='dot'></div>
-                        <div class='user-blog-post-time'>{{ date?.postDateFormat(bookmark.postDate) }}</div>
+                        <div class='user-blog-post-time' [innerHTML]="bookmark.lastUpdateDate | date"></div>
                     </div>
                 </div>
                 <div class="user-unique-id">{{ bookmark.uniqueId }}</div>
@@ -43,6 +43,19 @@
                         (removeFromArray)="handleBookmarkRemove($event)">
                     </app-blog-activity-more>
                 </div>
+
+                <app-blog-all-comments 
+                    [postId]="bookmark?.id" 
+                    pageName='home'
+                    (totalCommentLength)="setCommentsLength($event, bookmark.id)"
+                ></app-blog-all-comments>
+
+                <app-blog-comment-input 
+                    [index]="i" 
+                    [postId]="bookmark.id"
+                    [commentsCount]="bookmark.comments.length"
+                    (click)="stopDefaultBehaviour($event)"
+                ></app-blog-comment-input>
             </div>
         </div>
     </ng-container>

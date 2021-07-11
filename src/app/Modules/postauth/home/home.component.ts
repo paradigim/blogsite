@@ -170,7 +170,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       take(1)
     )
     .subscribe((posts: PostData[]) => {
-      this.postData = _.orderBy(posts, ['id'], ['desc']);
+      this.postData = _.orderBy(posts, ['lastUpdateDate'], ['desc']);
       this.isDataLoaded = false;
     }, err => {
       this.matDialog.open(CommonErrorDialogComponent, {

@@ -77,7 +77,7 @@ i.video {
 ::ng-deep .mat-button.mat-primary .mat-button-focus-overlay, 
 ::ng-deep .mat-icon-button.mat-primary .mat-button-focus-overlay, 
 ::ng-deep .mat-stroked-button.mat-primary .mat-button-focus-overlay {
-    background-color: var(--prime-color);
+    background-color: var(--prime-color) !important;
     opacity: 0.08;
 }
 
