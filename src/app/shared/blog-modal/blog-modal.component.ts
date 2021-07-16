@@ -72,7 +72,6 @@ export class BlogModalComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(): void {
-    console.log('ED P D: ', this.editPostData);
     if (this.editPostData && !this.editPost) {
       this.setPostData();
     }
@@ -153,24 +152,18 @@ export class BlogModalComponent implements OnInit, OnChanges {
       .pipe(take(1))
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(async res => {
-        console.log('SUC POST');
-        console.log('FILTE TYPE: ', this.fileType);
         if (this.fileType === 'video') {
-          console.log('check - 1');
           const snap = await this.afs.upload(`/videos/${new Date().getTime()}_${this.selectedFile.name}`, this.selectedFile);
           this.saveFile(snap, id);
           
         } else if(this.fileType === 'image') {
-          console.log('check - 2');
           const snap = await this.afs.upload(`/images/${new Date().getTime()}_${this.selectedFile.name}`, this.selectedFile);
           this.saveFile(snap, id);
         }
         
         if (this.userFollowers.length > 0) {
-          console.log('check - 3');
           this.dataService.setNewPostStatus(true);
           this.interaction.setNotification(id, this.userFollowers).then(() => {
-            console.log('check - 5');
             this.dataService.saveUsersForNotificationAlert(this.userFollowers);
             
             this.interaction.updateUserNotificationReadStatus(this.userFollowers);
@@ -181,7 +174,6 @@ export class BlogModalComponent implements OnInit, OnChanges {
             this.router.navigate(['/home']);
           });
         } else {
-          console.log('check - 4');
           this.dataService.loadAfterNewPost(true);
           this.modal.approve();
           this.modalStatus.emit();

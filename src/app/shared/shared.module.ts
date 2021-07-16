@@ -17,6 +17,7 @@ import { EmojiModule } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { SnackbarmodalComponent } from './snackbarmodal/snackbarmodal.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { PipesModule } from '../pipes/pipes.module';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     EmojiModule,
     AngularFireStorageModule,
     MatSnackBarModule,
+    PipesModule
   ],
   exports: [
     BlogModalComponent,

@@ -18,12 +18,9 @@ export class AccessAuthGuard implements CanActivate {
     
     const token = this.interaction.getJwtFromLocalStorage();
     if (!!token) {
-      console.log('JWT: ', !!token);
       this.router.navigate(['home']);
       return false;
     } else {
-      console.log('NO TOKEN');
-      // this.router.navigate(['auth/login']);
       return true;
     }
   }

@@ -13,7 +13,6 @@ export class ImagePipe implements PipeTransform {
   ) {}
 
   transform(value: string, imageType: string): unknown {
-    console.log('VALUE: ', value);
     switch(imageType) {
       case 'profile-image': 
         return this.updateService.getProfileImage(value.trim());

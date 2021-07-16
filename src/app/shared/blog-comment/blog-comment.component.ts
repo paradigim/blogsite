@@ -11,22 +11,19 @@ import { InteractionService } from 'src/app/services/interaction.service';
 export class BlogCommentComponent implements OnInit {
 
   @Input() commentCount = 0;
-  @Input() postId = null;
-  @Input() totalComment = 0;
-  updateCount = null;
+
+  totalComment = 0;
 
   constructor(private data: DataExchangeService) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.totalComment = this.commentCount;
+  }
 
   ngOnChanges() {
-    if (this.totalComment > 0) {
-      this.commentCount = this.totalComment;
-    }
+    this.totalComment = this.commentCount;
   }
 
-  likeCountStatusChange(): void {
-    
-  }
+  likeCountStatusChange(): void {}
 
 }

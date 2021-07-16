@@ -1,15 +1,19 @@
 
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { skipWhile, take } from 'rxjs/operators';
+import { filter, skipWhile, take } from 'rxjs/operators';
 import { fadeHeight } from 'src/app/animation/fade-height';
-import { PostData } from 'src/app/Models/post';
+import { Comments, PostData } from 'src/app/Models/post';
 import { UserData } from 'src/app/Models/user';
 import { DataExchangeService } from 'src/app/services/data-exchange.service';
 import { DateService } from 'src/app/services/date.service';
 import { InteractionService } from 'src/app/services/interaction.service';
 import { PostService } from 'src/app/services/post.service';
 import { UserQuery } from 'src/app/state/user/user.query';
+import { BookmarkService } from 'src/app/services/bookmark.service';
+import { BookmarkQuery } from 'src/app/state/bookmark/bookmark.query';
+import { CommentQuery } from 'src/app/state/comment/comment.query';
+import { CommentService } from 'src/app/services/comment.service';
 
 @Component({
   selector: 'app-bookmarks',
@@ -25,14 +29,21 @@ export class BookmarksComponent implements OnInit {
   user: UserData;
   showSnackbarStatus = false;
   snackBarText = '';
+  commentData: Comments[];
 
   constructor(
     private router: Router,
     private data: DataExchangeService,
     private date: DateService,
     private postService: PostService,
-    private userQuery: UserQuery
-  ) { 
+    private userQuery: UserQuery,
+    private bookmarkService: BookmarkService,
+    private bookmarkQuery: BookmarkQuery,
+    private commentQuery: CommentQuery,
+    private commentService: CommentService
+  ) {}
+
+  ngOnInit(): void {
     this.userQuery.getLoggedInUser()
       .pipe(
         skipWhile(res => !res),
@@ -40,29 +51,95 @@ export class BookmarksComponent implements OnInit {
       )
       .subscribe((user: UserData) => {
         this.user = user;
+        console.log('USER: ', this.user);
+        this.getBookmarks();
+        this.getComments();
       })
-  }
 
-  ngOnInit(): void {
-    this.getBookmarks();
     this.data.setPageStatus(false);
   }
 
-  getBookmarks() {
-    this.postService.getAllPosts()
+  // fetch all comments from store/database
+  getComments() {
+    this.commentQuery.getCommentLoadingStatus()
+      .pipe(take(1))
+      .subscribe(status => {
+        if (status) {
+          this.fetchCommentFromStore();
+        } else {
+          this.fetchCommentFromDatabase();
+        }
+      })
+  }
+
+  fetchCommentFromStore() {
+    this.commentQuery.getComment()
       .pipe(
         skipWhile(res => !res),
         take(1)
       )
-      .subscribe((posts: PostData[]) => {
-        this.bookmarkData = posts.filter(post => {
-          const ifBookmarked = post.bookmarks.findIndex(userId => userId === String(this.user.id));
-
-          if (ifBookmarked > -1) {
-            return post;
-          }
-        });
+      .subscribe((comments: Comments[]) => {
+        this.commentData = comments;
       })
+  }
+
+  fetchCommentFromDatabase() {
+    this.commentService.getAllComments()
+      .pipe(
+        skipWhile(res => !res),
+        take(1)
+      )
+      .subscribe((comments: Comments[]) => {
+        this.commentData = comments;
+        this.commentService.updateCommentData(this.commentData);
+        console.log('FROM DB: ', this.commentData);
+      })
+  }
+
+  // get bookmarks based on the condition if isLoaded from state is true or false
+  getBookmarks() {
+    this.bookmarkQuery.getBookmarkLoadingStatus()
+      .pipe(take(1))
+      .subscribe(status => {
+        if (status) {
+          this.fetchBookMarkFromStore();
+        } else {
+          this.fetchBookMarkFromDatabase();
+        }
+      })
+  }
+
+  // Get bookmark from database
+  fetchBookMarkFromDatabase() {
+    this.bookmarkService.getBookmarkPosts()
+      .pipe(
+        skipWhile(res => !res),
+        take(1)
+      )
+      .subscribe((bookmarks: PostData[]) => {
+        this.bookmarkData = bookmarks;
+        this.bookmarkService.updateBookmark(this.bookmarkData);
+      })
+  }
+
+  // Get bookmark from store
+  fetchBookMarkFromStore() {
+    this.bookmarkQuery.getBookmarks()
+      .pipe(
+        skipWhile(res => !res),
+        take(1)
+      )
+      .subscribe(bookmarks => {
+        this.bookmarkData = bookmarks;
+      })
+  }
+
+  addNewComment(comment) {
+    this.fetchCommentFromDatabase();
+  }
+
+  removeComment(commentId) {
+    this.commentData = this.commentData.filter(item => item.id !== commentId);
   }
 
   stopDefaultBehaviour(e): void {

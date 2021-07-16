@@ -18,13 +18,10 @@ export class AuthGuard implements CanActivate {
     
     const token = this.interaction.getJwtFromLocalStorage();
     if (!!token === false) {
-      console.log('JWT: ', !!token);
-      // this.router.navigate(['home']);
       this.router.navigate(['auth/login']);
       return false;
       
     } else {
-      // console.log('NO TOKEN - 1');
       return true;
     }
   }

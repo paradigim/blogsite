@@ -1,7 +1,7 @@
 
 
 <div class='home-container' *ngIf="!isDataLoaded">
-    <div>
+    <div *ngIf="postData && commentData">
         <!-- showing loader before pots will successfuly added and fetched from the databsae -->
         <div class="loader-for-post" *ngIf="isNewPost">
             <div class="ui fluid placeholder">
@@ -63,30 +63,35 @@
                         [user]="user"
                         [likedUserIds]="item.likedUserId"
                     ></app-blog-like>
-                    <app-blog-comment [totalComment]="updateCountToPostId === item.id && totalComment" [commentCount]="item.comments?.length"></app-blog-comment>
+                    <app-blog-comment [commentCount]="(commentData | comment: item.id).length"></app-blog-comment>
                     <app-blog-activity-more 
                         [index]="i" 
                         [elemId]="i" 
-                        (click)="stopDefaultBehaviour($event)"
                         [postData]="item"
                         [postUserId]="item.userId"
                         [user]="user"
                         [videoUrl]="item.video"
                         [imageUrl]="item.image"
+                        (click)="stopDefaultBehaviour($event)"
                         (snackbarBookmarkStatus)="handleSnackbarStatus($event)"
                     ></app-blog-activity-more>
                 </div>
+
                 <app-blog-all-comments 
-                    [postId]="item?.id" 
+                    [postId]="item?.id"
+                    [userId]="user.id" 
+                    [post]="item"
                     pageName='home'
-                    (totalCommentLength)="setCommentsLength($event, item.id)"
+                    [allComment]="commentData | comment: item.id"
+                    (deleteStatus)="removeComment($event)"
                 ></app-blog-all-comments>
 
                 <app-blog-comment-input 
                     [index]="i" 
                     [postId]="item.id"
-                    [commentsCount]="item.comments.length"
+                    [user]="user"
                     (click)="stopDefaultBehaviour($event)"
+                    (showNewComment)="addNewComment($event)"
                 ></app-blog-comment-input>
             </div>
         </div>

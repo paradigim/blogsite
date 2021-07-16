@@ -9,6 +9,7 @@ import { ConfirmationComponent } from 'src/app/Components/confirmation/confirmat
 import { PostDialogComponent } from 'src/app/Components/post-dialog/post-dialog.component';
 import { PostData } from 'src/app/Models/post';
 import { UserData } from 'src/app/Models/user';
+import { BookmarkService } from 'src/app/services/bookmark.service';
 import { DataExchangeService } from 'src/app/services/data-exchange.service';
 import { InteractionService } from 'src/app/services/interaction.service';
 import { PostService } from 'src/app/services/post.service';
@@ -53,7 +54,8 @@ export class BlogActivityMoreComponent implements OnInit {
     private dataExchange: DataExchangeService,
     private matDialog: MatDialog,
     private overlay: Overlay,
-    private postService: PostService
+    private postService: PostService,
+    private bookmarkService: BookmarkService
   ) {}
 
   ngOnInit(): void {
@@ -106,6 +108,7 @@ export class BlogActivityMoreComponent implements OnInit {
     this.postService.updateBookmarkData(newBookmarkList, this.postData.id)
       .subscribe((post: PostData) => {
           this.postData = post;
+          this.bookmarkService.updateBookmarkLoadingStatus();
           this.initialBookmarkCheck(true);
       });
   }
@@ -126,8 +129,6 @@ export class BlogActivityMoreComponent implements OnInit {
 
   // edit the post
   editPost(): void {
-    console.log('POST DATA: ', this.postData);
-
     this.matDialog.open(PostDialogComponent, {
       data: {
         user: this.user,
@@ -178,26 +179,5 @@ export class BlogActivityMoreComponent implements OnInit {
       .subscribe(result => {
         this.doDeletePermanently();
       })
-
-
-    
-    // this.interaction.deletePost(this.postId)
-    //   .then(() => {
-    //     this.interaction.getAllNotification()
-    //       .pipe(skipWhile(val => !val))
-    //       .pipe(take(1))
-    //       .subscribe(data => {
-    //         if (data.length > 0) {
-    //           this.isPostDelete.emit(true);
-    //           const notiAfterDelete = data.filter(item => item.notificationPostId === this.postId);
-    //           this.interaction.deleteNoti(notiAfterDelete);
-    //           if (url) {
-    //             this.interaction.deleteFileFromStaorage(url);
-    //           }
-    //         }
-    //       })
-    //   }).catch(err => {
-    //     console.log('Post can not be removed');
-    //   });
   }
 }

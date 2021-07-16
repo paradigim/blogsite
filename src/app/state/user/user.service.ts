@@ -100,9 +100,6 @@ export class UserService {
   updateUserData(file) {
     this.fetchUserData()
       .subscribe((user: any) => {
-        console.log('USER STATE: ', user);
-        // newUser['imageUrl'] = 'http://localhost:3000/' + file.path;
-
         this.userStore.update(state => {
           return {
             user

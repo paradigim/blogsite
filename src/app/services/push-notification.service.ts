@@ -33,7 +33,6 @@ export class PushNotification {
   requestPermission() {
     this.afMessaging.requestToken
     .subscribe(token => {
-      console.log('FCM TOKEN: ', token)
       this.interaction.getUser()
         .pipe(skipWhile(data => !data))
         .pipe(take(1))
@@ -46,14 +45,13 @@ export class PushNotification {
         })
     },
     err => {
-      console.log('FCM ERROR: ', err);
+      
     })
   }
 
   receiveMessage() {
     this.afMessaging.messages
     .subscribe(payload => {
-      console.log("MESSEGE: ", payload);
       this.currentMessage.next(payload);
     })
   }

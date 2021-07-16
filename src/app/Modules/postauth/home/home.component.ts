@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { InteractionService } from 'src/app/services/interaction.service';
 import { Router } from '@angular/router';
 import { filter, skipWhile, switchMap, take, takeUntil } from 'rxjs/operators';
@@ -10,7 +10,7 @@ import { DataExchangeService } from 'src/app/services/data-exchange.service';
 import { CdkVirtualScrollViewport, FixedSizeVirtualScrollStrategy, VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PostService } from 'src/app/services/post.service';
-import { PostData } from 'src/app/Models/post';
+import { Comments, PostData } from 'src/app/Models/post';
 import * as _ from 'lodash';
 import { MatDialog } from '@angular/material/dialog';
 import { CommonErrorDialogComponent } from 'src/app/Components/common-error-dialog/common-error-dialog.component';
@@ -19,6 +19,8 @@ import { UserService } from 'src/app/state/user/user.service';
 import { UserQuery } from 'src/app/state/user/user.query';
 import { UserData } from 'src/app/Models/user';
 import { fadeHeight } from 'src/app/animation/fade-height';
+import { CommentQuery } from 'src/app/state/comment/comment.query';
+import { CommentService } from 'src/app/services/comment.service';
 
 
 export interface VirtualScrollStrategy {
@@ -64,6 +66,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   snackBarText = '';
   isNewPost = false;
   user: UserData;
+  commentData: Comments[];
 
   constructor(
     private interaction: InteractionService,
@@ -74,7 +77,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     private postService: PostService,
     private matDialog: MatDialog,
     private overlay: Overlay,
-    private userQuery: UserQuery
+    private userQuery: UserQuery,
+    private commentQuery: CommentQuery,
+    private commentService: CommentService,
+    private cdref: ChangeDetectorRef
   ) {
     this.userQuery.getLoggedInUser()
       .pipe(
@@ -96,6 +102,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     this.isDataLoaded = true;
     this.getAllPosts();
+    this.getComments();
 
     this.data.newPostData$
       .pipe(
@@ -134,6 +141,44 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.showSnackbarStatus = false;
       this.snackBarText = '';
     }
+  }
+  
+  // fetch all comments from store/database
+  getComments() {
+    this.commentQuery.getCommentLoadingStatus()
+      .pipe(take(1))
+      .subscribe(status => {
+        if (status) {
+          this.fetchCommentFromStore();
+        } else {
+          this.fetchCommentFromDatabase();
+        }
+      })
+  }
+
+  fetchCommentFromStore() {
+    this.commentQuery.getComment()
+      .pipe(
+        skipWhile(res => !res),
+        take(1)
+      )
+      .subscribe((comments: Comments[]) => {
+        this.commentData = comments;
+        console.log('FROM STORE: ', this.commentData);
+      })
+  }
+
+  fetchCommentFromDatabase() {
+    this.commentService.getAllComments()
+      .pipe(
+        skipWhile(res => !res),
+        take(1)
+      )
+      .subscribe((comments: Comments[]) => {
+        this.commentData = comments;
+        this.commentService.updateCommentData(this.commentData);
+        console.log('FROM DB: ', this.commentData);
+      })
   }
 
   getNewlyAddedPostFromDatabase(post) {
@@ -183,53 +228,57 @@ export class HomeComponent implements OnInit, OnDestroy {
       });
     });  
   }
-  // new database code #end
 
   redirectLink(e) {
     e.stopPropagation();
   }
 
-  setCommentsLength(e, postId) {
-    this.updateCountToPostId = postId;
-    this.totalComment = e;
+  addNewComment(comment) {
+    this.fetchCommentFromDatabase();
   }
 
-  showNotificationToUser() {
-    const notificationShowStatus = this.data.getNewPostStatus();
-      if (notificationShowStatus) {
-        this.interaction.getUser()
-        .pipe(skipWhile(data => !data))
-        .pipe(take(1))
-        .subscribe(user => {
-          this.data.setNewPostStatus(false);
-          this.fetchUserTosendNotification(user.follower);
-        })
-      }
+  removeComment(commentId) {
+    this.commentData = this.commentData.filter(item => item.id !== commentId);
   }
+  // new database code #end
 
-  fetchUserTosendNotification(followers: string[]) {
-    followers.forEach((userid, i) => {
-      this.interaction.getUser(userid)
-      .pipe(take(1))
-      .subscribe(data => {
-        if (data?.fcmToken.length > 0) {
-          data?.fcmToken.forEach(item => {
-            this.userFCMToken.push(item)
-          });
-        }
-        if (i === followers.length - 1) {
-          this.pushNotificationService.addPushSubscriber(this.userFCMToken, 'Heyllo.com', 'You have got a notification')
-          .pipe(takeUntil(this.unSubscribe))
-          .subscribe(res => {
-            this.userFCMToken = [];
-          }, 
-          err => {
-            this.userFCMToken = [];
-          });
-        }
-      });
-    });
-  }
+
+  // showNotificationToUser() {
+  //   const notificationShowStatus = this.data.getNewPostStatus();
+  //     if (notificationShowStatus) {
+  //       this.interaction.getUser()
+  //       .pipe(skipWhile(data => !data))
+  //       .pipe(take(1))
+  //       .subscribe(user => {
+  //         this.data.setNewPostStatus(false);
+  //         this.fetchUserTosendNotification(user.follower);
+  //       })
+  //     }
+  // }
+
+  // fetchUserTosendNotification(followers: string[]) {
+  //   followers.forEach((userid, i) => {
+  //     this.interaction.getUser(userid)
+  //     .pipe(take(1))
+  //     .subscribe(data => {
+  //       if (data?.fcmToken.length > 0) {
+  //         data?.fcmToken.forEach(item => {
+  //           this.userFCMToken.push(item)
+  //         });
+  //       }
+  //       if (i === followers.length - 1) {
+  //         this.pushNotificationService.addPushSubscriber(this.userFCMToken, 'Heyllo.com', 'You have got a notification')
+  //         .pipe(takeUntil(this.unSubscribe))
+  //         .subscribe(res => {
+  //           this.userFCMToken = [];
+  //         }, 
+  //         err => {
+  //           this.userFCMToken = [];
+  //         });
+  //       }
+  //     });
+  //   });
+  // }
 
   // set following status on init
   // allPosts(): void {
@@ -256,10 +305,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   // }
 
   deletePostFromList(e, i) {
-    console.log('E I', e, i);
     if (e) {
       this.postData.splice(i, 1);
-      // this.allPosts();
     }
     this.showSnackbarStatus = true;
     this.snackBarText = 'Deleted';

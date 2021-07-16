@@ -30,16 +30,16 @@ export class SideMenuItemComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.afAuth.authState.subscribe(auth => {
-      this.userId = auth.uid;
-      this.interaction.getUser()
-        .subscribe(user => {
-          this.userToReadNotification = user.notificationToRead;
-          if (!user.notificationToRead) {
-            this.alert = false;
-          }
-        })
-    })
+    // this.afAuth.authState.subscribe(auth => {
+    //   this.userId = auth?.uid;
+    //   this.interaction.getUser()
+    //     .subscribe(user => {
+    //       this.userToReadNotification = user.notificationToRead;
+    //       if (!user.notificationToRead) {
+    //         this.alert = false;
+    //       }
+    //     })
+    // })
   }
 
   ngAfterViewInit() {

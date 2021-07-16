@@ -1,5 +1,5 @@
 <div class="bookmarks-container">
-    <ng-container *ngIf="bookmarkData?.length > 0">
+    <ng-container *ngIf="bookmarkData && commentData">
         <div 
             @fadeHeight
             class='ec-blog-post' 
@@ -29,7 +29,7 @@
                         [user]="user"
                         [likedUserIds]="bookmark.likedUserId"
                     ></app-blog-like>
-                    <app-blog-comment [commentCount]="bookmark.comments.length"></app-blog-comment>
+                    <app-blog-comment [commentCount]="(commentData | comment: bookmark.id).length"></app-blog-comment>
                     <app-blog-activity-more
                         [index]="i" 
                         [elemId]="i" 
@@ -44,17 +44,21 @@
                     </app-blog-activity-more>
                 </div>
 
-                <app-blog-all-comments 
-                    [postId]="bookmark?.id" 
+                <app-blog-all-comments
+                    [userId]="user?.id" 
+                    [post]="item"
+                    [postId]="item?.id"
                     pageName='home'
-                    (totalCommentLength)="setCommentsLength($event, bookmark.id)"
+                    [allComment]="commentData | comment: bookmark.id"
+                    (deleteStatus)="removeComment($event)"
                 ></app-blog-all-comments>
 
                 <app-blog-comment-input 
                     [index]="i" 
                     [postId]="bookmark.id"
-                    [commentsCount]="bookmark.comments.length"
+                    [user]="user"
                     (click)="stopDefaultBehaviour($event)"
+                    (showNewComment)="addNewComment($event)"
                 ></app-blog-comment-input>
             </div>
         </div>

@@ -1,7 +1,14 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Overlay } from '@angular/cdk/overlay';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { CommonErrorDialogComponent } from 'src/app/Components/common-error-dialog/common-error-dialog.component';
+import { UserData } from 'src/app/Models/user';
 import { DataExchangeService } from 'src/app/services/data-exchange.service';
 import { InteractionService } from 'src/app/services/interaction.service';
+import { PostService } from 'src/app/services/post.service';
+import { UserQuery } from 'src/app/state/user/user.query';
 import * as data from 'src/assets/language.json';
+import { CommentService } from 'src/app/services/comment.service';
 
 
 @Component({
@@ -11,8 +18,10 @@ import * as data from 'src/assets/language.json';
 })
 export class BlogCommentInputComponent implements OnInit {
   @Input() index = 0;
-  @Input() postId = '';
-  @Input() commentsCount = 0;
+  @Input() postId: number;
+  @Input() user: UserData;
+  @Output() showNewComment = new EventEmitter<Comment>();
+
   comment = '';
   jsonData = (data as any).default;
   isDisabled = true;
@@ -21,8 +30,10 @@ export class BlogCommentInputComponent implements OnInit {
   showEmoji = false;
 
   constructor(
-    private interaction: InteractionService,
-    private dataExchange: DataExchangeService
+    private dataExchange: DataExchangeService,
+    private matDialog: MatDialog,
+    private overlay: Overlay,
+    private commentService: CommentService
   ) { }
 
   ngOnInit(): void {
@@ -53,7 +64,31 @@ export class BlogCommentInputComponent implements OnInit {
   addComment(e): void {
     e.stopPropagation();
     const postDate = new Date().getTime();
-    this.interaction.addCommentToPost(this.comment, this.postId, postDate);
+    
+    const data = {
+      text: this.comment,
+      commentTime: String(postDate),
+      commentedUserId: this.user.id,
+      userImage: this.user.imageUrl,
+      uniqueUserId: this.user.uniqueUserId,
+      userName: this.user.name,
+      postId: this.postId
+    };
+
+    this.commentService.savePostComment(data, this.postId)
+      .subscribe((res: Comment) => {
+        this.commentService.updateCommentLoadingStatus(false);
+        this.showNewComment.emit(res);
+      }, err => {
+        this.matDialog.open(CommonErrorDialogComponent, {
+          data: {
+            message: err.error.message
+          },
+          width: '300px',
+          autoFocus: false,
+          scrollStrategy: this.overlay.scrollStrategies.noop()
+        });
+      });
     this.comment = '';
   }
 

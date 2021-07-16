@@ -305,7 +305,7 @@ export class InteractionService implements OnDestroy {
     }, {merge: true}).then(res => {
       return;
     }).catch(err => {
-      console.log(err);
+      
     });
   }
 
@@ -338,11 +338,6 @@ export class InteractionService implements OnDestroy {
   fetchUserFromFirebase(userId): Observable<any> {
     return this.afs.collection('users').doc(userId).valueChanges();
   }
-
-  // delete post
-  // deletePost(postId: string): Promise<any> {
-  //   return this.afs.collection('posts').doc(postId).delete();
-  // }
 
   updateFollower(follower, userId): void {
     this.afs.collection('users').doc(userId).update({

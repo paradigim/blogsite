@@ -65,7 +65,6 @@ export class RegisterComponent implements OnInit {
       
       this.authService.signUp(formValue, uniqueUserId)
       .subscribe(res => {
-        console.log(res);
         this.interaction.storeJwtInLocalStorage(res);
         
         this.submitted = false;

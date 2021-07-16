@@ -22,6 +22,7 @@ export const environment = {
       login: "auth/login",
       getUser: "auth/user",
       logout: "auth/logout",
+      getAll: "auth/users"
     },
     update: {
       uploadProfileImage: "upload/profileimage",
@@ -37,7 +38,12 @@ export const environment = {
       delete: "post/delete",
       update: "post/update",
       updateLike: "post/update-like",
-      updateBookmark: "post/update-bookmark"
+      updateBookmark: "post/update-bookmark",
+    },
+    comment: {
+      addComment: "comment/add-comment",
+      getAllComments: "comment/all-comment",
+      deleteComment: "comment/delete-comment"
     }
   }
 };

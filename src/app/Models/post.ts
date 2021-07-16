@@ -13,6 +13,15 @@ export interface PostData {
     video?: string;
     likedUserId?: string[];
     read?: string[];
-    comments?: string[];
     bookmarks?: string[];
+}
+
+export interface Comments {
+    text?: string;
+    commentTime?: string;
+    commentedUserId?: number;
+    userImage?: string;
+    uniqueUserId?: string;
+    userName?: string;
+    id?: number;
 }

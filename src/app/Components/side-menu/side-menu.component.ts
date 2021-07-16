@@ -59,7 +59,6 @@ export class SideMenuComponent implements OnInit {
       )
       .subscribe(user => {
         this.userData = user;
-        console.log('USER: ', user);
       });
   }
 

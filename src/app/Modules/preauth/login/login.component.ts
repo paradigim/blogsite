@@ -50,17 +50,15 @@ export class LoginComponent implements OnInit {
         if (res.authenticated) {
           if (res.jwtToken) {
             this.interaction.storeJwtInLocalStorage(res.jwtToken);
-            // const localStorageData = this.interaction.getJwtFromLocalStorage();
           }
           this.authService.getUser()
             .subscribe(user => {
-              this.userService.saveUserDataInStore(user); //pritam
+              this.userService.saveUserDataInStore(user);
               this.router.navigate(['home']);
             }); 
         }
       },
       err => {
-        console.log('ERROR: ', err);
         if (err.error.field === 'email') {
           this.isErrorEmail = true;
         }

@@ -1,10 +1,15 @@
+import { Overlay } from '@angular/cdk/overlay';
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { MatDialog } from '@angular/material/dialog';
 import { pipe, Subject } from 'rxjs';
 import { delay, skipWhile, take, takeUntil } from 'rxjs/operators';
-import { DataExchangeService } from 'src/app/services/data-exchange.service';
+import { CommonErrorDialogComponent } from 'src/app/Components/common-error-dialog/common-error-dialog.component';
+import { Comments, PostData } from 'src/app/Models/post';
+import { CommentService } from 'src/app/services/comment.service';
 import { DateService } from 'src/app/services/date.service';
 import { InteractionService } from 'src/app/services/interaction.service';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-blog-all-comments',
@@ -12,79 +17,90 @@ import { InteractionService } from 'src/app/services/interaction.service';
   styleUrls: ['./blog-all-comments.component.css']
 })
 export class BlogAllCommentsComponent implements OnInit, OnDestroy {
-  @Input() postId = '';
+  @Input() postId: number;
+  @Input() userId: number;
   @Input() pageName = '';
+  @Input() post: PostData = null;
+  @Input() allComment: Comments[];
   @Output() totalCommentLength = new EventEmitter();
+  @Output() deleteStatus = new EventEmitter<number>();
 
   deleteLoader = false;
   deleteIndex = -1;
   ngUnsubscribe = new Subject();
   commentData = [];
-  userId = '';
 
   constructor(
-    private interaction: InteractionService,
-    private dataExchange: DataExchangeService,
     private date: DateService,
-    private afAuth: AngularFireAuth
-  ) { 
-    this.afAuth.authState.subscribe(user => {
-      if (user){
-        this.userId = user.uid;
-      }
-    });
-  }
+    private commentService: CommentService,
+    private matDialog: MatDialog,
+    private overlay: Overlay,
+  ) {}
 
   ngOnInit(): void {
-    this.interaction.getBlogComments(this.postId)
-    .pipe(skipWhile(val => val === !val))
-    .pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe((val: any) => {
-      this.interaction.getAllUser()
-      .pipe(skipWhile(val => !val))
-      .pipe(take(1))
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((user: any) => {
-        this.commentData = [];
-        val.comments.forEach((item: any) => {
-          const userData = user.filter(data => data.id === item.commentedUserId);
-
-          this.commentData.unshift({
-            user: userData[0],
-            commentText: item.text,
-            postDate: val.postDate,
-            id: item.commentId,
-            time: item.commentPostTime
-          });
-        });
-        if (this.pageName !== '') {
-          this.commentData = this.commentData.slice(0, 2);
-        }
-        this.totalCommentLength.emit(val.comments.length);
-      });
-    });
+    this.setCommentData();
   }
 
-  ngOnChanges() {}
+  ngOnChanges() {
+    this.setCommentData();
+  }
+
+  setCommentData() {
+    this.commentData = _.orderBy(this.allComment, ['id'], ['desc']);
+
+    if (this.pageName !== '') {
+      this.commentData = this.commentData.slice(0, 2);
+    }
+    this.totalCommentLength.emit(this.commentData.length);
+  }
 
   deleteComment(index, cmntId, e) {
     e.stopPropagation();
     this.deleteLoader = true;
     this.deleteIndex = index;
-    this.interaction.getBlogComments(this.postId)
-      .pipe(delay(1000))
-      .pipe(take(1))
-      .subscribe((post: any) => {
-        const allComments = post.comments;
-        const indexToDelete = allComments.findIndex(item => cmntId === item.commentId && item.commentedUserId === this.userId);
 
-        allComments.splice(indexToDelete, 1);
-        this.interaction.updateComment(allComments, this.postId);
-        this.commentData.splice(index, 1);
-      
+    this.commentService.deleteComment(cmntId)
+      .subscribe(res => {
+        if (res) {
+          setTimeout(() => {
+            this.allComment = this.allComment.filter(item => item.id !== cmntId);
+            this.setCommentData();
+            this.commentService.updateCommentLoadingStatus(false);
+            this.deleteStatus.emit(cmntId);
+            this.deleteLoader = false;
+            this.deleteIndex = -1;
+          }, 1200);
+        }
+      }, err => {
         this.deleteLoader = false;
         this.deleteIndex = -1;
-      })
+
+        this.matDialog.open(CommonErrorDialogComponent, {
+          data: {
+            message: err.error.message
+          },
+          width: '300px',
+          autoFocus: false,
+          scrollStrategy: this.overlay.scrollStrategies.noop()
+        });
+      });
+
+
+
+    // this.interaction.getBlogComments(this.postId)
+    //   .pipe(delay(1000))
+    //   .pipe(take(1))
+    //   .subscribe((post: any) => {
+    //     const allComments = post.comments;
+    //     const indexToDelete = allComments.findIndex(item => cmntId === item.commentId && item.commentedUserId === this.userId);
+
+    //     allComments.splice(indexToDelete, 1);
+        
+    //     this.commentData.splice(index, 1);
+      
+    //     this.deleteLoader = false;
+    //     this.deleteIndex = -1;
+    //   })
   }
 
   ngOnDestroy() {

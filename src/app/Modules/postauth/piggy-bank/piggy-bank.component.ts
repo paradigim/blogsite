@@ -181,7 +181,7 @@ export class PiggyBankComponent implements OnInit, OnDestroy {
       .pipe(distinctUntilChanged())
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((value) => {
-        console.log(`[monthAndYear] -> `, value);
+        
       });
   }
 

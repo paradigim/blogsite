@@ -40,7 +40,6 @@ export class AuthService {
     return this.apiService.fetchPostUrl(url, null)
   }
 
-
   createUniqueUserName(username: string): any {
     const name = username.split(' ').join('');
     const randomNo = this.getUniqueId();
