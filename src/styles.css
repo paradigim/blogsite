@@ -3,6 +3,8 @@
 /* @import 'semantic-ui-css/semantic.css'; */
 /* @import 'bulma/css/bulma.css'; */
 
+@import 'semantic-ui-css/semantic.css';
+
 @import "~@ctrl/ngx-emoji-mart/picker";
 
 :root {
@@ -135,4 +137,13 @@ body, html {
   max-height: 500px;
   object-fit: cover;
   border-radius: 20px;
+}
+
+.data-loader {
+  height: 100vh !important;
+}
+
+.data-loader .loader {
+  top: 50% !important;
+  transform: translateY(-50%) !important;
 }

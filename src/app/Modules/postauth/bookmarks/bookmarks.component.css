@@ -1,5 +1,5 @@
-/* @import 'semantic-ui-css/semantic.css'; */
-@import 'bulma/css/bulma.css';
+@import 'semantic-ui-css/semantic.css';
+/* @import 'bulma/css/bulma.css'; */
 
 .home-container {
     display: flex;
@@ -81,7 +81,9 @@
 
 .user-unique-id {
     color: #666;
-    font-size: 14px;
+    font-size: 13px;
+    cursor: text;
+    display: inline-block;
 }
 
 .user-intro-follow {
@@ -90,18 +92,19 @@
     justify-content: space-between;
 }
 
-.follow {
-    border: 1px solid #666;
-    background: none;
-    border-radius: 4px;
-    padding: 6px 15px;
-    color: #666;
-    font-size: 14px;
-    outline: none;
-}
-
 .is-following {
     background: var(--prime-color);
     color: #fff;
     border-color: var(--prime-color);
+}
+
+.follow {
+    color: var(--prime-color);
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.user-blog-info-2 {
+    display: flex;
+    align-items: center;
 }

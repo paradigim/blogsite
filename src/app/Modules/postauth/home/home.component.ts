@@ -15,12 +15,15 @@ import * as _ from 'lodash';
 import { MatDialog } from '@angular/material/dialog';
 import { CommonErrorDialogComponent } from 'src/app/Components/common-error-dialog/common-error-dialog.component';
 import { Overlay } from '@angular/cdk/overlay';
-import { UserService } from 'src/app/state/user/user.service';
 import { UserQuery } from 'src/app/state/user/user.query';
 import { UserData } from 'src/app/Models/user';
 import { fadeHeight } from 'src/app/animation/fade-height';
 import { CommentQuery } from 'src/app/state/comment/comment.query';
 import { CommentService } from 'src/app/services/comment.service';
+import { FollowService } from 'src/app/services/follow.service';
+import { UserStore } from 'src/app/state/user/user.store';
+import { AllUsersQuery } from 'src/app/state/all-users/all-users.query';
+import { UserService } from 'src/app/services/user.service';
 
 
 export interface VirtualScrollStrategy {
@@ -67,6 +70,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   isNewPost = false;
   user: UserData;
   commentData: Comments[];
+  followStatus = false;
+  defaultImageUrl = './assets/images/default-1.jpg';
+  allUsers: UserData[];
 
   constructor(
     private interaction: InteractionService,
@@ -80,7 +86,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     private userQuery: UserQuery,
     private commentQuery: CommentQuery,
     private commentService: CommentService,
-    private cdref: ChangeDetectorRef
+    private followService: FollowService,
+    private userService: UserService,
+    private userStore: UserStore,
+    private allUserQuery: AllUsersQuery
   ) {
     this.userQuery.getLoggedInUser()
       .pipe(
@@ -110,9 +119,9 @@ export class HomeComponent implements OnInit, OnDestroy {
       )
       .subscribe(post => {
         if (post) {
+          this.isNewPost = true;
           this.postData = this.postData.filter(item => item.id !== post.id);
           this.showSnackbarStatus = false;
-          this.isNewPost = true;
           this.getNewlyAddedPostFromDatabase(post);
         }
       })
@@ -129,6 +138,44 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.snackBarText = 'Post Deleted';
         }
       })
+
+    this.getAllUsers();
+  }
+
+  getAllUsers() {
+    this.allUserQuery.getAllUsersLoadingStatus()
+      .pipe(take(1))
+      .subscribe(status => {
+        if (status) {
+          this.fetchUsersFromStore();
+        } else {
+          this.fetchUsersFromDatabase();
+        }
+      })
+  }
+
+  fetchUsersFromStore() {
+    this.allUserQuery.getAllUsers()
+      .pipe(
+        skipWhile(res => !res),
+        take(1)
+      )
+      .subscribe((users: UserData[]) => {
+        this.allUsers = [...users];
+        console.log('ALL USERS: ', this.allUsers);
+      })
+  }
+
+  fetchUsersFromDatabase() {
+    this.userService.getAllUsers()
+      .pipe(
+        skipWhile(res => !res),
+        take(1)
+      )
+      .subscribe((users: UserData[]) => {
+        this.allUsers = users;
+        this.allUserQuery.updateAllUsersData(this.allUsers);
+      })
   }
 
   handleSnackbarStatus(e) {
@@ -141,6 +188,33 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.showSnackbarStatus = false;
       this.snackBarText = '';
     }
+  }
+
+  // change foloow status pritam
+  changeFollowStatus(e, post: PostData) {
+    e.stopPropagation();
+    const data = {
+      userWhoFollow: String(this.user.id)
+    }
+    this.followService.updateFollowStatus(post.userId, data)
+      .subscribe(res => {
+        if (res) {
+          // this.followStatus = true;
+          this.userService.updateUsersFollowList(post.userId, res)
+            .subscribe(users => {
+              this.fetchUsersFromStore();
+            });
+        }
+      }, err => {
+        this.matDialog.open(CommonErrorDialogComponent, {
+          data: {
+            message: err.error.message
+          },
+          width: '300px',
+          autoFocus: false,
+          scrollStrategy: this.overlay.scrollStrategies.noop()
+        });
+      });
   }
   
   // fetch all comments from store/database

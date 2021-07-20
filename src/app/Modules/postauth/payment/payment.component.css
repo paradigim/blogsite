@@ -1,0 +1,32 @@
+
+@import 'semantic-ui-css/semantic.css';
+
+.payment-container {
+    padding: 0.8rem;
+}
+
+.top-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.payment-title {
+    font-weight: bold;
+    font-size: 25px;
+    margin-bottom: 0px;
+}
+
+.add-account-btn {
+    font-size: 14px;
+    background: var(--prime-color);
+    padding: 12px 15px;
+    border-radius: 20px;
+    color: #fff;
+    border: 0;
+}
+
+.add-account-btn i {
+    vertical-align: inherit;
+    font-size: 12px;
+}

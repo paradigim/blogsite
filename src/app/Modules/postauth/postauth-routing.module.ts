@@ -57,6 +57,10 @@ const routes: Routes = [
             (m) => m.PiggyBankModule
           ),
       },
+      {
+        path: 'payment',
+        loadChildren: () => import('../postauth/payment/payment.module').then((m) => m.PaymentModule)
+      }
     ],
   },
 ];

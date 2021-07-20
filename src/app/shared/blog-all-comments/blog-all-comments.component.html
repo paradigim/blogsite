@@ -3,7 +3,7 @@
     <ng-container *ngIf="commentData.length > 0">
         <div class="each-comments-wrapper" *ngFor="let item of commentData; index as i">
             <div class="comment-user">
-                <img [src]="item?.userImage">
+                <img [src]="item.userImage ? (item.userImage | image: 'profile-image') : defaultImageUrl">
             </div>
             <div class='comment-details'>
                 <div>

@@ -14,6 +14,12 @@ import { BookmarkService } from 'src/app/services/bookmark.service';
 import { BookmarkQuery } from 'src/app/state/bookmark/bookmark.query';
 import { CommentQuery } from 'src/app/state/comment/comment.query';
 import { CommentService } from 'src/app/services/comment.service';
+import { MatDialog } from '@angular/material/dialog';
+import { Overlay } from '@angular/cdk/overlay';
+import { CommonErrorDialogComponent } from 'src/app/Components/common-error-dialog/common-error-dialog.component';
+import { FollowService } from 'src/app/services/follow.service';
+import { UserService } from 'src/app/services/user.service';
+import { AllUsersQuery } from 'src/app/state/all-users/all-users.query';
 
 @Component({
   selector: 'app-bookmarks',
@@ -30,6 +36,10 @@ export class BookmarksComponent implements OnInit {
   showSnackbarStatus = false;
   snackBarText = '';
   commentData: Comments[];
+  isNewPost = false;
+  isDataLoaded = true;
+  allUsers: UserData[];
+  defaultImageUrl = './assets/images/default-1.jpg';
 
   constructor(
     private router: Router,
@@ -40,7 +50,12 @@ export class BookmarksComponent implements OnInit {
     private bookmarkService: BookmarkService,
     private bookmarkQuery: BookmarkQuery,
     private commentQuery: CommentQuery,
-    private commentService: CommentService
+    private commentService: CommentService,
+    private matDialog: MatDialog,
+    private overlay: Overlay,
+    private followService: FollowService,
+    private userService: UserService,
+    private allUserQuery: AllUsersQuery
   ) {}
 
   ngOnInit(): void {
@@ -56,7 +71,84 @@ export class BookmarksComponent implements OnInit {
         this.getComments();
       })
 
+
+    this.data.newPostData$
+      .pipe(
+        skipWhile(res => !res)
+      )
+      .subscribe(post => {
+        if (post) {
+          this.isNewPost = true;
+          this.bookmarkData = this.bookmarkData.filter(item => item.id !== post.id);
+          this.showSnackbarStatus = false;
+          this.getNewlyAddedPostFromDatabase(post);
+        }
+      })
+
     this.data.setPageStatus(false);
+    this.getAllUsers();
+  }
+
+  getAllUsers() {
+    this.allUserQuery.getAllUsersLoadingStatus()
+      .pipe(take(1))
+      .subscribe(status => {
+        if (status) {
+          this.fetchUsersFromStore();
+        } else {
+          this.fetchUsersFromDatabase();
+        }
+      })
+  }
+
+  fetchUsersFromStore() {
+    this.allUserQuery.getAllUsers()
+      .pipe(
+        skipWhile(res => !res),
+        take(1)
+      )
+      .subscribe((users: UserData[]) => {
+        this.allUsers = [...users];
+      })
+  }
+
+  fetchUsersFromDatabase() {
+    this.userService.getAllUsers()
+      .pipe(
+        skipWhile(res => !res),
+        take(1)
+      )
+      .subscribe((users: UserData[]) => {
+        this.allUsers = users;
+        this.allUserQuery.updateAllUsersData(this.allUsers);
+      })
+  }
+
+  getNewlyAddedPostFromDatabase(post) {
+    this.postService.getNewPost(post.id)
+    .pipe(
+      skipWhile(res => !res),
+      take(1)
+    )
+    .subscribe(post => {
+      setTimeout(() => {
+        this.isNewPost = false;
+        this.showSnackbarStatus = true;
+        this.data.saveNewPostData(null);
+        this.snackBarText = 'Posted';
+        this.bookmarkData.unshift(post);
+        console.log('NEW-2: ', this.isNewPost);
+      }, 1200)
+    }, err => {
+      this.matDialog.open(CommonErrorDialogComponent, {
+        data: {
+          message: err.error.message
+        },
+        width: '300px',
+        autoFocus: false,
+        scrollStrategy: this.overlay.scrollStrategies.noop()
+      });
+    });
   }
 
   // fetch all comments from store/database
@@ -118,6 +210,7 @@ export class BookmarksComponent implements OnInit {
       )
       .subscribe((bookmarks: PostData[]) => {
         this.bookmarkData = bookmarks;
+        this.isDataLoaded = false;
         this.bookmarkService.updateBookmark(this.bookmarkData);
       })
   }
@@ -131,6 +224,7 @@ export class BookmarksComponent implements OnInit {
       )
       .subscribe(bookmarks => {
         this.bookmarkData = bookmarks;
+        this.isDataLoaded = false;
       })
   }
 
@@ -140,6 +234,33 @@ export class BookmarksComponent implements OnInit {
 
   removeComment(commentId) {
     this.commentData = this.commentData.filter(item => item.id !== commentId);
+  }
+
+  // change foloow status pritam
+  changeFollowStatus(e, post: PostData) {
+    e.stopPropagation();
+    const data = {
+      userWhoFollow: String(this.user.id)
+    }
+    this.followService.updateFollowStatus(post.userId, data)
+      .subscribe(res => {
+        if (res) {
+          // this.followStatus = true;
+          this.userService.updateUsersFollowList(post.userId, res)
+            .subscribe(users => {
+              this.fetchUsersFromStore();
+            });
+        }
+      }, err => {
+        this.matDialog.open(CommonErrorDialogComponent, {
+          data: {
+            message: err.error.message
+          },
+          width: '300px',
+          autoFocus: false,
+          scrollStrategy: this.overlay.scrollStrategies.noop()
+        });
+      });
   }
 
   stopDefaultBehaviour(e): void {

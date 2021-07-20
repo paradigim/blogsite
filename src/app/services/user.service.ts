@@ -1,26 +1,31 @@
-
-import { Inject, Injectable } from '@angular/core';
-import { PersistState } from '@datorama/akita';
+import { Injectable } from '@angular/core';
+import { resetStores } from '@datorama/akita';
 import { Observable, of } from 'rxjs';
-import { filter, switchMap, take, tap } from 'rxjs/operators';
-import { UserData } from 'src/app/Models/user';
-import { AuthService } from 'src/app/services/auth.service';
-import { UserQuery } from './user.query';
-import { UserStore } from './user.store';
-import { resetStores } from "@datorama/akita";
-import { UpdateService } from 'src/app/services/update.service';
+import { filter, switchMap, take } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
+import { UserData } from '../Models/user';
+import { AllUsersQuery } from '../state/all-users/all-users.query';
+import { UserQuery } from '../state/user/user.query';
+import { UserStore } from '../state/user/user.store';
+import { ApiService } from './api.service';
+import { AuthService } from './auth.service';
+import { UpdateService } from './update.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class UserService {
 
-  userData: UserData;
+  environment = environment;
 
   constructor(
     private userStore: UserStore,
     private userQuery: UserQuery,
     private authService: AuthService,
-    private updateService: UpdateService
-  ) {}
+    private updateService: UpdateService,
+    private apiService: ApiService,
+    private allUsersQuery: AllUsersQuery
+  ) { }
 
   // saved loggedIn user data to store
   saveUserDataInStore(data: UserData) {
@@ -66,6 +71,11 @@ export class UserService {
     )
   }
 
+  // fetch bookmarked loading status
+  getUserLoadingStatus(): Observable<boolean> {
+    return this.userQuery.getUserLoggedinStatus();
+  }
+
   /**
    * only update the isLoading status of the store
    * @returns boolean -> true/false
@@ -97,14 +107,22 @@ export class UserService {
     })
   }
 
-  updateUserData(file) {
-    this.fetchUserData()
-      .subscribe((user: any) => {
-        this.userStore.update(state => {
-          return {
-            user
-          }
-        })
-      })
+  updateUserData(userData) {
+    this.userStore.update(state => {
+      return {
+        user: userData,
+        isLoaded: true
+      }
+    })
+  }
+
+  // fetch all users from database
+  getAllUsers() {
+    const url = `${this.environment.api.baseUrl}${this.environment.api.userAuth.getAll}`;
+    return this.apiService.fetchGetUrl(url);
+  }
+
+  updateUsersFollowList(userIdWhoFollowed, followList): Observable<UserData[]> {
+    return this.allUsersQuery.updateUsersFollowList(userIdWhoFollowed, followList);
   }
 }

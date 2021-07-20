@@ -39,8 +39,9 @@ export class ApiService {
 
   fetchPutUrl(
     url,
-    data = null
+    data: any = null
   ): Observable<any> {
+    console.log('DATA: ', data);
     return this.http.put(url, data);
   }
 

@@ -7,7 +7,7 @@ import { skipWhile, take, takeUntil } from 'rxjs/operators';
 import { UserData } from 'src/app/Models/user';
 import { DataExchangeService } from 'src/app/services/data-exchange.service';
 import { InteractionService } from 'src/app/services/interaction.service';
-import { UserService } from 'src/app/state/user/user.service'
+import { UserService } from 'src/app/services/user.service';
 import { EditProfileModalComponent } from '../edit-profile-modal/edit-profile-modal.component';
 
 @Component({

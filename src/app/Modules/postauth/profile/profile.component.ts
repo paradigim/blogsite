@@ -6,11 +6,11 @@ import { filter, map, skipWhile, switchMap, take, takeUntil } from 'rxjs/operato
 import { DataExchangeService } from 'src/app/services/data-exchange.service';
 import { DateService } from 'src/app/services/date.service';
 import { InteractionService } from 'src/app/services/interaction.service';
-import { UserService } from 'src/app/state/user/user.service';
 import { NgxImageCompressService } from 'ngx-image-compress';
 import { UpdateService } from 'src/app/services/update.service';
 import { UserData } from 'src/app/Models/user';
 import { HttpEventType } from '@angular/common/http';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-profile',

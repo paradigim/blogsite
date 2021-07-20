@@ -4,6 +4,7 @@ import { AnchorPipe } from './anchor.pipe';
 import { ImagePipe } from './image.pipe';
 import { DatePipe } from './date.pipe';
 import { CommentPipe } from './comment.pipe';
+import { FollowPipe } from './follow.pipe';
 
 
 
@@ -12,11 +13,17 @@ import { CommentPipe } from './comment.pipe';
     AnchorPipe, 
     ImagePipe, 
     DatePipe, 
-    CommentPipe
+    CommentPipe, 
+    FollowPipe
   ],
   imports: [
     CommonModule
   ],
-  exports: [AnchorPipe, ImagePipe, CommentPipe]
+  exports: [
+    AnchorPipe, 
+    ImagePipe, 
+    CommentPipe,
+    FollowPipe
+  ]
 })
 export class PipesModule { }

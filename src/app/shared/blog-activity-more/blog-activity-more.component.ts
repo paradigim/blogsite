@@ -14,7 +14,6 @@ import { DataExchangeService } from 'src/app/services/data-exchange.service';
 import { InteractionService } from 'src/app/services/interaction.service';
 import { PostService } from 'src/app/services/post.service';
 import { UpdateService } from 'src/app/services/update.service';
-import { UserService } from 'src/app/state/user/user.service';
 // import * as $ from 'jquery';
 declare var $: any;
 
@@ -49,7 +48,6 @@ export class BlogActivityMoreComponent implements OnInit {
     private interaction: InteractionService,
     private afAuth: AngularFireAuth,
     private afStorage: AngularFireStorage,
-    private userService: UserService,
     private updateService: UpdateService,
     private dataExchange: DataExchangeService,
     private matDialog: MatDialog,

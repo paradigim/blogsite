@@ -4,7 +4,7 @@
 
     <mat-dialog-content class="post-write-section">
         <div class="user-image">
-            <img [src]="userData.imageUrl">
+            <img [src]="userData.imageUrl ? userData.imageUrl : defaultImageUrl">
         </div>
 
         <form class="ui form post-form" [formGroup]="postForm">

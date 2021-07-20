@@ -29,7 +29,7 @@
             (click)="routeToBlogDetail($event, item.id, item.followStatus)"
         >
             <div class='user-blog-post r-hide'>
-                <img [src]="item.userImage | image: 'profile-image'">
+                <img [src]="item.userImage ? (item.userImage | image: 'profile-image') : defaultImageUrl">
             </div>
             <div class='user-blog-wrapper'>
                 <div class="r-cont">
@@ -40,12 +40,19 @@
                         <div class="user-intro-follow">
                             <div class='user-blog-info'>
                                 <div class='user-blog-name' (click)="goOtherUserProfile(item.userid, $event)">{{ item.userName }}</div>
-                                <div class='dot'></div>
-                                <div class='user-blog-post-time' [innerHTML]="item.lastUpdateDate | date"></div>
+                                <ng-container *ngIf="item.userId !== user.id"> 
+                                    <div class='dot'></div>
+                                    <div class="follow" *ngIf="allUsers" (click)="changeFollowStatus($event, item)">
+                                        {{ allUsers | follow: item.userId : user.id }}
+                                    </div>
+                                </ng-container>
                             </div>
-                            <div class='follow-status' *ngIf="item.followStatus">Following</div>
                         </div>
-                        <div class="user-unique-id" (click)="$event.stopPropagation()">{{ item.uniqueId }}</div>
+                        <div class='user-blog-info-2'>
+                            <div class="user-unique-id" (click)="$event.stopPropagation()">{{ item.uniqueId }}</div>
+                            <div class='dot'></div>
+                            <div class='user-blog-post-time' [innerHTML]="item.lastUpdateDate | date"></div>
+                        </div>
                     </div>        
                 </div>
 

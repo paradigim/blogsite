@@ -1,4 +1,22 @@
-<div class="bookmarks-container">
+<div class="bookmarks-container" *ngIf="!isDataLoaded">
+    <div class="loader-for-post" *ngIf="isNewPost">
+        <div class="ui fluid placeholder">
+            <div class="image header">
+            <div class="line"></div>
+            <div class="line"></div>
+            </div>
+            <div class="paragraph">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+            </div>
+        </div>
+    </div>
     <ng-container *ngIf="bookmarkData && commentData">
         <div 
             @fadeHeight
@@ -6,17 +24,28 @@
             *ngFor="let bookmark of bookmarkData; index as i;"
             (click)="routeToBlogDetail($event, bookmark.id)">
             <div class='user-blog-post'>
-                <img [src]="bookmark.userImage | image: 'profile-image'">
+                <img [src]="bookmark.userImage ? (bookmark.userImage | image: 'profile-image') : defaultImageUrl">
             </div>
             <div class='user-blog-wrapper'>
                 <div class="user-intro-follow">
                     <div class='user-blog-info'>
+
                         <div class='user-blog-name'>{{ bookmark.userName }}</div>
-                        <div class='dot'></div>
-                        <div class='user-blog-post-time' [innerHTML]="bookmark.lastUpdateDate | date"></div>
+                        <ng-container *ngIf="bookmark.userId !== user.id"> 
+                            <div class='dot'></div>
+                            <div class="follow" *ngIf="allUsers" (click)="changeFollowStatus($event, bookmark)">
+                                {{ allUsers | follow: bookmark.userId : user.id }}
+                            </div>
+                        </ng-container>
                     </div>
                 </div>
-                <div class="user-unique-id">{{ bookmark.uniqueId }}</div>
+
+                <div class='user-blog-info-2'>
+                    <div class="user-unique-id">{{ bookmark.uniqueId }}</div>
+                    <div class='dot'></div>
+                    <div class='user-blog-post-time' [innerHTML]="bookmark.lastUpdateDate | date"></div>
+                </div>
+
                 <div class='user-blog-content' *ngIf="bookmark?.content">
                     {{ bookmark.content }}
                 </div>
@@ -72,3 +101,7 @@
     [text]="snackBarText"
     (snackbarClose)="handleSnackbarClose($event)"
 ></app-snackbarmodal>
+
+<div *ngIf="isDataLoaded" class="data-loader">
+    <div class="ui active centered inline loader"></div>
+</div>

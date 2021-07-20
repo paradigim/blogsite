@@ -9,8 +9,8 @@ import { InteractionService } from 'src/app/services/interaction.service';
 import {ErrorStateMatcher} from '@angular/material/core';
 import { UpdateService } from 'src/app/services/update.service';
 import { CommonErrorDialogComponent } from '../common-error-dialog/common-error-dialog.component';
-import { UserService } from 'src/app/state/user/user.service';
 import { Overlay } from '@angular/cdk/overlay';
+import { UserService } from 'src/app/services/user.service';
 
 // export class MyErrorStateMatcher implements ErrorStateMatcher {
 //   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {

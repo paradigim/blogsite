@@ -4,11 +4,11 @@ import { UserQuery } from 'src/app/state/user/user.query';
 import { filter, skipWhile, switchMap, take } from 'rxjs/operators';
 import { UserData } from 'src/app/Models/user';
 import { AuthService } from 'src/app/services/auth.service';
-import { UserService } from 'src/app/state/user/user.service';
 import { DataExchangeService } from 'src/app/services/data-exchange.service';
 import { MatDialog } from '@angular/material/dialog';
 import { PostDialogComponent } from '../post-dialog/post-dialog.component';
 import { Overlay } from '@angular/cdk/overlay';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-side-menu',

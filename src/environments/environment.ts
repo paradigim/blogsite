@@ -27,7 +27,8 @@ export const environment = {
     update: {
       uploadProfileImage: "upload/profileimage",
       deleteImage: "upload/deleteprofileimage",
-      updateProfile: "update/profile"
+      updateProfile: "update/profile",
+      updateFollow: "update/follow"
     },
     getProfileInage: "upload/profileimage",
     post: {
@@ -44,7 +45,7 @@ export const environment = {
       addComment: "comment/add-comment",
       getAllComments: "comment/all-comment",
       deleteComment: "comment/delete-comment"
-    }
+    },
   }
 };
 

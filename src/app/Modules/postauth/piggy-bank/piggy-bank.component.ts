@@ -19,6 +19,7 @@ import {
   ApexTitleSubtitle,
   ApexLegend
 } from "ng-apexcharts";
+import { Router } from '@angular/router';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -66,7 +67,8 @@ export class PiggyBankComponent implements OnInit, OnDestroy {
   constructor(
     private dateService: DateService,
     private data: DataExchangeService,
-    private cdref: ChangeDetectorRef
+    private cdref: ChangeDetectorRef,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -74,6 +76,11 @@ export class PiggyBankComponent implements OnInit, OnDestroy {
     this.setTermContent(0);
     this.listenFiltersChange();
     this.setDefaultFilterValues();
+  }
+
+  //payment
+  wdthDraw() {
+    this.router.navigate(['payment']);
   }
 
   initChart() {

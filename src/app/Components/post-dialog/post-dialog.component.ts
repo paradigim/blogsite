@@ -25,6 +25,7 @@ export class PostDialogComponent implements OnInit {
   postData: PostData;
   editPostImage = '';
   postPrevImage = '';
+  defaultImageUrl = './assets/images/default-1.jpg';
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: { user: UserData, post?: PostData, edit?: boolean },

@@ -29,6 +29,7 @@ export class BlogAllCommentsComponent implements OnInit, OnDestroy {
   deleteIndex = -1;
   ngUnsubscribe = new Subject();
   commentData = [];
+  defaultImageUrl = './assets/images/default-1.jpg';
 
   constructor(
     private date: DateService,

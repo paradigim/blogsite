@@ -5,8 +5,8 @@ import { AuthService } from 'src/app/services/auth.service';
 import { DataExchangeService } from 'src/app/services/data-exchange.service';
 import { InteractionService } from 'src/app/services/interaction.service';
 import { StoreService } from 'src/app/services/store.service';
-import { UserService } from 'src/app/state/user/user.service';
 import { UserStore } from 'src/app/state/user/user.store';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-login',

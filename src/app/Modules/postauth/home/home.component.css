@@ -47,6 +47,11 @@
     align-items: center;
 }
 
+.user-blog-info-2 {
+    display: flex;
+    align-items: center;
+}
+
 .user-blog-name {
     font-weight: bold;
     text-transform: capitalize;
@@ -83,7 +88,7 @@
 
 .user-unique-id {
     color: #666;
-    font-size: 14px;
+    font-size: 13px;
     cursor: text;
     display: inline-block;
 }
@@ -112,15 +117,6 @@
     border-radius: 20px;
 }
 
-.data-loader {
-    height: 100vh;
-}
-
-.data-loader .loader {
-    top: 50%;
-    transform: translateY(-50%);
-}
-
 .user-blog-name:hover {
     cursor: pointer;
     text-decoration: underline;
@@ -141,6 +137,12 @@
 
 .loader-for-post {
     padding: 20px;
+}
+
+.follow {
+    color: var(--prime-color);
+    font-size: 13px;
+    font-weight: bold;
 }
 
 @media screen and (max-width: 768px) {

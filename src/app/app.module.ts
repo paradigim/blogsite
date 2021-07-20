@@ -38,12 +38,14 @@ import { CommonErrorDialogComponent } from './Components/common-error-dialog/com
 import { PostDialogComponent } from './Components/post-dialog/post-dialog.component';
 import { AutosizeModule } from 'ngx-autosize';
 import { ConfirmationComponent } from './Components/confirmation/confirmation.component';
+import { PaymentDialogComponent } from './Components/payment-dialog/payment-dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
     CommonErrorDialogComponent,
     PostDialogComponent,
     ConfirmationComponent,
+    PaymentDialogComponent,
   ],
   imports: [
     BrowserModule,
