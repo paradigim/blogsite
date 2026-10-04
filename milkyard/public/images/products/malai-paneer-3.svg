@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800"><defs>
+  <radialGradient id="bgmalai-paneerc" cx="50%" cy="38%" r="75%"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#EFE7D3"/></radialGradient>
+  <radialGradient id="shmalai-paneerc" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#3a2a10" stop-opacity=".32"/><stop offset="1" stop-color="#3a2a10" stop-opacity="0"/></radialGradient>
+  <linearGradient id="glassmalai-paneerc" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".25" stop-color="#fff" stop-opacity=".05"/><stop offset=".85" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".25"/></linearGradient>
+</defs><rect width="800" height="800" fill="url(#bgmalai-paneerc)"/>
+<circle cx="400" cy="400" r="290" fill="#fff" opacity=".28"/>
+<circle cx="400" cy="400" r="330" fill="none" stroke="#b9603a" stroke-opacity=".25" stroke-width="2" stroke-dasharray="2 12" stroke-linecap="round"/>
+<circle cx="196" cy="58" r="4" fill="#b9603a" opacity=".35"/><circle cx="342" cy="140" r="5" fill="#b9603a" opacity=".35"/><circle cx="648" cy="43" r="4" fill="#b9603a" opacity=".35"/><circle cx="471" cy="125" r="4" fill="#b9603a" opacity=".35"/><circle cx="440" cy="177" r="4" fill="#b9603a" opacity=".35"/><circle cx="706" cy="234" r="3" fill="#b9603a" opacity=".35"/><circle cx="240" cy="150" r="3" fill="#b9603a" opacity=".35"/><circle cx="79" cy="109" r="3" fill="#b9603a" opacity=".35"/><circle cx="755" cy="63" r="3" fill="#b9603a" opacity=".35"/><circle cx="316" cy="93" r="5" fill="#b9603a" opacity=".35"/>
+<rect y="640" width="800" height="160" fill="#000" opacity=".035"/><ellipse cx="400" cy="650" rx="280" ry="30" fill="url(#shmalai-paneerc)"/>
+<path d="M150 560 L400 470 L660 560 L410 660Z" fill="#b8793e"/><path d="M150 560 L410 660 V680 L150 580Z" fill="#8a5528"/><path d="M410 660 L660 560 V580 L410 680Z" fill="#9b6230"/><path d="M300 470 l110 -49.5 l110 49.5 l-110 49.5z" fill="#fffdf4"/>
+<path d="M300 470 l110 49.5 v110 l-110 -49.5z" fill="#efe6cf"/>
+<path d="M410 519.5 l110 -49.5 v110 l-110 49.5z" fill="#e2d6b8"/><path d="M210 560 l42 -18.900000000000002 l42 18.900000000000002 l-42 18.900000000000002z" fill="#fffdf4"/>
+<path d="M210 560 l42 18.900000000000002 v42 l-42 -18.900000000000002z" fill="#efe6cf"/>
+<path d="M252 578.9 l42 -18.900000000000002 v42 l-42 18.900000000000002z" fill="#e2d6b8"/><path d="M470 560 l42 -18.900000000000002 l42 18.900000000000002 l-42 18.900000000000002z" fill="#fffdf4"/>
+<path d="M470 560 l42 18.900000000000002 v42 l-42 -18.900000000000002z" fill="#efe6cf"/>
+<path d="M512 578.9 l42 -18.900000000000002 v42 l-42 18.900000000000002z" fill="#e2d6b8"/><path d="M540 520 l42 -18.900000000000002 l42 18.900000000000002 l-42 18.900000000000002z" fill="#fffdf4"/>
+<path d="M540 520 l42 18.900000000000002 v42 l-42 -18.900000000000002z" fill="#efe6cf"/>
+<path d="M582 538.9 l42 -18.900000000000002 v42 l-42 18.900000000000002z" fill="#e2d6b8"/><path d="M250 600 l42 -18.900000000000002 l42 18.900000000000002 l-42 18.900000000000002z" fill="#fffdf4"/>
+<path d="M250 600 l42 18.900000000000002 v42 l-42 -18.900000000000002z" fill="#efe6cf"/>
+<path d="M292 618.9 l42 -18.900000000000002 v42 l-42 18.900000000000002z" fill="#e2d6b8"/><path d="M600 470 q20 -20 40 0 q-20 10 -40 0z" fill="#5c8a2e"/><path d="M630 450 q20 -20 40 0 q-20 10 -40 0z" fill="#6f9e38"/></svg>

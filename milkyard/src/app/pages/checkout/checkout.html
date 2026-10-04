@@ -1,0 +1,124 @@
+@let t = totals();
+<div class="container page">
+  <div class="head">
+    <a routerLink="/cart" class="link small">← Back to cart</a>
+    <h1>Checkout</h1>
+    <ol class="progress" aria-label="Checkout steps">
+      <li class="done"><span>1</span> Cart</li>
+      <li class="done"><span>2</span> Login</li>
+      <li [class.done]="!!selected()"><span>3</span> Address</li>
+      <li><span>4</span> Payment</li>
+    </ol>
+  </div>
+
+  <div class="layout">
+    <div class="steps">
+      <!-- Contact -->
+      <section class="card step">
+        <header><span class="n done"><app-icon name="check" [size]="16" [stroke]="3" /></span><h2>Contact information</h2><a routerLink="/account/profile" class="link small">Edit</a></header>
+        <div class="contact">
+          <div><small>Name</small><b>{{ user().name }}</b></div>
+          <div><small>Mobile</small><b>+91 {{ user().phone }}</b></div>
+          <div><small>Email</small><b>{{ user().email }}</b></div>
+        </div>
+      </section>
+
+      <!-- Address -->
+      <section class="card step">
+        <header><span class="n" [class.done]="!!selected() && svc()?.ok">@if (selected() && svc()?.ok) { <app-icon name="check" [size]="16" [stroke]="3" /> } @else { 2 }</span><h2>Delivery address</h2>
+          @if (!adding() && !editing()) { <button class="btn btn-light btn-sm" (click)="adding.set(true)"><app-icon name="plus" [size]="16" /> Add new</button> }
+        </header>
+        @if (adding()) {
+          <app-address-form [address]="auth.blankAddress()" submitLabel="Save & deliver here" [cancellable]="addresses().length > 0" (save)="saveAddress($event)" (cancel)="adding.set(false)" />
+        } @else if (editing(); as e) {
+          <app-address-form [address]="e" submitLabel="Update address" (save)="saveAddress($event)" (cancel)="editing.set(null)" />
+        } @else {
+          <div class="addrs" role="radiogroup" aria-label="Choose delivery address">
+            @for (a of addresses(); track a.id) {
+              @let s = delivery.check(a.pincode);
+              <label class="addr" [class.on]="a.id === selectedId()" [class.bad]="!s.ok">
+                <input type="radio" name="addr" [checked]="a.id === selectedId()" (change)="pick(a)" />
+                <div class="grow">
+                  <div class="row wrap"><span class="badge" [class.badge-yellow]="a.id === selectedId()">{{ a.label }}</span>@if (a.isDefault) { <span class="tiny muted bold">Default</span> }</div>
+                  <b>{{ a.name }} · +91 {{ a.phone }}</b>
+                  <p>{{ a.line1 }}@if (a.line2) {, {{ a.line2 }}}@if (a.landmark) {, {{ a.landmark }}}, {{ a.city }}, {{ a.state }} – {{ a.pincode }}</p>
+                  <span class="svc" [class.ok]="s.ok"><app-icon [name]="s.ok ? 'check-circle' : 'alert'" [size]="14" /> {{ s.ok ? 'Delivery available · ' + s.zone!.name + ' · ' + s.zone!.eta : s.message }}</span>
+                </div>
+                <button type="button" class="icon-btn" (click)="$event.preventDefault(); editing.set(a)" aria-label="Edit address"><app-icon name="edit" [size]="18" /></button>
+              </label>
+            }
+          </div>
+        }
+      </section>
+
+      <!-- Payment -->
+      <section class="card step" [class.locked]="!selected() || !svc()?.ok">
+        <header><span class="n">3</span><h2>Payment</h2><span class="secure"><app-icon name="lock" [size]="14" /> 100% secure</span></header>
+        <div class="methods" role="radiogroup" aria-label="Payment method">
+          @for (m of methods; track m.id) {
+            <label class="method" [class.on]="method() === m.id">
+              <input type="radio" name="pm" [checked]="method() === m.id" (change)="method.set(m.id)" />
+              <span class="mi"><app-icon [name]="m.icon" [size]="22" /></span>
+              <span class="grow"><b>{{ m.label }}</b><small>{{ m.sub }}</small></span>
+              <span class="radio"></span>
+            </label>
+          }
+          <label class="method disabled" title="Coming soon">
+            <input type="radio" name="pm" disabled />
+            <span class="mi"><app-icon name="rupee" [size]="22" /></span>
+            <span class="grow"><b>Cash on delivery</b><small>Coming soon</small></span>
+          </label>
+        </div>
+        <p class="tiny muted mt-1">Payments are processed by a PCI-DSS compliant gateway (Razorpay). MILKYARD never sees or stores your card details.</p>
+      </section>
+    </div>
+
+    <!-- Summary -->
+    <aside class="summary card">
+      <h2>Order summary</h2>
+      <div class="items">
+        @for (l of cart.lines(); track l.variant.id) {
+          <div class="it">
+            <span class="thumb"><img [src]="l.product.images[0]" alt="" /><i>{{ l.item.qty }}</i></span>
+            <span class="grow"><b>{{ l.product.name }}</b><small>{{ l.variant.label }} · {{ l.variant.price | inr }} × {{ l.item.qty }}</small></span>
+            <b>{{ l.lineTotal | inr }}</b>
+          </div>
+        }
+      </div>
+      @if (t.coupon) {
+        <div class="applied"><app-icon name="tag" [size]="16" /><span class="grow"><b>{{ t.coupon.code }}</b> applied</span><button class="link tiny" (click)="cart.couponCode.set('')">Remove</button></div>
+      } @else {
+        <form class="input-group mt-1" (ngSubmit)="apply()">
+          <input name="code" [(ngModel)]="code" placeholder="Coupon code" aria-label="Coupon code" style="text-transform:uppercase" />
+          <button class="btn btn-sm" type="submit">Apply</button>
+        </form>
+        @if (couponError()) { <p class="err">{{ couponError() }}</p> }
+      }
+      <div class="tot">
+        <div class="tr"><span>Subtotal</span><span>{{ t.subtotal | inr }}</span></div>
+        @if (t.discount) { <div class="tr save"><span>Coupon discount</span><span>−{{ t.discount | inr }}</span></div> }
+        <div class="tr"><span>Delivery @if (svc()?.zone; as z) { <small class="muted">({{ z.name }})</small> }</span>
+          <span>@if (t.delivery === null) { <em class="muted">Select address</em> } @else if (t.delivery === 0) { <b class="ok">FREE</b> } @else { {{ t.delivery | inr }} }</span>
+        </div>
+        @if (t.serviceable && t.remainingForFree > 0) { <div class="hint">Add {{ t.remainingForFree | inr }} more for free delivery</div> }
+        <div class="tr total"><span>Total payable</span><span>{{ t.total | inr }}</span></div>
+      </div>
+      @if (t.belowMinimum) { <p class="err">Minimum order for this area is {{ t.minOrder | inr }}.</p> }
+      <label class="check small mt-1"><input type="checkbox" [checked]="agreed()" (change)="agreed.set(!agreed())" /> I agree to the <a routerLink="/policies/terms" class="link">terms</a> & <a routerLink="/policies/refund" class="link">refund policy</a></label>
+      <button class="btn btn-block pay" (click)="pay()" [disabled]="!canPay() || processing()">
+        <app-icon name="lock" [size]="18" /> {{ method() === 'COD' ? 'Place order' : 'Pay ' + (t.total | inr) }}
+      </button>
+      <div class="trust"><span>UPI</span><span>VISA</span><span>Mastercard</span><span>RuPay</span></div>
+    </aside>
+  </div>
+</div>
+
+@if (processing()) {
+  <div class="backdrop" style="z-index:150"></div>
+  <div class="pay-modal" role="alertdialog" aria-live="assertive">
+    <div class="spinner big"></div>
+    <h3>Processing your payment…</h3>
+    <p class="muted small">Securely connecting to Razorpay. Please don’t close this window.</p>
+    <b>{{ t.total | inr }}</b>
+  </div>
+}

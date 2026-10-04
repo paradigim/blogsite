@@ -1,0 +1,65 @@
+import { Routes } from '@angular/router';
+import { StoreLayout } from './layout/store-layout';
+import { adminGuard, authGuard } from './core/guards/auth.guard';
+
+export const routes: Routes = [
+  {
+    path: '',
+    component: StoreLayout,
+    children: [
+      { path: '', loadComponent: () => import('./pages/home/home').then((m) => m.HomePage) },
+      { path: 'shop', loadComponent: () => import('./pages/shop/shop').then((m) => m.ShopPage) },
+      { path: 'category/:slug', loadComponent: () => import('./pages/shop/shop').then((m) => m.ShopPage) },
+      { path: 'search', loadComponent: () => import('./pages/shop/shop').then((m) => m.ShopPage), data: { search: true } },
+      { path: 'product/:slug', loadComponent: () => import('./pages/product/product').then((m) => m.ProductPage) },
+      { path: 'cart', loadComponent: () => import('./pages/cart/cart').then((m) => m.CartPage) },
+      { path: 'login', loadComponent: () => import('./pages/login/login').then((m) => m.LoginPage) },
+      { path: 'checkout', canActivate: [authGuard], loadComponent: () => import('./pages/checkout/checkout').then((m) => m.CheckoutPage) },
+      { path: 'order-success/:id', canActivate: [authGuard], loadComponent: () => import('./pages/order-success/order-success').then((m) => m.OrderSuccessPage) },
+      {
+        path: 'account',
+        canActivate: [authGuard],
+        loadComponent: () => import('./pages/account/account-layout').then((m) => m.AccountLayout),
+        children: [
+          { path: '', loadComponent: () => import('./pages/account/overview').then((m) => m.AccountOverview) },
+          { path: 'orders', loadComponent: () => import('./pages/account/orders').then((m) => m.AccountOrders) },
+          { path: 'orders/:id', loadComponent: () => import('./pages/account/order-detail').then((m) => m.AccountOrderDetail) },
+          { path: 'addresses', loadComponent: () => import('./pages/account/addresses').then((m) => m.AccountAddresses) },
+          { path: 'wishlist', loadComponent: () => import('./pages/account/wishlist').then((m) => m.AccountWishlist) },
+          { path: 'profile', loadComponent: () => import('./pages/account/profile').then((m) => m.AccountProfile) },
+        ],
+      },
+      { path: 'about', loadComponent: () => import('./pages/info/about').then((m) => m.AboutPage) },
+      { path: 'contact', loadComponent: () => import('./pages/info/contact').then((m) => m.ContactPage) },
+      { path: 'faq', loadComponent: () => import('./pages/info/faq').then((m) => m.FaqPage) },
+      { path: 'policies/:slug', loadComponent: () => import('./pages/info/policy').then((m) => m.PolicyPage) },
+      { path: '404', loadComponent: () => import('./pages/info/not-found').then((m) => m.NotFoundPage) },
+    ],
+  },
+  {
+    path: 'admin',
+    canActivate: [adminGuard],
+    canActivateChild: [adminGuard],
+    loadComponent: () => import('./admin/admin-layout').then((m) => m.AdminLayout),
+    children: [
+      { path: '', loadComponent: () => import('./admin/dashboard').then((m) => m.AdminDashboard) },
+      { path: 'orders', loadComponent: () => import('./admin/orders').then((m) => m.AdminOrders) },
+      { path: 'orders/:id', loadComponent: () => import('./admin/order-detail').then((m) => m.AdminOrderDetail) },
+      { path: 'products', loadComponent: () => import('./admin/products').then((m) => m.AdminProducts) },
+      { path: 'products/:id', loadComponent: () => import('./admin/product-editor').then((m) => m.AdminProductEditor) },
+      { path: 'categories', loadComponent: () => import('./admin/categories').then((m) => m.AdminCategories) },
+      { path: 'inventory', loadComponent: () => import('./admin/inventory').then((m) => m.AdminInventory) },
+      { path: 'customers', loadComponent: () => import('./admin/customers').then((m) => m.AdminCustomers) },
+      { path: 'analytics', loadComponent: () => import('./admin/analytics').then((m) => m.AdminAnalytics) },
+      { path: 'profit', loadComponent: () => import('./admin/profit').then((m) => m.AdminProfit) },
+      { path: 'traffic', loadComponent: () => import('./admin/traffic').then((m) => m.AdminTraffic) },
+      { path: 'coupons', loadComponent: () => import('./admin/coupons').then((m) => m.AdminCoupons) },
+      { path: 'delivery', loadComponent: () => import('./admin/delivery').then((m) => m.AdminDelivery) },
+      { path: 'homepage', loadComponent: () => import('./admin/homepage').then((m) => m.AdminHomepage) },
+      { path: 'reviews', loadComponent: () => import('./admin/reviews').then((m) => m.AdminReviews) },
+      { path: 'notifications', loadComponent: () => import('./admin/notifications').then((m) => m.AdminNotifications) },
+      { path: 'settings', loadComponent: () => import('./admin/settings').then((m) => m.AdminSettings) },
+    ],
+  },
+  { path: '**', redirectTo: '404' },
+];

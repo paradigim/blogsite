@@ -1,0 +1,231 @@
+@if (product(); as p) {
+  @let v = variant()!;
+  <div class="container pdp">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a routerLink="/">Home</a><span class="sep">/</span>
+      <a routerLink="/shop">Shop</a><span class="sep">/</span>
+      @if (category(); as c) { <a [routerLink]="['/category', c.slug]">{{ c.name }}</a><span class="sep">/</span> }
+      <span>{{ p.name }}</span>
+    </nav>
+
+    <div class="top">
+      <!-- Gallery -->
+      <div class="gallery">
+        <div class="thumbs">
+          @for (src of p.images; track src; let i = $index) {
+            <button [class.on]="img() === i" (click)="img.set(i)" [attr.aria-label]="'Show image ' + (i + 1)"><img [src]="src" alt="" /></button>
+          }
+        </div>
+        <div class="stage" [class.zoom]="zoom()" (click)="zoom.set(!zoom())">
+          <img [src]="p.images[img()]" [alt]="'MILKYARD ' + p.name + ' — image ' + (img() + 1)" width="800" height="800" />
+          <div class="st-badges">
+            @if (p.bestSeller) { <span class="badge badge-ink">Bestseller</span> }
+            @if (p.newArrival) { <span class="badge badge-yellow">New</span> }
+            @if (p.legal.veg) { <span class="veg" title="Vegetarian"><i></i></span> }
+          </div>
+          <span class="zoom-hint"><app-icon name="zoom" [size]="16" /> Tap to {{ zoom() ? 'reset' : 'zoom' }}</span>
+          <button class="nav prev" (click)="$event.stopPropagation(); img.set((img() + p.images.length - 1) % p.images.length)" aria-label="Previous image"><app-icon name="chevron-left" /></button>
+          <button class="nav next" (click)="$event.stopPropagation(); img.set((img() + 1) % p.images.length)" aria-label="Next image"><app-icon name="chevron-right" /></button>
+        </div>
+      </div>
+
+      <!-- Buy box -->
+      <div class="buy">
+        <span class="eyebrow">{{ category()?.name }}</span>
+        <h1>{{ p.name }}</h1>
+        <div class="row wrap">
+          <a href="#reviews"><app-stars [rating]="p.rating" [count]="p.reviewCount" [size]="16" /></a>
+          <span class="dot-sep"></span>
+          <span class="small muted bold">{{ p.sold }}+ sold</span>
+        </div>
+        <p class="short">{{ p.shortDescription }}</p>
+
+        <div class="price-box">
+          <div class="row wrap">
+            <span class="big-price">{{ v.price | inr }}</span>
+            @if (v.mrp > v.price) {
+              <span class="mrp">MRP {{ v.mrp | inr }}</span>
+              <span class="badge badge-green">{{ catalog.discount(v) }}% off</span>
+            }
+          </div>
+          <span class="tiny muted">Inclusive of all taxes · {{ v.label }}@if (unitPrice(v.label, v.price); as up) { · {{ up }} }</span>
+        </div>
+
+        <div class="opts-h"><b>Choose size</b>@if (v.stock > 0 && v.stock <= p.lowStockThreshold) { <span class="badge badge-amber">Only {{ v.stock }} left</span> }</div>
+        <div class="opts" role="radiogroup" aria-label="Size">
+          @for (x of p.variants; track x.id) {
+            <button role="radio" class="opt" [attr.aria-checked]="x.id === v.id" [class.on]="x.id === v.id" (click)="variant.set(x)" [disabled]="x.stock <= 0">
+              <b>{{ x.label }}</b>
+              <span>{{ x.price | inr }}</span>
+              @if (x.mrp > x.price) { <s>{{ x.mrp | inr }}</s> }
+              @if (x.stock <= 0) { <em>Sold out</em> }
+            </button>
+          }
+        </div>
+
+        <div class="actions">
+          <app-qty [value]="qty()" [max]="v.stock || 1" (change)="qty.set($event)" />
+          <button class="btn grow" (click)="addToCart()" [disabled]="v.stock <= 0"><app-icon name="bag" /> Add to cart</button>
+          <button class="btn btn-yellow grow" (click)="buyNow()" [disabled]="v.stock <= 0">Buy now</button>
+          <button class="icon-btn wish" [class.on]="wish.has(p.id)" (click)="wish.toggle(p.id, p.name)" [attr.aria-label]="wish.has(p.id) ? 'Remove from wishlist' : 'Save to wishlist'"><app-icon name="heart" [fill]="wish.has(p.id)" /></button>
+        </div>
+
+        <ul class="highlights">
+          @for (h of p.highlights; track h) { <li><app-icon name="check-circle" [size]="18" /> {{ h }}</li> }
+        </ul>
+
+        <div class="deliv">
+          <b class="mb-1" style="display:block">Check delivery</b>
+          <app-pincode [small]="true" />
+          <div class="perks">
+            <span><app-icon name="truck" [size]="18" /> Same-day in Zone A</span>
+            <span><app-icon name="shield" [size]="18" /> Hygienically sealed</span>
+            <span><app-icon name="lock" [size]="18" /> Secure UPI & card payments</span>
+          </div>
+        </div>
+        <button class="link small" (click)="share(p)"><app-icon name="external" [size]="14" /> Share this product</button>
+      </div>
+    </div>
+
+    <!-- Info tabs -->
+    <section class="info">
+      <div class="tabs" role="tablist">
+        <button role="tab" [class.on]="tab() === 'desc'" (click)="tab.set('desc')">Description</button>
+        <button role="tab" [class.on]="tab() === 'ingredients'" (click)="tab.set('ingredients')">Ingredients</button>
+        @if (p.nutrition.length) { <button role="tab" [class.on]="tab() === 'nutrition'" (click)="tab.set('nutrition')">Nutrition</button> }
+        <button role="tab" [class.on]="tab() === 'storage'" (click)="tab.set('storage')">Storage & shelf life</button>
+        <button role="tab" [class.on]="tab() === 'legal'" (click)="tab.set('legal')">Product information</button>
+      </div>
+      <div class="panel" role="tabpanel">
+        @switch (tab()) {
+          @case ('desc') {
+            <div class="desc-grid">
+              <p class="lead">{{ p.description }}</p>
+              <img [src]="p.images[1]" alt="" loading="lazy" />
+            </div>
+          }
+          @case ('ingredients') {
+            <h3>Ingredients</h3>
+            <p>{{ p.ingredients }}</p>
+            <p class="tiny muted">Allergen information: contains milk / milk products. @if (p.categoryIds.includes('dryfruits') || p.ingredients.toLowerCase().includes('almond')) { Contains tree nuts. } Manufactured in a facility that handles nuts.</p>
+          }
+          @case ('nutrition') {
+            <h3>Nutritional information <small class="muted">(approx. per 100 g)</small></h3>
+            <table class="table ntable"><tbody>@for (n of p.nutrition; track n.label) { <tr><td>{{ n.label }}</td><td class="num">{{ n.value }}</td></tr> }</tbody></table>
+            <p class="tiny muted mt-1">Indicative values. Refer to the pack label for the final declared values.</p>
+          }
+          @case ('storage') {
+            <div class="grid-2">
+              <div class="card-flat"><app-icon name="box" [size]="24" /><h3 class="mt-1">Storage</h3><p class="mb-0">{{ p.storage }}</p></div>
+              <div class="card-flat"><app-icon name="calendar" [size]="24" /><h3 class="mt-1">Shelf life</h3><p class="mb-0">{{ p.shelfLife }}</p></div>
+            </div>
+          }
+          @case ('legal') {
+            <table class="table ntable">
+              <tbody>
+                <tr><td>Brand</td><td>MILKYARD</td></tr>
+                <tr><td>Net quantity</td><td>{{ v.label }}</td></tr>
+                <tr><td>MRP</td><td>{{ v.mrp | inr }} (incl. of all taxes)</td></tr>
+                <tr><td>Food type</td><td>{{ p.legal.veg ? 'Vegetarian' : 'Non-vegetarian' }}</td></tr>
+                <tr><td>FSSAI licence no.</td><td>{{ p.legal.fssaiLicense }}</td></tr>
+                <tr><td>Manufactured & marketed by</td><td>{{ p.legal.manufacturer }}</td></tr>
+                <tr><td>Country of origin</td><td>{{ p.legal.countryOfOrigin }}</td></tr>
+                <tr><td>Best before</td><td>{{ p.shelfLife }}</td></tr>
+                <tr><td>Date of manufacture</td><td>Printed on pack</td></tr>
+                <tr><td>Customer care</td><td>+91 70590 80710 · hello&#64;milkyard.in</td></tr>
+              </tbody>
+            </table>
+          }
+        }
+      </div>
+    </section>
+
+    <!-- Frequently bought together -->
+    @if (fbt().length) {
+      <section class="fbt">
+        <h2>Frequently bought together</h2>
+        <div class="fbt-row">
+          <div class="fbt-items">
+            <div class="fi on"><img [src]="p.images[0]" alt="" /><span><b>This item</b><small>{{ p.name }} · {{ v.price | inr }}</small></span></div>
+            @for (x of fbt(); track x.id) {
+              <span class="plus">+</span>
+              <label class="fi" [class.on]="fbtPicked().has(x.id)">
+                <input type="checkbox" [checked]="fbtPicked().has(x.id)" (change)="toggleFbt(x.id)" />
+                <img [src]="x.images[0]" alt="" />
+                <span><b>{{ x.name }}</b><small>{{ catalog.defaultVariant(x).label }} · {{ catalog.defaultVariant(x).price | inr }}</small></span>
+              </label>
+            }
+          </div>
+          <div class="fbt-total">
+            <span class="muted small">Total for {{ fbtPicked().size + 1 }} items</span>
+            <b>{{ fbtTotal() | inr }}</b>
+            <button class="btn" (click)="addFbt()">Add all to cart</button>
+          </div>
+        </div>
+      </section>
+    }
+
+    <!-- Reviews -->
+    <section class="reviews" id="reviews">
+      <div class="rv-summary">
+        <h2>Customer reviews</h2>
+        <div class="avg"><b>{{ p.rating.toFixed(1) }}</b><div><app-stars [rating]="p.rating" [size]="18" [showValue]="false" /><span class="small muted">Based on {{ p.reviewCount }} ratings</span></div></div>
+        <span class="tiny muted">Recent written reviews</span>
+        <div class="bars">
+          @for (d of dist(); track d.s) {
+            <div class="bar-row"><span>{{ d.s }}★</span><div class="bar"><i [style.width.%]="d.pct"></i></div><span class="muted">{{ d.n }}</span></div>
+          }
+        </div>
+        @if (!auth.isLoggedIn()) {
+          <p class="small muted">Bought this? <a routerLink="/login" [queryParams]="{ redirect: '/product/' + p.slug }" class="link">Log in</a> to write a review.</p>
+        } @else if (alreadyReviewed()) {
+          <p class="small muted">Thanks — you’ve reviewed this product.</p>
+        } @else if (purchased()) {
+          <button class="btn btn-outline btn-block" (click)="writing.set(true)">Write a review</button>
+        } @else {
+          <p class="small muted">Only customers who have received this product can leave a verified review.</p>
+        }
+      </div>
+      <div class="rv-list">
+        @if (writing()) {
+          <form class="card rv-form" (ngSubmit)="submitReview()">
+            <h3>Your review</h3>
+            <div class="star-pick" role="radiogroup" aria-label="Rating">
+              @for (s of [1, 2, 3, 4, 5]; track s) { <button type="button" [class.on]="s <= draft.rating" (click)="draft.rating = s" [attr.aria-label]="s + ' stars'">★</button> }
+            </div>
+            <div class="field"><label for="rt">Title</label><input id="rt" class="input" name="title" [(ngModel)]="draft.title" placeholder="Sum it up in a line" /></div>
+            <div class="field"><label for="rb">Review</label><textarea id="rb" class="textarea" name="body" [(ngModel)]="draft.body" required placeholder="How did it taste? How was the packaging?"></textarea></div>
+            <div class="field"><span class="label">Photo (optional)</span><input type="file" accept="image/*" class="input" /></div>
+            <div class="row"><button class="btn" type="submit">Submit review</button><button class="btn btn-ghost" type="button" (click)="writing.set(false)">Cancel</button></div>
+          </form>
+        }
+        @for (r of reviews(); track r.id) {
+          <article class="rv">
+            <div class="row between wrap">
+              <div class="row"><span class="av">{{ r.userName[0] }}</span><div><b>{{ r.userName }}</b>@if (r.verified) { <span class="badge badge-green"><app-icon name="check" [size]="11" /> Verified purchase</span> }<div class="tiny muted">{{ r.createdAt | date: 'd MMM y' }}</div></div></div>
+              <app-stars [rating]="r.rating" [showValue]="false" />
+            </div>
+            <h4>{{ r.title }}</h4>
+            <p>{{ r.body }}</p>
+          </article>
+        } @empty {
+          <div class="empty card"><h3>No reviews yet</h3><p>Be the first to share what you think.</p></div>
+        }
+      </div>
+    </section>
+
+    <!-- Related -->
+    @if (related().length) {
+      <section class="related">
+        <div class="section-head"><div><span class="eyebrow">You may also like</span><h2>More from MILKYARD</h2></div></div>
+        <div class="rgrid">@for (r of related(); track r.id) { <app-product-card [product]="r" [compact]="true" /> }</div>
+      </section>
+    }
+  </div>
+
+  <!-- Mobile sticky bar -->
+  <div class="sticky-buy">
+    <div><b>{{ v.price | inr }}</b><span class="tiny muted">{{ v.label }}</span></div>
+    <button class="btn" (click)="addToCart()" [disabled]="v.stock <= 0">Add to cart</button>
+  </div>
+}
